@@ -71,13 +71,15 @@ int	is_closed(char *str)
 	tmp_sgl_quote = 0;
 	while (str[iter])
 	{
-		if ()
-		{
-			/* code */
-		}
-		
+		if (str[iter] == '\'' && ft_strchr(&str[iter + 1], '\''))
+			tmp_sgl_quote = 1;
+		else if (str[iter] == '\'' && tmp_sgl_quote == 1)
+			tmp_sgl_quote = 0;
+		if (str[iter] == '\"' && tmp_sgl_quote == 0)
+			return (1);
+		iter++;
 	}
-	
+	return (0);
 }
 
 size_t	count_entries(char *buf, t_input *data)
@@ -100,12 +102,14 @@ size_t	count_entries(char *buf, t_input *data)
 				data->sgl_quote = 1;
 			else if (data->sgl_quote == 1 && buf[iter] == '\'')
 				data->sgl_quote = 0;
-			if (data->sgl_quote == 0 && data->dbl_quote == 0 && buf[iter] == '\"' && ft_strchr(&buf[iter + 1], '\"'))
+			if (data->sgl_quote == 0 && data->dbl_quote == 0 && buf[iter] == '\"' && is_closed(&buf[iter + 1]))
 				data->dbl_quote = 1;
 			else if (data->sgl_quote == 0 && data->dbl_quote == 1 && buf[iter] == '\"')
 				data->dbl_quote = 0;
 			iter++;
 		}
+		while (buf[iter] && !is_token(buf[iter]))
+			iter++;
 	}
 	return (count);
 }
