@@ -14,10 +14,14 @@ typedef struct s_input {
 	size_t	cmd_count;
 
 	char	**file_names;
-	int		file_count;
+	size_t	file_count;
 
 	char	**env_names;
-	int		env_count;
+	size_t	env_count;
+
+	char	**envp;
 	int		*input_spec;
-	int		tmp_spec;
+	size_t	total_entries;
+	int		sgl_quote;
+	int		dbl_quote;
 }	t_input;
