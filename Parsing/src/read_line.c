@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/16 11:45:29 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:27:28 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@
 // 	}
 // }
 
-
-int main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
 
@@ -65,10 +64,11 @@ int main(int argc, char *argv[], char *envp[])
 
 	while ((buf = readline("minishell>> ")) != NULL)
 	{
-		    if (ft_strlen(buf) > 0) {
-				parse_string(buf, &data);
-		    //   add_history(buf);
-		    }
+		token(buf, envp, &data);
+		// if (ft_strlen(buf) > 0) {
+		// 	parse_string(buf, &data);
+		// //   add_history(buf);
+		// }
 		free(buf);
 	}
 	return (0);
