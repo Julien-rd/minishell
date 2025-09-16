@@ -36,4 +36,4 @@ char		*getpath(char *path, char **envp, t_input *data);
 size_t		pathsize(char *path, char **envp, t_input *data);
 size_t		pathlen(char *path);
 int			quoteclosed(char *str, char quote, t_input *data);
-void		token(char *buf, char **envp, t_input *data);
+void		expand_input(char *buf, char **envp, t_input *data);

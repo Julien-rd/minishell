@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   expand_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/16 16:46:37 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/16 18:05:10 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	token_len(char *buf, char **envp, t_input *data)
+static void	var_len(char *buf, char **envp, t_input *data)
 {
 	size_t	iter;
 	int		data_increase;
@@ -37,7 +37,7 @@ static void	token_len(char *buf, char **envp, t_input *data)
 	}
 }
 
-static void	token_str(char *buf, char **envp, t_input *data)
+static void	expanded_str(char *buf, char **envp, t_input *data)
 {
 	size_t	iter;
 	size_t	len;
@@ -69,7 +69,7 @@ static void	token_str(char *buf, char **envp, t_input *data)
 		iter++;
 	}
 }
-void	token(char *buf, char **envp, t_input *data)
+void	expand_input(char *buf, char **envp, t_input *data)
 {
 	data->len = 0;
 	data->dbl_quote = 0;
@@ -78,5 +78,5 @@ void	token(char *buf, char **envp, t_input *data)
 	data->token_str = calloc(sizeof(char), data->len);
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
-	token_str(buf, envp, data);
+	expand_str(buf, envp, data);
 }
