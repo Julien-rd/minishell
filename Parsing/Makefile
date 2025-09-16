@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Ilibft_00 -MMD
-SRC = src/read_line.c
+SRC = src/read_line.c src/parse_string.c
 OBJ = $(SRC:.c=.o)
 DEP = $(SRC:.c=.d)
 LIBFT_DIR = libft_00

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/15 09:49:16 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/16 11:45:29 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,73 +55,6 @@
 // 	}
 // }
 
-int	is_token(char c)
-{
-	if (c == 32 || (c >= 9 && c <=13) || c == '>' || c == '<' || c == '|')
-		return (0);
-	return (1);
-}
-
-int	is_closed(char *str)
-{
-	size_t	iter;
-	int		tmp_sgl_quote;
-
-	iter = 0;
-	tmp_sgl_quote = 0;
-	while (str[iter])
-	{
-		if (str[iter] == '\'' && ft_strchr(&str[iter + 1], '\''))
-			tmp_sgl_quote = 1;
-		else if (str[iter] == '\'' && tmp_sgl_quote == 1)
-			tmp_sgl_quote = 0;
-		if (str[iter] == '\"' && tmp_sgl_quote == 0)
-			return (1);
-		iter++;
-	}
-	return (0);
-}
-
-size_t	count_entries(char *buf, t_input *data)
-{
-	size_t	iter;
-	size_t	count;
-
-	iter = 0;
-	count = 0;
-	data->dbl_quote = 0;
-	data->sgl_quote = 0;
-	while (buf[iter] && !is_token(buf[iter]))
-			iter++;
-	while (buf[iter])
-	{
-		count++;
-		while (data->dbl_quote || data->sgl_quote || (buf[iter] && is_token(buf[iter]) || (buf[iter] && buf[iter] == 32 || (buf[iter] >= 9 && buf[iter] <=13))))
-		{
-			if (data->sgl_quote == 0 && buf[iter] == '\'' && ft_strchr(&buf[iter + 1], '\''))
-				data->sgl_quote = 1;
-			else if (data->sgl_quote == 1 && buf[iter] == '\'')
-				data->sgl_quote = 0;
-			if (data->sgl_quote == 0 && data->dbl_quote == 0 && buf[iter] == '\"' && is_closed(&buf[iter + 1]))
-				data->dbl_quote = 1;
-			else if (data->sgl_quote == 0 && data->dbl_quote == 1 && buf[iter] == '\"')
-				data->dbl_quote = 0;
-			iter++;
-		}
-		while (buf[iter] && !is_token(buf[iter]))
-			iter++;
-	}
-	return (count);
-}
-
-char	**parse_string(char *buf, t_input *data)
-{
-	char	**entries;
-
-	data->total_entries = count_entries(buf, data);
-	printf("%zu", data->total_entries);
-	return (NULL);
-}
 
 int main(int argc, char *argv[], char *envp[])
 {
