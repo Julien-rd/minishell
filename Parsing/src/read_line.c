@@ -91,12 +91,12 @@ size_t	count_entries(char *buf, t_input *data)
 	count = 0;
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
+	while (buf[iter] && !is_token(buf[iter]))
+			iter++;
 	while (buf[iter])
 	{
-		while (buf[iter] && !is_token(buf[iter]))
-			iter++;
 		count++;
-		while (data->dbl_quote || data->sgl_quote || (buf[iter] && is_token(buf[iter])))
+		while (data->dbl_quote || data->sgl_quote || (buf[iter] && is_token(buf[iter]) || (buf[iter] && buf[iter] == 32 || (buf[iter] >= 9 && buf[iter] <=13))))
 		{
 			if (data->sgl_quote == 0 && buf[iter] == '\'' && ft_strchr(&buf[iter + 1], '\''))
 				data->sgl_quote = 1;
