@@ -12,8 +12,8 @@
 # define OPERATOR 5
 # define HERE_DOC 6
 # define APPEND_FILE 7
-# define FD_SET 8
-# define FD_GET 9
+# define FD_WRITE 8
+# define FD_TAKE 9
 # define PIPE 10
 
 typedef struct s_input

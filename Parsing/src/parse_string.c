@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/17 18:49:45 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/17 18:54:56 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,9 +222,9 @@ void	check_fd(char *buf, t_input *data, size_t iter, size_t entry)
 	while (ft_isdigit(buf[tmp_iter]))
 		tmp_iter++;
 	if (tmp_iter > iter && buf[tmp_iter] == '>')
-		data->input_spec[entry] = FD_SET;
+		data->input_spec[entry] = FD_WRITE;
 	if (tmp_iter > iter && buf[tmp_iter] == '<')
-		data->input_spec[entry] = FD_GET;
+		data->input_spec[entry] = FD_TAKE;
 }
 
 void	fill_entries(char *buf, t_input *data)
