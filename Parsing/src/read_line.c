@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/17 15:21:06 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/17 18:49:36 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,9 @@ void	entry_spec(t_input	*data)
 				else if (!ft_strcmp(data->entries[iter - 1], ">"))
 					data->input_spec[iter] = OUTFILE;
 			}
-			if (data->entries[iter + 1] && data->input_spec[iter + 1] == OPERATOR)
-			{
-				if (!ft_strcmp(data->entries[iter + 1], "<"))
-					data->input_spec[iter] = DEFAULT_REDIRECT;
-			}
 		}
+		if (data->input_spec[iter] == OPERATOR && data->input_spec[iter] == '|')
+			data->input_spec[iter] = PIPE;
 		iter++;
 	}
 }
