@@ -39,3 +39,5 @@ int		malloc_entries(char *buf, t_input *data);
 void	input_spec_init(t_input *data);
 void	fill_string(char *buf, t_input *data);
 int		parse_string(char *buf, t_input *data);
+
+char	**here_doc(t_input *data, size_t heredoc_count);
