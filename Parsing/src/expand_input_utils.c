@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/17 16:29:58 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/17 17:03:09 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ size_t pathsize(char *path, char **envp, t_input *data)
 		return (1);
 	while (envp[iter])
 	{
-		if (ft_strncmp(envp[iter], path, len) == 61)
+		if (ft_strncmp(envp[iter], path, len + 1) == 61)
 			return (ft_strlen(&envp[iter][len + 1]));
 		iter++;
 	}
@@ -85,7 +85,7 @@ char *getpath(char *path, char **envp, t_input *data)
 		return (str = ft_calloc(2, 1), str = "$", str);
 	while (envp[iter])
 	{
-		if (ft_strncmp(envp[iter], path, len) == 61)
+		if (ft_strncmp(envp[iter], path, len + 1) == 61)
 			return (ft_strdup(&envp[iter][len + 1]));
 		iter++;
 	}
