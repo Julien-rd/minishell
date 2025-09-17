@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/16 18:05:10 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/17 12:00:08 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	expand_input(char *buf, char **envp, t_input *data)
 	data->len = 0;
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
-	token_len(buf, envp, data);
+	var_len(buf, envp, data);
 	data->token_str = calloc(sizeof(char), data->len);
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
