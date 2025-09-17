@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:00:45 by eprottun          #+#    #+#             */
-/*   Updated: 2025/05/03 16:01:43 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/17 12:25:32 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *str, int fd);
 char	**ft_split(char const *str, char c);
 char	*ft_strchr(const char *str, int char_value);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *src);
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 char	*ft_strjoin(char const *s1, char const *s2);

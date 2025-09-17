@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_input_utils.c                               :+:      :+:    :+:   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/17 12:02:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/16 16:25:17 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	quoteclosed(char *str, char quote, t_input *data)
+int quoteclosed(char *str, char quote, t_input *data)
 {
-	size_t	iter;
+	size_t iter;
 
 	iter = 0;
 	if (data->sgl_quote == 1)
@@ -42,9 +42,9 @@ int	quoteclosed(char *str, char quote, t_input *data)
 	return (0);
 }
 
-size_t	pathlen(char *path)
+size_t pathlen(char *path)
 {
-	size_t	len;
+	size_t len;
 
 	len = 0;
 	if (ft_isdigit(path[len]))
@@ -54,14 +54,16 @@ size_t	pathlen(char *path)
 			len++;
 	return (len);
 }
-size_t	pathsize(char *path, char **envp, t_input *data)
+size_t pathsize(char *path, char **envp, t_input *data)
 {
-	size_t	len;
-	size_t	iter;
-	char	*str;
+	size_t len;
+	size_t iter;
+	char *str;
 
 	iter = 0;
 	len = pathlen(path);
+	if (len == 0)
+		return (1);
 	while (envp[iter])
 	{
 		if (ft_strncmp(envp[iter], path, len) == 0)
@@ -70,7 +72,7 @@ size_t	pathsize(char *path, char **envp, t_input *data)
 	}
 	return (0);
 }
-char	*getpath(char *path, char **envp, t_input *data)
+char *getpath(char *path, char **envp, t_input *data)
 {
 	size_t len;
 	size_t iter;
@@ -79,6 +81,8 @@ char	*getpath(char *path, char **envp, t_input *data)
 	len = 0;
 	iter = 0;
 	len = pathlen(path);
+	if (len == 0)
+		return (str = ft_calloc(2, 1), str = "$", str);
 	while (envp[iter])
 	{
 		if (ft_strncmp(envp[iter], path, len) == 0)

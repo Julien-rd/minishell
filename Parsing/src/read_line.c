@@ -3,73 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/17 11:43:11 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/17 15:21:06 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// int	double_quotes(char *buf, t_input *data, size_t *iter)
-// {
-// 	while (buf[*iter] != '"')
-// 	{
-// 		if (!buf[*iter])
-// 			return (1); //bracket not closed
-// 		if (buf[*iter] == '$')
-// 			env_variable();
-// 		(*iter)++;
-// 	}
-// }
+void	entry_spec(t_input	*data)
+{
+	size_t	iter;
+	
+	iter = 0;
+	while (data->entries[iter])
+	{
+		if (data->input_spec[iter] == DEFAULT)
+		{
+			if (iter != 0 && data->input_spec[iter - 1] == OPERATOR)
+			{
+				if (!ft_strcmp(data->entries[iter - 1], "<<"))
+					data->input_spec[iter] = HERE_DOC;
+				else if (!ft_strcmp(data->entries[iter - 1], ">>"))
+					data->input_spec[iter] = APPEND_FILE;
+				else if (!ft_strcmp(data->entries[iter - 1], "<"))
+					data->input_spec[iter] = INFILE;
+				else if (!ft_strcmp(data->entries[iter - 1], ">"))
+					data->input_spec[iter] = OUTFILE;
+			}
+			if (data->entries[iter + 1] && data->input_spec[iter + 1] == OPERATOR)
+			{
+				if (!ft_strcmp(data->entries[iter + 1], "<"))
+					data->input_spec[iter] = DEFAULT_REDIRECT;
+			}
+		}
+		iter++;
+	}
+}
 
-// int	single_quotes(char *buf, t_input *data, size_t *iter)
-// {
-// 	int		end_quote;
-// 	size_t	tmp_iter;
-// 	char	*return_str;
-
-// 	tmp_iter = *iter + 1;
-// 	end_quote = 1;
-// 	while (buf[tmp_iter] != '\'')
-// 	{
-// 		if (!buf[tmp_iter])
-// 			end_quote = 0;
-// 		(tmp_iter)++;
-// 	}
-// 	if (end_quote == 1)
-// 	{
-// 		return_str = ft_substr(buf, *iter + 1, tmp_iter - 1 - *iter);
-// 		if (!return_str)
-// 			return (-1);
-// 	}
-// 	else
-// 	{
-// 		tmp_iter = *iter;
-// 		while (buf[tmp_iter] && buf[tmp_iter] != ' ')
-// 			tmp_iter++;
-// 		return_str = ft_substr(buf, *iter, tmp_iter - *iter);
-// 		if (!return_str)
-// 			return (-1);
-// 	}
-// }
-
-int	main(int argc, char *argv[], char *envp[])
+int main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
 
 	char *buf;
-	data.envp = envp;
 
 	while ((buf = readline("minishell>> ")) != NULL)
 	{
-		heredoc()
-		// token(buf, envp, &data);
-		// if (ft_strlen(buf) > 0) {
-		// 	parse_string(buf, &data);
-		// //   add_history(buf);
-		// }
+		    if (ft_strlen(buf) > 0) {
+			{
+				expand_input(buf, envp, &data);
+				parse_string(data.expanded_str, &data);
+				entry_spec(&data);
+				size_t	iter = 0;
+				while (data.entries[iter])
+				{
+					printf("%zu = [%s] (%i)\n", iter, data.entries[iter], data.input_spec[iter]);
+					iter++;
+				}
+			}
+		    //   add_history(buf);
+		    }
 		free(buf);
 	}
 	return (0);

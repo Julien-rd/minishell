@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/16 12:58:27 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/17 15:33:43 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,17 @@ void	input_spec_init(t_input *data)
 	}
 }
 
+void	check_fd(char *buf, t_input *data, size_t iter, size_t entry)
+{
+	size_t	tmp_iter;
+
+	tmp_iter = iter;
+	while (ft_isdigit(buf[tmp_iter]))
+		tmp_iter++;
+	if (tmp_iter > iter && buf[tmp_iter] == '>')
+		data->input_spec[entry] = FD;
+}
+
 void	fill_entries(char *buf, t_input *data)
 {
 	size_t	iter;
@@ -232,6 +243,7 @@ void	fill_entries(char *buf, t_input *data)
 		tmp_count = 0;
 		while (data->dbl_quote || data->sgl_quote || (buf[iter] && is_token(buf[iter])))
 		{
+			check_fd(buf, data, iter, entry);
 			if (data->dbl_quote == 0 && data->sgl_quote == 0 && buf[iter] == '\'' && ft_strchr(&buf[iter + 1], '\''))
 				data->sgl_quote = 1, iter++;
 			if (data->sgl_quote == 0 && data->dbl_quote == 0 && buf[iter] == '\"' && ft_strchr(&buf[iter + 1], '\"'))
@@ -258,19 +270,14 @@ int	parse_string(char *buf, t_input *data)
 {
 	data->total_entries = count_entries(buf, data);
 	data->entries = malloc(sizeof(char *) * (data->total_entries + 1));
-	data->input_spec = malloc(sizeof(int) * data->total_entries);
-	input_spec_init(data);
 	if (!data->entries)
 		return (-1);
+	data->input_spec = malloc(sizeof(int) * data->total_entries);
+	if (!data->input_spec)
+		return (-1);
+	input_spec_init(data);
 	if (malloc_entries(buf, data) == -1)
 		return (-1);
 	fill_entries(buf, data);
-
-	size_t	 iter = 0;
-	while (data->entries[iter])
-	{
-		printf("%zu = [%s] (%i)\n", iter, data->entries[iter], data->input_spec[iter]);
-		iter++;
-	}
 	return (0);
 }
