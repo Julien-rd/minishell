@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 16:09:35 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/18 17:05:41 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-typedef struct s_cmd
-{
-	char **cmd;
-	char **line;
-	int *line_spec;
-} t_cmd;
 
 int setup_redirect(t_exec *data, t_cmd *cmd)
 {
@@ -137,16 +130,66 @@ void child_process(t_exec *data)
 	t_cmd cmd;
 
 	cmd.line = &data->entries[data->pipe_position[data->pipe_iter]];
-	cmd.line_spec = data->input_spec[data->pipe_position[data->pipe_iter]];
+	cmd.line_spec = &data->input_spec[data->pipe_position[data->pipe_iter]];
 	cmd_init(&cmd);
 	// redirection of files
 	if (setup_redirect(data, &cmd))
 		exit(1);
-	path = getpath(data->envp, cmd.cmd[0]);
+	path = ft_getpath(data->envp, cmd.cmd[0]);
 	if (path == NULL)
 		exit(1);
 	execve(path, cmd.cmd, data->envp);
 	exit(1);
+}
+
+void	parent_process(t_exec *data)
+{
+	if (data->pipe_iter != 0)
+	{
+		if (close(data->prev_fd) == -1)
+		{
+			// ft_error_handle(cmds, "close", PIPE_DEP, YES);
+			exit(1);
+		}
+	}
+	if (data->pipe_iter != data->pipe_count - 1)
+	{
+		data->prev_fd = data->fd[0];
+		if (close(data->fd[1]) == -1)
+		{
+			// ft_error_handle(cmds, "close", PIPE_READ, YES);
+			exit(1);
+		}
+	}
+}
+
+int	ft_kill_children(t_exec *data)
+{
+	int		status;
+	int		success;
+	pid_t	pid;
+
+	success = 0;
+	data->return_value = 1;
+	while (1)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid == -1)
+		{
+			if (errno == ECHILD && ++success)
+				break ;
+			else if (errno == EINTR)
+				continue ;
+			else
+				break ;
+		}
+		if (pid == data->last_pid)
+			if (WIFEXITED(status))
+				data->return_value = WEXITSTATUS(status);
+	}
+	if (errno != ECHILD)
+		perror("waitpid");
+	return (success);
 }
 
 int execute_cmds(t_exec *data)
@@ -166,10 +209,10 @@ int execute_cmds(t_exec *data)
 		if (data->pid == 0)
 			child_process(data);
 		else
-			ft_parent_process(&cmds);
+			parent_process(data);
 		data->pipe_iter++;
 	}
-	if (ft_kill_children(&cmds))
-		return (cmds.return_value);
+	if (ft_kill_children(data))
+		return (data->return_value);
 	return (1);
 }

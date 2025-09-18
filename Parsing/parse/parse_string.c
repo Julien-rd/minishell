@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/17 18:54:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/18 17:12:52 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,9 +274,10 @@ int	parse_string(char *buf, t_input *data)
 	data->entries = malloc(sizeof(char *) * (data->total_entries + 1));
 	if (!data->entries)
 		return (-1);
-	data->input_spec = malloc(sizeof(int) * data->total_entries);
+	data->input_spec = malloc(sizeof(int) * (data->total_entries + 1));
 	if (!data->input_spec)
 		return (-1);
+	data->input_spec[data->total_entries] = END;
 	input_spec_init(data);
 	if (malloc_entries(buf, data) == -1)
 		return (-1);
