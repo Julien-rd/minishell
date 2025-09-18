@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 17:12:52 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ int	malloc_entries(char *buf, t_input *data)
 		}
 	}
 	data->entries[entry] = NULL;
+	return (0);
 }
 
 void	input_spec_init(t_input *data)

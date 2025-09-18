@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/18 18:14:32 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/18 19:02:05 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	size_t	iter;
 	int		delimiter_not_detected;
 	char	*buf;
-	int		first_round;
 
 	delimiter_not_detected = 1;
 	iter = 0;
@@ -45,12 +44,10 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 		delimiter_not_detected = ft_strcmp(&buf[iter], entry);
 		if (delimiter_not_detected)
 		{
-			if (!first_round)
-				data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
-						"\n");
 			data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
 					buf);
-			first_round = 0;
+			data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
+						"\n");
 		}
 		free(buf);
 	}

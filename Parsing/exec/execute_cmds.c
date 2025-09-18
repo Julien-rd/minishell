@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 18:25:50 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/18 19:04:50 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ int setup_redirect(t_exec *data, t_cmd *cmd)
 		if (close(data->prev_fd) == -1)
 			return (1);
 	}
+	if (data->pipe_iter != data->pipe_count)
+	{
+		if (dup2(data->fd[1], 1) == -1)
+			return (1);
+		if (close(data->fd[0]) == -1)
+			return (1);
+		if (close(data->fd[1]) == -1)
+			return (1);
+	}
 	while (cmd->line_spec[iter] != END && cmd->line_spec[iter] != PIPE)
 	{
 		if (cmd->line_spec[iter] == INFILE)
@@ -49,10 +58,15 @@ int setup_redirect(t_exec *data, t_cmd *cmd)
 		}
 		if (cmd->line_spec[iter] == HERE_DOC)
 		{
+			// write(1, data->heredoc[data->hdoc_iter], ft_strlen(data->heredoc[data->hdoc_iter]));
 			if (in_count != 0)
 				close(fd_in);
-			write(0, data->heredoc[data->hdoc_iter], ft_strlen(data->heredoc[data->hdoc_iter]));
+			int fd_heredoc[2];
+			pipe(fd_heredoc);
+			write(fd_heredoc[1], data->heredoc[data->hdoc_iter], ft_strlen(data->heredoc[data->hdoc_iter]));
+			dup2(fd_heredoc[0], 0);
 			data->hdoc_iter++;
+			close(fd_heredoc[1]);
 		}
 		if (cmd->line_spec[iter] == FD_WRITE)
 		{
@@ -97,16 +111,6 @@ int setup_redirect(t_exec *data, t_cmd *cmd)
 	return (0);
 }
 
-int setup_read(t_exec *data, t_cmd *cmd)
-{
-	if (data->pipe_iter != 0)
-	{
-		if (dup2(data->prev_fd, 0) == -1)
-			return (1);
-		if (close(data->prev_fd) == -1)
-			return (1);
-	}
-}
 int cmd_init(t_cmd *cmd)
 {
 	size_t iter;
@@ -145,7 +149,10 @@ void child_process(t_exec *data)
 		exit(1);
 	path = ft_getpath(data->envp, cmd.cmd[0]);
 	if (path == NULL)
+	{
+		perror(cmd.cmd[0]);
 		exit(1);
+	}
 	execve(path, cmd.cmd, data->envp);
 	exit(1);
 }
