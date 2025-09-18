@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/18 17:27:09 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/18 18:14:32 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,33 @@ static size_t	skip_whitspaces(char *buf)
 static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 {
 	size_t	iter;
-	int		delimiter_detected;
+	int		delimiter_not_detected;
 	char	*buf;
+	int		first_round;
 
-	delimiter_detected = 0;
+	delimiter_not_detected = 1;
 	iter = 0;
 	if (entry == NULL)
 		return (1);
 	data->heredoc[hdoc_iter] = calloc(1, 1);
 	if (!data->heredoc[hdoc_iter])
 		return (1);
-	while (!delimiter_detected && data->heredoc[hdoc_iter])
+	while (delimiter_not_detected && data->heredoc[hdoc_iter])
 	{
 		buf = readline("> ");
 		if (!buf)
 			return (1);
 		iter = skip_whitspaces(buf);
-		delimiter_detected = ft_strcmp(&buf[iter], entry);
-		if (!delimiter_detected)
+		delimiter_not_detected = ft_strcmp(&buf[iter], entry);
+		if (delimiter_not_detected)
+		{
+			if (!first_round)
+				data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
+						"\n");
 			data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
 					buf);
+			first_round = 0;
+		}
 		free(buf);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/18 17:48:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/18 18:17:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	exec_central(t_input *input, char **envp)
 	iter_p = 0;
 	iter = 0;
 	init_data(&data, input, envp);
-	execute_cmds(&data);
+	if (data.heredoc)
+		// printf("heredoc:%s\n", data.heredoc[0]);
+	// execute_cmds(&data);
 	return (0);
 }
