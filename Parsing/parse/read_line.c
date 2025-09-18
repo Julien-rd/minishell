@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 17:00:34 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/18 17:36:50 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	entry_spec(t_input	*data)
 					data->input_spec[iter] = OUTFILE;
 			}
 		}
-		if (data->input_spec[iter] == OPERATOR && data->input_spec[iter] == '|')
+		if (data->input_spec[iter] == OPERATOR && !ft_strcmp(data->entries[iter], "|"))
 			data->input_spec[iter] = PIPE;
 		iter++;
 	}

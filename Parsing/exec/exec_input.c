@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/18 17:13:30 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/18 17:48:53 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	init_pipe_pos(t_exec *data)
 	int		pipe_count;
 
 	iter = 0;
+	
 	data->pipe_position = malloc(sizeof(int) * (data->pipe_count + 1));
 	if (!data->pipe_position)
 		return (-1);
@@ -54,7 +55,11 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 int	exec_central(t_input *input, char **envp)
 {
 	t_exec data;
+	size_t iter;
+	size_t iter_p;
 
+	iter_p = 0;
+	iter = 0;
 	init_data(&data, input, envp);
 	execute_cmds(&data);
 	return (0);
