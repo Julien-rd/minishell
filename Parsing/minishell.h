@@ -3,6 +3,10 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "libft_00/libft.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <errno.h>
 
 # define END 0
 # define CMD 1
@@ -26,6 +30,28 @@ typedef struct s_input
 	int		dbl_quote;
 	size_t	len;
 }			t_input;
+
+typedef struct s_exec
+{
+	char 	**envp;
+
+	char 	**heredoc;
+	size_t	hdoc_iter;
+	
+	char 	**entries;
+	int 	*intput_spec;
+	
+	int	*pipe_position;
+	size_t	pipe_iter;
+	size_t	pipe_count;
+
+	
+	pid_t 	pid;
+	pid_t 	last_pid;
+	int 	prev_fd;
+	int 	fd[2];
+	int 	IO[2];
+} t_exec;
 
 int		quoteclosed(char *str, char quote, t_input *data);
 size_t	pathlen(char *path);
