@@ -39,7 +39,7 @@ typedef struct s_exec
 	size_t	hdoc_iter;
 	
 	char 	**entries;
-	int 	*intput_spec;
+	int 	*input_spec;
 	
 	int	*pipe_position;
 	size_t	pipe_iter;
@@ -67,4 +67,4 @@ void	input_spec_init(t_input *data);
 void	fill_string(char *buf, t_input *data);
 int		parse_string(char *buf, t_input *data);
 
-char	**here_doc(t_input *data, size_t heredoc_count);
+int		here_doc(t_exec *data);
