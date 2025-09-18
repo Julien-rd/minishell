@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 17:05:41 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:25:50 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ int setup_redirect(t_exec *data, t_cmd *cmd)
 	in_count = 0;
 	out_count = 0;
 	iter = 0;
+	if (data->pipe_iter != 0)
+	{
+		if (dup2(data->prev_fd, 0) == -1)
+			return (1);
+		if (close(data->prev_fd) == -1)
+			return (1);
+	}
 	while (cmd->line_spec[iter] != END && cmd->line_spec[iter] != PIPE)
 	{
 		if (cmd->line_spec[iter] == INFILE)
@@ -87,6 +94,7 @@ int setup_redirect(t_exec *data, t_cmd *cmd)
 		}
 		iter++;
 	}
+	return (0);
 }
 
 int setup_read(t_exec *data, t_cmd *cmd)
@@ -152,7 +160,7 @@ void	parent_process(t_exec *data)
 			exit(1);
 		}
 	}
-	if (data->pipe_iter != data->pipe_count - 1)
+	if (data->pipe_iter != data->pipe_count)
 	{
 		data->prev_fd = data->fd[0];
 		if (close(data->fd[1]) == -1)
