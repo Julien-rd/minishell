@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/17 17:03:09 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/18 20:14:11 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ char *getpath(char *path, char **envp, t_input *data)
 	len = pathlen(path);
 	if (len == 0)
 		return (str = ft_calloc(2, 1), str = "$", str);
+	// printf("[%s]\n", path);
+	// fflush(stdout);
 	while (envp[iter])
 	{
 		if (ft_strncmp(envp[iter], path, len + 1) == 61)

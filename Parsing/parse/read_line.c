@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 17:36:50 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/18 20:41:14 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int main(int argc, char *argv[], char *envp[])
 				// 	printf("%zu = [%s] (%i)\n", iter, data.entries[iter], data.input_spec[iter]);
 				// 	iter++;
 				// }
-		    //   add_history(buf);
+		    	add_history(buf);
 		    }
 		// printf("yeezy");
 		free(buf);
