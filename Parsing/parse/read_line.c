@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/19 19:19:40 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/19 20:51:36 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ void	entry_spec(t_input	*data)
 	}
 }
 
+void	sigint_handler(int num)
+{
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 /* parse_string - three malloc: entry**, input_spec*, entries */
 /* entry_spec: no error */
 int	main(int argc, char *argv[], char *envp[])
@@ -47,6 +54,8 @@ int	main(int argc, char *argv[], char *envp[])
 	t_input	data;
 	char	*buf;
 
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		buf = readline("minishell>> ");
