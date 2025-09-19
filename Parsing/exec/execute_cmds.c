@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 19:04:50 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:03:07 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ int setup_redirect(t_exec *data, t_cmd *cmd)
 				close(fd_in);
 			fd_in = open(cmd->line[iter], O_RDONLY, 0644);
 			if (fd_in == -1)
-				exit(1);
+				perror(cmd->line[iter]), exit(1);
 			if (dup2(fd_in, 0) == -1)
-				exit(1);
+				perror(cmd->line[iter]), exit(1);
 			in_count++;
 		}
 		if (cmd->line_spec[iter] == HERE_DOC)
@@ -68,22 +68,22 @@ int setup_redirect(t_exec *data, t_cmd *cmd)
 			data->hdoc_iter++;
 			close(fd_heredoc[1]);
 		}
-		if (cmd->line_spec[iter] == FD_WRITE)
-		{
-			fd_write = ft_atoi(cmd->line[iter]);
-			iter += 2;
-			fd_fdout = open(cmd->line[iter], O_RDONLY, 0644);
-			if (dup2(fd_write, fd_fdout) == -1)
-				exit(1);
-		}
-		if (cmd->line_spec[iter] == FD_TAKE)
-		{
-			fd_write = ft_atoi(cmd->line[iter]);
-			iter += 2;
-			fd_fdout = open(cmd->line[iter], O_RDONLY, 0644);
-			if (dup2(fd_fdout, fd_write) == -1)
-				exit(1);
-		}
+		// if (cmd->line_spec[iter] == FD_WRITE)
+		// {
+		// 	fd_write = ft_atoi(cmd->line[iter]);
+		// 	iter += 2;
+		// 	fd_fdout = open(cmd->line[iter], O_RDONLY, 0644);
+		// 	if (dup2(fd_write, fd_fdout) == -1)
+		// 		exit(1);
+		// }
+		// if (cmd->line_spec[iter] == FD_TAKE)
+		// {
+		// 	fd_write = ft_atoi(cmd->line[iter]);
+		// 	iter += 2;
+		// 	fd_fdout = open(cmd->line[iter], O_RDONLY, 0644);
+		// 	if (dup2(fd_fdout, fd_write) == -1)
+		// 		exit(1);
+		// }
 		if (cmd->line_spec[iter] == OUTFILE)
 		{
 			if (out_count != 0)

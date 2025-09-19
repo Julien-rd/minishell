@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/18 20:41:14 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:00:30 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,15 @@ int main(int argc, char *argv[], char *envp[])
 
 	while ((buf = readline("minishell>> ")) != NULL)
 	{
-		// printf("1\n");
-		    if (ft_strlen(buf) > 0) 
-			{
-				expand_input(buf, envp, &data);
-				parse_string(data.expanded_str, &data);
-				entry_spec(&data);
-				exec_central(&data, envp);
-				// size_t	iter = 0;
-				// while (data.entries[iter])
-				// {
-				// 	printf("%zu = [%s] (%i)\n", iter, data.entries[iter], data.input_spec[iter]);
-				// 	iter++;
-				// }
-		    	add_history(buf);
-		    }
-		// printf("yeezy");
+		if (ft_strlen(buf) > 0)
+		{
+			expand_input(buf, envp, &data);
+			if (parse_string(&data) == -1) //three malloc: entry**, input_spec*, entries
+				return (perror("parsing"), 1);
+			entry_spec(&data); //no error
+			exec_central(&data, envp);
+			add_history(buf);
+		}
 		free(buf);
 	}
 	return (0);

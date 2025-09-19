@@ -1,0 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_string_helpers.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 14:46:22 by eprottun          #+#    #+#             */
+/*   Updated: 2025/09/19 15:04:36 by eprottun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+int	is_token(char c)
+{
+	if (c == 32 || (c >= 9 && c <= 13) || c == '>' || c == '<' || c == '|')
+		return (0);
+	return (1);
+}
+
+int	is_closed(char *str)
+{
+	size_t	iter;
+	int		tmp_sgl_quote;
+
+	iter = 0;
+	tmp_sgl_quote = 0;
+	while (str[iter])
+	{
+		if (str[iter] == '\'' && ft_strchr(&str[iter + 1], '\''))
+			tmp_sgl_quote = 1;
+		else if (str[iter] == '\'' && tmp_sgl_quote == 1)
+			tmp_sgl_quote = 0;
+		if (str[iter] == '\"' && tmp_sgl_quote == 0)
+			return (1);
+		iter++;
+	}
+	return (0);
+}
+
+int	toggle_quotes(t_input *data, size_t iter)
+{
+	int	r_value;
+
+	r_value = 0;
+	if (data->exp_str[iter] == '\'' && !data->dbl_quote && (data->sgl_quote
+			|| (ft_strchr(&data->exp_str[iter + 1], '\'') && ++r_value)))
+		data->sgl_quote = !data->sgl_quote;
+	else if (data->exp_str[iter] == '\"' && !data->sgl_quote && (data->dbl_quote
+			|| (ft_strchr(&data->exp_str[iter + 1], '\"') && ++r_value)))
+		data->dbl_quote = !data->dbl_quote;
+	return (r_value);
+}
+
+int	token_len(t_input *data, size_t *iter)
+{
+	size_t	count;
+
+	count = 0;
+	while (data->dbl_quote || data->sgl_quote
+		|| (data->exp_str[*iter] && is_token(data->exp_str[*iter])))
+	{
+		(*iter) += toggle_quotes(data, *iter);
+		if (!(data->sgl_quote == 1 && data->exp_str[*iter] == '\'')
+			&& !(data->dbl_quote == 1 && data->exp_str[*iter] == '\"'))
+			count++;
+		toggle_quotes(data, *iter);
+		(*iter)++;
+	}
+	return (count);
+}

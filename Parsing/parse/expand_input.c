@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/16 18:05:10 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/19 12:37:38 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ static void	expand_str(char *buf, char **envp, t_input *data)
 		else if (buf[iter] == '$' && data->sgl_quote == 0)
 		{
 			sub_str = getpath(&buf[iter + 1], envp, data);
-			ft_strlcpy(&data->expanded_str[len], sub_str, ft_strlen(sub_str) + 1);
+			ft_strlcpy(&data->exp_str[len], sub_str, ft_strlen(sub_str) + 1);
             len += ft_strlen(sub_str);
 			iter += pathlen(&buf[iter + 1]);
 			data_increase = 1;
 		}
 		if (!data_increase)
 		{
-			ft_strlcpy(&data->expanded_str[len], &buf[iter], 2);
+			ft_strlcpy(&data->exp_str[len], &buf[iter], 2);
 			len++;
 		}
 		iter++;
@@ -75,7 +75,7 @@ void	expand_input(char *buf, char **envp, t_input *data)
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
 	var_len(buf, envp, data);
-	data->expanded_str = calloc(sizeof(char), data->len);
+	data->exp_str = calloc(sizeof(char), data->len);
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
 	expand_str(buf, envp, data);
