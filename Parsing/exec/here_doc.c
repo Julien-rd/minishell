@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/18 19:02:05 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:47:19 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	}
 	return (0);
 }
+
 size_t	operator_count(t_exec *data)
 {
 	size_t	iter;
@@ -64,11 +65,9 @@ size_t	operator_count(t_exec *data)
 	{
 		if (data->input_spec[iter] == HERE_DOC)
 			hdoc_count++;
-		if (data->input_spec[iter] == PIPE)
-			data->pipe_count++;
 		iter++;
 	}
-	return (iter);
+	return (hdoc_count);
 }
 
 int	here_doc(t_exec *data)
