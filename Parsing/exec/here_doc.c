@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/19 15:47:19 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/19 19:10:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 			data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
 					buf);
 			data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
-						"\n");
+					"\n");
 		}
 		free(buf);
 	}

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/19 15:00:30 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/19 19:19:40 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	entry_spec(t_input	*data)
 {
 	size_t	iter;
-	
+
 	iter = 0;
 	while (data->entries[iter])
 	{
@@ -33,27 +33,33 @@ void	entry_spec(t_input	*data)
 					data->input_spec[iter] = OUTFILE;
 			}
 		}
-		if (data->input_spec[iter] == OPERATOR && !ft_strcmp(data->entries[iter], "|"))
+		if (data->input_spec[iter] == OPERATOR
+			&& !ft_strcmp(data->entries[iter], "|"))
 			data->input_spec[iter] = PIPE;
 		iter++;
 	}
 }
 
-int main(int argc, char *argv[], char *envp[])
+/* parse_string - three malloc: entry**, input_spec*, entries */
+/* entry_spec: no error */
+int	main(int argc, char *argv[], char *envp[])
 {
-	t_input data;
+	t_input	data;
+	char	*buf;
 
-	char *buf;
-
-	while ((buf = readline("minishell>> ")) != NULL)
+	while (1)
 	{
+		buf = readline("minishell>> ");
+		if (buf == NULL)
+			break ;
 		if (ft_strlen(buf) > 0)
 		{
 			expand_input(buf, envp, &data);
-			if (parse_string(&data) == -1) //three malloc: entry**, input_spec*, entries
+			if (parse_string(&data) == -1)
 				return (perror("parsing"), 1);
-			entry_spec(&data); //no error
-			exec_central(&data, envp);
+			entry_spec(&data);
+			if (exec_central(&data, envp) == -1)
+				return (perror("execution error"), 1);
 			add_history(buf);
 		}
 		free(buf);

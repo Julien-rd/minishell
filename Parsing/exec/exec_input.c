@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/19 15:42:28 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/19 19:15:11 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	init_pipe_pos(t_exec *data)
 	int		pipe_count;
 
 	iter = 0;
-	
 	data->pipe_position = malloc(sizeof(int) * (data->pipe_count + 1));
 	if (!data->pipe_position)
 		return (-1);
@@ -37,11 +36,13 @@ static int	init_pipe_pos(t_exec *data)
 	data->pipe_count = p_iter - 1;
 	return (0);
 }
+
 static int	init_data(t_exec *data, t_input *input, char **envp)
 {
 	data->envp = envp;
 	data->input_spec = input->input_spec;
 	data->entries = input->entries;
+	data->hdoc_iter = 0;
 	data->pipe_iter = 0;
 	data->pipe_count = 0;
 	free(input->exp_str);
@@ -52,14 +53,14 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	return (0);
 }
 
+/* was macht return 1 oder 0 hier? */
 int	exec_central(t_input *input, char **envp)
 {
-	t_exec data;
-	
-	if (init_data(&data, input, envp) == -1) //was macht return 1 oder 0 hier?
+	t_exec	data;
+
+	if (init_data(&data, input, envp) == -1)
 		return (-1);
-	// if (data.heredoc)
-		// printf("heredoc:%s\n", data.heredoc[0]);
-	execute_cmds(&data);
+	if (execute_cmds(&data) == -1)
+		return (-1);
 	return (0);
 }

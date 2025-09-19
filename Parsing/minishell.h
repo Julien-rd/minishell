@@ -55,7 +55,6 @@ typedef struct s_exec
 	int		prev_fd;
 	int		fd[2];
 	int		IO[2];
-	int		return_value;
 }			t_exec;
 
 int			quoteclosed(char *str, char quote, t_input *data);
@@ -70,20 +69,25 @@ void		fill_ops(size_t *entry, size_t *iter, t_input *data);
 void		fill_string(t_input *data);
 
 /* parse_string */
-int			is_token(char c);
-int			is_closed(char *str);
-void		op_count(char *buf, size_t *iter, size_t *count);
-int			toggle_quotes(t_input *data, size_t iter);
 size_t		count_entries(t_input *data);
-int			malloc_ops(size_t *entry, size_t *iter, t_input *data);
-void		fill_ops(size_t *entry, size_t *iter, t_input *data);
-int			token_len(t_input *data, size_t *iter);
 int			malloc_entries(t_input *data);
 void		input_spec_init(t_input *data);
 void		fill_entries(t_input *data);
 int			parse_string(t_input *data);
 
+/* parse_string_helpers */
+int			token_len(t_input *data, size_t *iter);
+int			is_token(char c);
+int			is_closed(char *str);
+int			toggle_quotes(t_input *data, size_t iter);
+
+/* parse_string_ops */
+void		op_count(char *buf, size_t *iter, size_t *count);
+int			malloc_ops(size_t *entry, size_t *iter, t_input *data);
+void		fill_ops(size_t *entry, size_t *iter, t_input *data);
+
 int			here_doc(t_exec *data);
 char		*ft_getpath(char **envp, char *cmd);
 int			exec_central(t_input *input, char **envp);
 int			execute_cmds(t_exec *data);
+int 		setup_redirect(t_exec *data, t_cmd *cmd);
