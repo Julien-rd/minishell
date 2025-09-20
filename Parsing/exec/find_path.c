@@ -6,13 +6,13 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 16:58:33 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:56:17 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_find_paths(char *envp[])
+int	ft_find_paths(char *envp[], char *env_name)
 {
 	int	iter;
 
@@ -21,8 +21,9 @@ int	ft_find_paths(char *envp[])
 		return (2);
 	while (envp[iter])
 	{
-		if (ft_strncmp(envp[iter], "PATH=", 5) == 0)
-			return (iter);
+		if (ft_strncmp(envp[iter], env_name, ft_strlen(env_name)) == 0)
+			if (envp[iter][ft_strlen(env_name)] == '=')
+				return (iter);
 		iter++;
 	}
 	return (-1);
@@ -89,7 +90,7 @@ char	*ft_getpath(char **envp, char *cmd)
 
 	if (ft_strchr(cmd, '/'))
 		return (cmd);
-	path_pos = ft_find_paths(envp);
+	path_pos = ft_find_paths(envp, "PATH");
 	if (!path_pos)
 		return (/*own error*/NULL);
 	paths = ft_split(&envp[path_pos][5], ':');

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 13:28:40 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:09:37 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ void	child_process(t_exec *data)
 		exit(12);
 	if (!ft_strncmp(cmd.cmd[0], "exit", 5) && cmd.cmd[1] == NULL)
 		exit(0);
+	if (!ft_strncmp(cmd.cmd[0], "export", 7))
+		export(cmd.cmd, data);
+	if (!ft_strncmp(cmd.cmd[0], "unset", 6))
+		unset(cmd.cmd, data);
+	if (!ft_strncmp(cmd.cmd[0], "env", 4))
+		env(data->envp);
 	path = ft_getpath(data->envp, cmd.cmd[0]);
 	if (path == NULL)
 	{

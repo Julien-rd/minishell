@@ -102,6 +102,7 @@ void		op_count(char *buf, size_t *iter, size_t *count);
 int			malloc_ops(size_t *entry, size_t *iter, t_input *data);
 void		fill_ops(size_t *entry, size_t *iter, t_input *data);
 
+int			ft_find_paths(char *envp[], char *env_name);
 int			here_doc(t_exec *data);
 char		*ft_getpath(char **envp, char *cmd);
 int			exec_central(t_input *input, char **envp);
@@ -113,3 +114,5 @@ int			own_exit(int exit_code);
 int			cd(char *path);
 int			echo(char **cmd, int nflag);
 int			env(char **envp);
+int	export(char **cmd, t_exec *data);
+int	unset(char **cmd, t_exec *data);

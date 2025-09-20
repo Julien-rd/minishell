@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 18:17:47 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:10:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,27 @@ int	echo(char **cmd, int nflag)
 				return (perror("write"), -1);
 		iter++;
 	}
-	return (0);
+	exit(0);
+}
+
+int	unset(char **cmd, t_exec *data)
+{
+	char	*value;
+	int	envp_pos;
+
+	if (!cmd[1] || cmd[2] != NULL)
+		return (/* own error */-1);
+	envp_pos = ft_find_paths(data->envp, cmd[1]);
+	if (envp_pos == -1)
+		return (/* own error */-1);
+	value = ft_strdup("");
+	if (!value)
+		return (perror("export"), -1);
+	if (data->envp_count >= data->envp_malloc)
+		if (/* !extend_envp(data) */0)
+			return (free(value), perror("export"), -1);
+	data->envp[envp_pos] = value;
+	exit(0);
 }
 
 int	export(char **cmd, t_exec *data)
@@ -66,11 +86,11 @@ int	export(char **cmd, t_exec *data)
 	if (!value)
 		return (perror("export"), -1);
 	if (data->envp_count >= data->envp_malloc)
-		if (!extend_envp(data))
+		if (/* !extend_envp(data) */0)
 			return (free(value), perror("export"), -1);
 	data->envp[data->envp_count] = value;
 	data->envp[++data->envp_count] = NULL;
-	return (0);
+	exit(0);
 }
 
 int	env(char **envp)
@@ -88,6 +108,6 @@ int	env(char **envp)
 			return (perror("write"), -1);
 		iter++;
 	}
-	return (0);
+	exit(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/20 13:30:44 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:09:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ static int	init_pipe_pos(t_exec *data)
 
 static int	init_data(t_exec *data, t_input *input, char **envp)
 {
-	data->envp = envp;
+	data->envp = input->envp;
+	data->envp_count = input->envp_count;
+	data->envp_malloc = input->envp_malloc;
 	data->input_spec = input->input_spec;
 	data->entries = input->entries;
 	data->pipe_count = 0;
