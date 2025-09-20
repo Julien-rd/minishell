@@ -3,11 +3,11 @@
 #include <fcntl.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <signal.h>
 
 #define END 0
 #define CMD 1
@@ -18,6 +18,13 @@
 #define HERE_DOC 6
 #define APPEND_FILE 7
 #define PIPE 8
+
+typedef struct s_expanded_str
+{
+	size_t	var_count;
+	char	**paths;
+	size_t	*path_pos;
+}			t_expanded_str;
 
 typedef struct s_cmd
 {
@@ -45,7 +52,7 @@ typedef struct s_exec
 	char	**envp;
 	size_t	envp_count;
 	size_t	envp_malloc;
-	
+
 	char	**heredoc;
 	size_t	hdoc_iter;
 
@@ -63,11 +70,14 @@ typedef struct s_exec
 	int		IO[2];
 }			t_exec;
 
-int			quoteclosed(char *str, char quote, t_input *data);
 size_t		pathlen(char *path);
 size_t		pathsize(char *path, char **envp, t_input *data);
-char		*getpath(char *path, char **envp, t_input *data);
-void		expand_input(char *buf, char **envp, t_input *data);
+int			expand_input(char *buf, char **envp, t_input *data);
+int			quoteclosed(char *str, char quote, t_input *data);
+int			getpath(char *buf, t_expanded_str *str, size_t path_iter,
+				char **envp, size_t len);
+int			quote_check(size_t iter, char *buf, t_input *data);
+void		free2d(char **str);
 
 size_t		count_entries(t_input *data);
 int			malloc_ops(size_t *entry, size_t *iter, t_input *data);
@@ -96,10 +106,10 @@ int			here_doc(t_exec *data);
 char		*ft_getpath(char **envp, char *cmd);
 int			exec_central(t_input *input, char **envp);
 int			execute_cmds(t_exec *data);
-int 		setup_redirect(t_exec *data, t_cmd *cmd);
+int			setup_redirect(t_exec *data, t_cmd *cmd);
 
 /* own cmds */
-int	own_exit(int exit_code);
-int	cd(char *path);
-int	echo(char **cmd, int nflag);
-int	env(char **envp);
+int			own_exit(int exit_code);
+int			cd(char *path);
+int			echo(char **cmd, int nflag);
+int			env(char **envp);

@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Ilibft_00 -MMD
-SRC = exec/own_cmds.c exec/file_management.c parse/read_line.c parse/parse_string.c parse/parse_string_ops.c parse/parse_string_helpers.c parse/expand_input.c parse/expand_input_utils.c exec/here_doc.c exec/execute_cmds.c exec/find_path.c exec/exec_input.c
+SRC = exec/own_cmds.c exec/file_management.c parse/read_line.c parse/parse_string.c parse/parse_string_ops.c parse/free2d.c parse/parse_string_helpers.c parse/expand_input.c parse/expand_input_utils.c exec/here_doc.c exec/execute_cmds.c exec/find_path.c exec/exec_input.c
 OBJ = $(SRC:.c=.o)
 DEP = $(SRC:.c=.d)
 LIBFT_DIR = libft_00

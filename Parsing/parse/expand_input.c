@@ -3,80 +3,142 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/19 12:37:38 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:44:50 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	var_len(char *buf, char **envp, t_input *data)
+int	expanded_str(char *buf, t_input *data, t_expanded_str *str)
 {
 	size_t	iter;
-	int		data_increase;
+	size_t	str_iter;
+	size_t	len;
+	size_t	path_iter;
+	size_t	path_pos_iter;
 
+	path_iter = 0;
+	path_pos_iter = 0;
+	str_iter = 0;
 	iter = 0;
+	data->exp_str = calloc(data->len + 1, sizeof(char));
+	if (!data->exp_str)
+		return (-1);
 	while (buf[iter])
 	{
-		data_increase = 0;
-		if (buf[iter] == '\'' && data->dbl_quote == 0)
-			quoteclosed(&buf[iter], '\'', data);
-		else if (buf[iter] == '\"' && data->sgl_quote == 0)
-			quoteclosed(&buf[iter], '\"', data);
-		else if (buf[iter] == '$' && data->sgl_quote == 0)
+		if (str->path_pos[path_pos_iter] == iter)
 		{
-			data->len += pathsize(&buf[iter + 1], envp, data);
-			iter += pathlen(&buf[iter + 1]);
-			data_increase = 1;
+			if (str->path_pos[path_pos_iter + 1] == 0)
+			{
+				iter += pathlen(&buf[iter + 1]);
+				path_pos_iter += 2;
+			}
+			else
+			{
+				len = ft_strlen(str->paths[path_iter]);
+				ft_memcpy(&data->exp_str[str_iter], str->paths[path_iter],
+					len);
+				path_iter++;
+				str_iter += len;
+				path_pos_iter += 2;
+				iter += pathlen(&buf[iter + 1]);
+			}
 		}
-		if (!data_increase)
+		else
+			data->exp_str[str_iter++] = buf[iter];
+		iter++;
+	}
+	return (0);
+}
+
+int	check_paths(char *buf, t_input *data, t_expanded_str *str, char **envp)
+{
+	size_t	iter;
+	size_t	paths_iter;
+	size_t	path_pos_iter;
+	size_t	len;
+
+	paths_iter = 0;
+	path_pos_iter = 0;
+	iter = 0;
+	data->dbl_quote = 0;
+	data->sgl_quote = 0;
+	while (buf[iter])
+	{
+		len = pathlen(&buf[iter + 1]);
+		if (!quote_check(iter, buf, data) && buf[iter] == '$' && len)
+		{
+			if(getpath(&buf[iter + 1], str, paths_iter, envp, len))
+			{
+				data->len += ft_strlen(str->paths[paths_iter]);
+				paths_iter++;
+				str->path_pos[path_pos_iter++] = iter;
+				str->path_pos[path_pos_iter++] = iter + len;
+			}
+			else
+			{
+				str->path_pos[path_pos_iter++] = iter;
+				str->path_pos[path_pos_iter++] = 0;
+			}
+			iter += len;
+		}
+		else
 			data->len++;
 		iter++;
 	}
+	return (0);
 }
 
-static void	expand_str(char *buf, char **envp, t_input *data)
+int	paths_init(char *buf, t_input *data, t_expanded_str *str)
 {
 	size_t	iter;
-	size_t	len;
-	char	*sub_str;
-	int		data_increase;
 
 	iter = 0;
-	len = 0;
+	data->dbl_quote = 0;
+	data->sgl_quote = 0;
 	while (buf[iter])
 	{
-		data_increase = 0;
-		if (buf[iter] == '\'' && data->dbl_quote == 0)
-			quoteclosed(&buf[iter], '\'', data);
-		else if (buf[iter] == '\"' && data->sgl_quote == 0)
-			quoteclosed(&buf[iter], '\"', data);
-		else if (buf[iter] == '$' && data->sgl_quote == 0)
+		if (!quote_check(iter, buf, data) && buf[iter] == '$')
 		{
-			sub_str = getpath(&buf[iter + 1], envp, data);
-			ft_strlcpy(&data->exp_str[len], sub_str, ft_strlen(sub_str) + 1);
-            len += ft_strlen(sub_str);
-			iter += pathlen(&buf[iter + 1]);
-			data_increase = 1;
-		}
-		if (!data_increase)
-		{
-			ft_strlcpy(&data->exp_str[len], &buf[iter], 2);
-			len++;
+			if (pathlen(&buf[iter + 1]) > 0)
+				str->var_count++;
 		}
 		iter++;
 	}
+	if (str->var_count > 0)
+	{
+		str->paths = calloc(sizeof(char *), str->var_count + 1);
+		if (!str->paths)
+			return (perror(""), -1);
+		str->path_pos = malloc(sizeof(size_t) * str->var_count * 2);
+		if (!str->path_pos)
+			return (free2d(str->paths), perror(""), -1);
+	}
+	return (0);
 }
-void	expand_input(char *buf, char **envp, t_input *data)
+
+int	expand_input(char *buf, char **envp, t_input *data)
 {
+	char			**paths;
+	t_expanded_str	str;
+	size_t			iter;
+
 	data->len = 0;
-	data->dbl_quote = 0;
-	data->sgl_quote = 0;
-	var_len(buf, envp, data);
-	data->exp_str = calloc(sizeof(char), data->len);
-	data->dbl_quote = 0;
-	data->sgl_quote = 0;
-	expand_str(buf, envp, data);
+	str.var_count = 0;
+	str.paths = NULL;
+	if (paths_init(buf, data, &str) == -1)
+		return (-1);
+	if (str.var_count == 0)
+	{
+		data->exp_str = buf;
+		return (0);
+	}
+	if (check_paths(buf, data, &str, envp) == -1)
+		return (-1);
+	expanded_str(buf, data, &str);
+	free2d(str.paths);
+	return (0);
 }

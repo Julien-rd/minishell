@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/18 20:14:11 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:34:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int quoteclosed(char *str, char quote, t_input *data)
+int	quoteclosed(char *str, char quote, t_input *data)
 {
-	size_t iter;
+	size_t	iter;
 
 	iter = 0;
 	if (data->sgl_quote == 1)
@@ -25,71 +25,82 @@ int quoteclosed(char *str, char quote, t_input *data)
 	if (data->dbl_quote == 1)
 	{
 		data->dbl_quote = 0;
-		return (1);
+		return (0);
 	}
-	while (str[iter])
+	while (str[++iter])
 	{
-		++iter;
-		if (str[iter] && str[iter] == quote)
+		if (str[iter] == quote)
 		{
 			if (quote == '\'')
+			{
 				data->sgl_quote = 1;
+				return (1);
+			}
 			if (quote == '\"')
+			{
 				data->dbl_quote = 1;
-			return (1);
+				return (0);
+			}
 		}
 	}
 	return (0);
 }
-
-size_t pathlen(char *path)
+int	quote_check(size_t iter, char *buf, t_input *data)
 {
-	size_t len;
+	int	return_value;
+
+	return_value = 0;
+	if (buf[iter] == '\'' && data->dbl_quote == 0)
+		return_value = quoteclosed(&buf[iter], '\'', data);
+	else if (buf[iter] == '\"' && data->sgl_quote == 0)
+		return_value = quoteclosed(&buf[iter], '\"', data);
+	if (data->sgl_quote == 1)
+		return (1);
+	return (return_value);
+}
+size_t	pathlen(char *path)
+{
+	size_t	len;
 
 	len = 0;
-	if (ft_isdigit(path[len]))
-		len = 1;
 	if (ft_isalpha(path[len]) || path[len] == '_')
 		while (ft_isalnum(path[len]) || path[len] == '_')
 			len++;
 	return (len);
 }
-size_t pathsize(char *path, char **envp, t_input *data)
+
+int	pathcmp(const char *s1, const char *s2, size_t n)
 {
-	size_t len;
-	size_t iter;
-	char *str;
+	unsigned int	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0' && i < n - 1)
+	{
+		i++;
+	}
+	if (s1[i] == '=')
+		return (1);
+	return (0);
+}
+
+int	getpath(char *buf, t_expanded_str *str, size_t path_iter, char **envp,
+		size_t len)
+{
+	char	*var_value;
+	size_t	iter;
 
 	iter = 0;
-	len = pathlen(path);
-	if (len == 0)
-		return (1);
 	while (envp[iter])
 	{
-		if (ft_strncmp(envp[iter], path, len + 1) == 61)
-			return (ft_strlen(&envp[iter][len + 1]));
+		if (pathcmp(envp[iter], buf, len + 1))
+		{
+			str->paths[path_iter] = ft_substr(&envp[iter][len + 1], 0,
+					ft_strlen(&envp[iter][len + 1]));
+			return (1);
+		}
 		iter++;
 	}
 	return (0);
-}
-char *getpath(char *path, char **envp, t_input *data)
-{
-	size_t len;
-	size_t iter;
-	char *str;
-
-	len = 0;
-	iter = 0;
-	len = pathlen(path);
-	if (len == 0)
-		return (str = ft_calloc(2, 1), str = "$", str);
-	// printf("[%s]\n", path);
-	// fflush(stdout);
-	while (envp[iter])
-	{
-		if (ft_strncmp(envp[iter], path, len + 1) == 61)
-			return (ft_strdup(&envp[iter][len + 1]));
-		iter++;
-	}
-	return (ft_calloc(1, 1));
 }
