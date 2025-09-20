@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/19 20:51:36 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 13:32:32 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_input	data;
 	char	*buf;
+	int	exit_code;
 
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
@@ -67,11 +68,15 @@ int	main(int argc, char *argv[], char *envp[])
 			if (parse_string(&data) == -1)
 				return (perror("parsing"), 1);
 			entry_spec(&data);
-			if (exec_central(&data, envp) == -1)
+			exit_code = exec_central(&data, envp);
+			if (exit_code == -1)
 				return (perror("execution error"), 1);
+			if (exit_code == 12)
+				return (write(1, "exit\n", 5), 0);
 			add_history(buf);
 		}
 		free(buf);
 	}
+	return (write(1, "exit\n", 5), 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/19 19:15:11 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 13:30:44 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	data->envp = envp;
 	data->input_spec = input->input_spec;
 	data->entries = input->entries;
-	data->hdoc_iter = 0;
-	data->pipe_iter = 0;
 	data->pipe_count = 0;
 	free(input->exp_str);
 	if (here_doc(data) == 1)
@@ -57,10 +55,11 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 int	exec_central(t_input *input, char **envp)
 {
 	t_exec	data;
+	int		exit_code;
 
+	exit_code = 0;
 	if (init_data(&data, input, envp) == -1)
 		return (-1);
-	if (execute_cmds(&data) == -1)
-		return (-1);
-	return (0);
+	exit_code = execute_cmds(&data);
+	return (exit_code);
 }

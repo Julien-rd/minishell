@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 12:08:30 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 13:28:40 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	child_process(t_exec *data)
 		exit(1);
 	if (setup_redirect(data, &cmd) == -1)
 		exit(1);
-	if (!ft_strncmp(cmd.cmd[0], "exit", 5) && data->pipe_count == 0)
-		own_exit(0);
+	if (!ft_strncmp(cmd.cmd[0], "exit", 5) && cmd.cmd[1] == NULL && !data->pipe_count)
+		exit(12);
+	if (!ft_strncmp(cmd.cmd[0], "exit", 5) && cmd.cmd[1] == NULL)
+		exit(0);
 	path = ft_getpath(data->envp, cmd.cmd[0]);
 	if (path == NULL)
 	{
@@ -98,8 +100,10 @@ int	kill_children(t_exec *data)
 				break ;
 		}
 		if (pid == data->last_pid)
+		{
 			if (WIFEXITED(status))
 				return_value = WEXITSTATUS(status);
+		}
 	}
 	if (errno != ECHILD)
 		return (perror("waitpid"), -1);
@@ -109,6 +113,7 @@ int	kill_children(t_exec *data)
 int	execute_cmds(t_exec *data)
 {
 	data->hdoc_iter = 0;
+	data->pipe_iter = 0;
 	while (data->pipe_iter <= data->pipe_count)
 	{
 		if (data->pipe_iter != data->pipe_count)
