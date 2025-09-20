@@ -92,3 +92,9 @@ char		*ft_getpath(char **envp, char *cmd);
 int			exec_central(t_input *input, char **envp);
 int			execute_cmds(t_exec *data);
 int 		setup_redirect(t_exec *data, t_cmd *cmd);
+
+/* own cmds */
+int	own_exit(int exit_code);
+int	cd(char *path);
+int	echo(char **cmd, int nflag);
+int	env(char **envp);

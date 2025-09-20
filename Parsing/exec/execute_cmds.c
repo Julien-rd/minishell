@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/19 19:14:58 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 12:08:30 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	child_process(t_exec *data)
 		exit(1);
 	if (setup_redirect(data, &cmd) == -1)
 		exit(1);
+	if (!ft_strncmp(cmd.cmd[0], "exit", 5) && data->pipe_count == 0)
+		own_exit(0);
 	path = ft_getpath(data->envp, cmd.cmd[0]);
 	if (path == NULL)
 	{
