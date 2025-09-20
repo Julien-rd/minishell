@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 12:11:51 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:18:59 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,23 @@
 int	cd(char *path)
 {
 	if (chdir(path) == -1)
-    	return (perror("chdir failed"), 1);
-    return 0;
+		return (perror("chdir"), -1);
+	return (0);
+}
+
+int	pwd(void)
+{
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (perror("pwd"), -1);
+	if (write(1, cwd, ft_strlen(cwd)) == -1)
+		return (perror("write"), -1);
+	if (write(1, "\n", 1) == -1)
+		return (perror("write"), -1);
+	free(cwd);
+	return (0);
 }
 
 int	own_exit(int exit_code)
@@ -62,4 +77,3 @@ int	env(char **envp)
 	}
 	return (0);
 }
-
