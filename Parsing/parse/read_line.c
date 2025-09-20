@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 13:32:32 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:38:35 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,32 @@ void	sigint_handler(int num)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
+int	create_envp(t_input *data, char *envp[])
+{
+	size_t	iter;
+	size_t	create_iter;
+
+	if (!envp)
+		return (-1);
+	iter = 0;
+	while (envp[iter])
+		iter++;
+	data->envp_count = iter;
+	data->envp_malloc = iter * 2;
+	data->envp = malloc((data->envp_malloc + 1) * sizeof(char *));
+	if (!data->envp)
+		return (-1);
+	create_iter = 0;
+	while (create_iter < iter)
+	{
+		data->envp[create_iter] = envp[create_iter];
+		create_iter++;
+	}
+	data->envp[create_iter] = NULL;
+	return (0);
+}
+
 /* parse_string - three malloc: entry**, input_spec*, entries */
 /* entry_spec: no error */
 int	main(int argc, char *argv[], char *envp[])
@@ -57,6 +83,8 @@ int	main(int argc, char *argv[], char *envp[])
 
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+	if (create_envp(&data, envp) == -1)
+		return (perror("envp"), 1);
 	while (1)
 	{
 		buf = readline("minishell>> ");

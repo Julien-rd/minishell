@@ -17,7 +17,7 @@
 #define OPERATOR 5
 #define HERE_DOC 6
 #define APPEND_FILE 7
-#define PIPE 10
+#define PIPE 8
 
 typedef struct s_cmd
 {
@@ -28,6 +28,9 @@ typedef struct s_cmd
 
 typedef struct s_input
 {
+	char	**envp;
+	size_t	envp_count;
+	size_t	envp_malloc;
 	char	*exp_str;
 	char	**entries;
 	int		*input_spec;
@@ -40,7 +43,9 @@ typedef struct s_input
 typedef struct s_exec
 {
 	char	**envp;
-
+	size_t	envp_count;
+	size_t	envp_malloc;
+	
 	char	**heredoc;
 	size_t	hdoc_iter;
 

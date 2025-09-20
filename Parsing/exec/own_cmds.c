@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 15:18:59 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/20 18:17:47 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,8 @@
 int	cd(char *path)
 {
 	if (chdir(path) == -1)
-		return (perror("chdir"), -1);
-	return (0);
-}
-
-int	pwd(void)
-{
-	char	*cwd;
-
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (perror("pwd"), -1);
-	if (write(1, cwd, ft_strlen(cwd)) == -1)
-		return (perror("write"), -1);
-	if (write(1, "\n", 1) == -1)
-		return (perror("write"), -1);
-	free(cwd);
-	return (0);
+    	return (perror("chdir failed"), 1);
+    return 0;
 }
 
 int	own_exit(int exit_code)
@@ -60,6 +45,34 @@ int	echo(char **cmd, int nflag)
 	return (0);
 }
 
+int	export(char **cmd, t_exec *data)
+{
+	char	*value;
+	size_t	iter;
+
+	if (!cmd[1] || cmd[2] != NULL || !ft_strchr(cmd[1], '=') 
+	|| cmd[1][0] == '=' || (!ft_isalpha(cmd[1][0]) && cmd[1][0] != '_'))
+		return (/* own error */-1);
+	iter = 0;
+	while (cmd[1][iter] != '=')
+	{
+		if (!ft_isalnum(cmd[1][iter]) && cmd[1][iter] != '_')
+			return (/* own error */-1);
+		iter++;
+	}
+	while (cmd[1][iter])
+		iter++;
+	value = ft_strdup(cmd[1]);
+	if (!value)
+		return (perror("export"), -1);
+	if (data->envp_count >= data->envp_malloc)
+		if (!extend_envp(data))
+			return (free(value), perror("export"), -1);
+	data->envp[data->envp_count] = value;
+	data->envp[++data->envp_count] = NULL;
+	return (0);
+}
+
 int	env(char **envp)
 {
 	size_t	iter;
@@ -77,3 +90,4 @@ int	env(char **envp)
 	}
 	return (0);
 }
+
