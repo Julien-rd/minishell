@@ -7,13 +7,15 @@ DEP = $(SRC:.c=.d)
 LIBFT_DIR = libft_00
 LIBFT = $(LIBFT_DIR)/libft.a
 
+.SILENT:
+
 all: $(LIBFT) $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline 2>&1
 
 clean: 
 	rm -f $(OBJ) $(DEP)
