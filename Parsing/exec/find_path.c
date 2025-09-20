@@ -6,11 +6,27 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/19 19:05:52 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:16:17 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_find_paths(char *envp[])
+{
+	int	iter;
+
+	iter = 0;
+	if (!envp)
+		return (2);
+	while (envp[iter])
+	{
+		if (ft_strncmp(envp[iter], "PATH=", 5) == 0)
+			return (iter);
+		iter++;
+	}
+	return (-1);
+}
 
 char	*ft_strjointhree(char const *s1, char const *s2, char const *s3)
 {
@@ -66,17 +82,17 @@ int	ft_search_paths(char **paths, char **tmp_path, char *cmd)
 
 char	*ft_getpath(char **envp, char *cmd)
 {
-	char	*path_env;
+	int		path_pos;
 	char	**paths;
 	char	*tmp_path;
 	int		success_bool;
 
 	if (ft_strchr(cmd, '/'))
 		return (cmd);
-	path_env = getenv("PATH");
-	if (path_env == NULL)
+	path_pos = ft_find_paths(envp);
+	if (!path_pos)
 		return (perror("getenv"), NULL);
-	paths = ft_split(path_env, ':');
+	paths = ft_split(envp[path_pos], ':');
 	if (paths == NULL)
 		return (NULL);
 	success_bool = ft_search_paths(paths, &tmp_path, cmd);
