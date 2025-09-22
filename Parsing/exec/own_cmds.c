@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 15:50:58 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:21:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	cd(t_cmd *cmd)
 	else if (chdir(cmd->cmd[1]) == -1)
 	{
 		perror("cd");
-		return(-1);
+		return (-1);
 	}
 	// Error handling chdir kackt ab// path not found
-	return(0);
+	return (0);
 }
 void	pwd(void)
 {
@@ -78,11 +78,10 @@ void	echo(char **cmd, int nflag)
 	size_t	iter;
 
 	iter = 1;
-	if (nflag == 0)
+	if (nflag == -1)
 		return ;
-	if (nflag == 1)
-		iter = 2;
 	write(1, "HALLO\n", 6);
+	iter += nflag;
 	while (cmd[iter])
 	{
 		if (write(1, cmd[iter], ft_strlen(cmd[iter])) == -1)
@@ -98,12 +97,14 @@ void	echo(char **cmd, int nflag)
 			}
 		iter++;
 	}
-	if (nflag == 2)
+	if (nflag == 0)
+	{
 		if (write(1, "\n", 1) == -1)
 		{
 			perror("write");
 			exit(1);
 		}
+	}
 	exit(0);
 }
 

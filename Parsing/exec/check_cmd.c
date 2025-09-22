@@ -6,30 +6,39 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 15:46:45 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:16:46 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	flag_check(t_cmd *cmd)
+int	options_check(t_cmd *cmd)
 {
 	size_t	iter;
+	size_t	n_iter;
 
 	iter = 1;
 	if (!cmd)
 		return (-1);
-	while (cmd->cmd[iter])
+	if (!ft_strncmp(cmd->cmd[0], "echo", 5))
 	{
-		if (cmd->cmd[iter][0] == '-')
+		while (cmd->cmd[iter][0] == '-')
 		{
-			if (!ft_strncmp(cmd->cmd[0], "echo", 5) && !ft_strncmp(cmd->cmd[1],
-					"-n", 3))
-				return (2);
-			return (1);
+			n_iter = 1;
+			while (cmd->cmd[iter][n_iter] == 'n')
+				n_iter++;
+			if (cmd->cmd[iter][n_iter])
+				break ;
+			iter++;
 		}
-		iter++;
+		if (ft_strncmp(cmd->cmd[iter], "-e", 3) && ft_strncmp(cmd->cmd[iter],
+				"-E", 3) && ft_strncmp(cmd->cmd[iter], "--help", 7)
+			&& ft_strncmp(cmd->cmd[iter], "--version", 10))
+			return (-1);
+		return (iter - 1);
 	}
+	if (cmd->cmd[1] != NULL && cmd->cmd[1][0] == '-')
+		return (-1);
 	return (0);
 }
 

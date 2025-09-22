@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 15:46:59 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:14:13 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	child_process(t_exec *data, t_cmd *cmd)
 		exit(1);
 	if (data->cmd_flag != EXTERNAL)
 	{
-		flag = flag_check(cmd);
+		flag = options_check(cmd);
 		if (data->cmd_flag == ECHO)
 			echo(cmd->cmd, flag);
 		else if (data->cmd_flag == PWD && flag != 1)
@@ -122,7 +122,7 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 {
 	int	flag;
 
-	flag = flag_check(cmd);
+	flag = options_check(cmd);
 	if (!flag)
 	{
 		if (data->cmd_flag == CD)
