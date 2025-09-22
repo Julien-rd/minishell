@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 15:36:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:50:58 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int	unset(char **cmd, t_exec *data)
 		if (extend_envp(data) == -1)
 			return (free(value), perror("unset"), -1);
 	data->envp[envp_pos] = value;
-	exit(0);
+	return (0);
 }
 
 int	check_position(t_exec *data)

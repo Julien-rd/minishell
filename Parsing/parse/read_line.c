@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 17:38:35 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:48:39 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 		if (ft_strlen(buf) > 0)
 		{
-			expand_input(buf, envp, &data);
+			expand_input(buf, data.envp, &data);
 			if (parse_string(&data) == -1)
 				return (perror("parsing"), 1);
 			entry_spec(&data);

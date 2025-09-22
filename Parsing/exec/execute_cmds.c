@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 15:29:17 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:46:59 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 		if (data->cmd_flag == EXIT)
 			return (12);
 		if (data->cmd_flag == EXPORT)
-		return (export(cmd->cmd, data));
+			return (export(cmd->cmd, data));
 		if (data->cmd_flag == UNSET)
 			return (unset(cmd->cmd, data));
 	}

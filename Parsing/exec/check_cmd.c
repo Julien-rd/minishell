@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 15:09:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:46:45 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ int	cmd_flag(t_exec *data, t_cmd *cmd)
 	if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
 		return (data->cmd_flag = PWD, 0);
 	if (!ft_strncmp(cmd->cmd[0], "export", 7))
-		return (data->cmd_flag = INTERNAL, 1);
+		return (data->cmd_flag = EXPORT, 1);
 	if (!ft_strncmp(cmd->cmd[0], "unset", 6))
-		return (data->cmd_flag = INTERNAL, 1);
+		return (data->cmd_flag = UNSET, 1);
 	if (!ft_strncmp(cmd->cmd[0], "env", 4))
 		return (data->cmd_flag = ENV, 0);
 	if (!ft_strncmp(cmd->cmd[0], "exit", 5))
