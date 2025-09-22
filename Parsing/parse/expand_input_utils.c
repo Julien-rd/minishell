@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/20 18:34:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 18:15:42 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ int	pathcmp(const char *s1, const char *s2, size_t n)
 	i = 0;
 	if (n == 0)
 		return (0);
-	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0' && i < n - 1)
+	while (s1[i] == s2[i] && s1[i] != '\0' && i < n - 1)
 	{
 		i++;
 	}
-	if (s1[i] == '=')
+	if ((i == n - 1) && s1[i] == '=')
 		return (1);
 	return (0);
 }

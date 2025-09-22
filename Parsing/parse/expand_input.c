@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/20 18:44:50 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 18:27:46 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,9 @@ int	expand_input(char *buf, char **envp, t_input *data)
 	if (check_paths(buf, data, &str, envp) == -1)
 		return (-1);
 	expanded_str(buf, data, &str);
+	printf("[%s]\n", data->exp_str);
+	printf("%c", data->exp_str[0]);
+	fflush(stdout);
 	free2d(str.paths);
 	return (0);
 }
