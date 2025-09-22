@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:46:22 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/19 15:04:36 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:33:00 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int	toggle_quotes(t_input *data, size_t iter)
 
 	r_value = 0;
 	if (data->exp_str[iter] == '\'' && !data->dbl_quote && (data->sgl_quote
-			|| (ft_strchr(&data->exp_str[iter + 1], '\'') && ++r_value)))
+			|| (ft_strchr(&data->exp_str[iter + 1], '\''))) && ++r_value)
 		data->sgl_quote = !data->sgl_quote;
 	else if (data->exp_str[iter] == '\"' && !data->sgl_quote && (data->dbl_quote
-			|| (ft_strchr(&data->exp_str[iter + 1], '\"') && ++r_value)))
+			|| (ft_strchr(&data->exp_str[iter + 1], '\"'))) && ++r_value)
 		data->dbl_quote = !data->dbl_quote;
 	return (r_value);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 16:21:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 17:44:03 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	pwd(void)
 		exit(1);
 	}
 	write(1, buf, ft_strlen(buf));
+	write(1, "\n", 1);
 	exit(0);
 }
 
@@ -80,7 +81,6 @@ void	echo(char **cmd, int nflag)
 	iter = 1;
 	if (nflag == -1)
 		return ;
-	write(1, "HALLO\n", 6);
 	iter += nflag;
 	while (cmd[iter])
 	{
@@ -122,8 +122,7 @@ int	extend_envp(t_exec *data)
 	data->envp_malloc = (size_t)(data->envp_malloc * 1.5);
 	while (data->envp[iter])
 	{
-		if (!ft_strcmp(data->envp[iter], ""))
-		// if "" delete entry and dont copy
+		if (!ft_strcmp(data->envp[iter], "")) // if "" delete entry and dont copy
 		{
 			free(data->envp[iter]);
 			data->envp_count--;
@@ -197,13 +196,16 @@ int	export(char **cmd, t_exec *data)
 	if (!value)
 		return (perror("export"), -1);
 	if (data->envp_count >= data->envp_malloc)
+	{
 		if (extend_envp(data) == -1)
 			return (free(value), perror("export"), -1);
+	}
 	position = check_position(data);
 	if (position == -1)
 	{
 		data->envp[data->envp_count] = value;
-		data->envp[++data->envp_count] = NULL;
+		data->envp_count = data->envp_count + 1;
+		data->envp[data->envp_count] = NULL;
 	}
 	else
 		data->envp[position] = value;
@@ -224,13 +226,12 @@ void	env(char **envp)
 			perror("write");
 			exit(1);
 		}
-		if (write(1, "\n", 1) == -1)
+		if (envp[iter][0] != '\0' && write(1, "\n", 1) == -1)
 		{
 			perror("write");
 			exit(1);
 		}
 		iter++;
 	}
-	write(1, "jo", 2);
 	exit(0);
 }
