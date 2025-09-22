@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 10:25:12 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 10:28:47 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	cd(t_cmd *cmd)
 	if (iter > 2)
 	{
 		write(2, "cd: too many arguments", 22);
+		write(2, "\n", 1);
 		return (1);
 	}
 	else if (chdir(cmd->cmd[1]) == -1)
@@ -47,6 +48,7 @@ int	exit_cmd(t_exec *data, t_cmd *cmd)
 	if (cmd->cmd[1] == NULL && data->pipe_count == 0)
 	{
 		write(1, "exit", 5);
+		write(2, "\n", 1);
 		exit(12);
 	}
 	else if (cmd->cmd[1] == NULL)
