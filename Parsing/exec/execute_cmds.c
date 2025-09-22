@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 14:28:48 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:29:17 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	cmd_init(t_cmd *cmd)
 	size_t	cmd_iter;
 
 	iter = 0;
+	cmd_tokens = 0;
 	while (cmd->line_spec[iter] != END && cmd->line_spec[iter] != PIPE)
 	{
 		if (cmd->line_spec[iter] == DEFAULT)
@@ -50,14 +51,17 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	if (data->cmd_flag != EXTERNAL)
 	{
 		flag = flag_check(cmd);
-		if (data->cmd_flag == ECHO && flag != 1)
-			echo();
+		if (data->cmd_flag == ECHO)
+			echo(cmd->cmd, flag);
 		else if (data->cmd_flag == PWD && flag != 1)
 			pwd();
 		else if (data->cmd_flag == ENV && flag != 1)
-			env();
+			env(data->envp);
 		else
+		{
+			//ERRORHANDLING für exit etc. !NICHT IN PARENTPROCESS
 			exit(data->internal_errcode);
+		}
 	}
 	path = ft_getpath(data->envp, cmd->cmd[0]);
 	if (path == NULL)

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 10:28:47 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:36:05 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,31 @@ int	cd(t_cmd *cmd)
 	{
 		write(2, "cd: too many arguments", 22);
 		write(2, "\n", 1);
-		return (1);
+		return (-1);
 	}
 	else if (chdir(cmd->cmd[1]) == -1)
-		return (perror("cd"), 1);
+	{
+		perror("cd");
+		return(-1);
+	}
 	// Error handling chdir kackt ab// path not found
-	return (0);
+	return(0);
 }
-int	pwd(void)
+void	pwd(void)
 {
 	char	*buf;
 
 	buf = getcwd(NULL, 0);
 	if (!buf)
-		return (-1);
+	{
+		perror("getcwd");
+		exit(1);
+	}
 	write(1, buf, ft_strlen(buf));
-	return 0;
+	exit(0);
 }
 
-int	exit_cmd(t_exec *data, t_cmd *cmd)
+void	exit_cmd(t_exec *data, t_cmd *cmd)
 {
 	size_t	iter;
 
@@ -67,26 +73,38 @@ int	exit_cmd(t_exec *data, t_cmd *cmd)
 	}
 }
 
-int	echo(char **cmd, int nflag)
+void	echo(char **cmd, int nflag)
 {
 	size_t	iter;
 
 	iter = 1;
-	if (nflag == 2)
+	if (nflag == 0)
+		return ;
+	if (nflag == 1)
 		iter = 2;
+	write(1, "HALLO\n", 6);
 	while (cmd[iter])
 	{
 		if (write(1, cmd[iter], ft_strlen(cmd[iter])) == -1)
-			return (perror("write"), -1);
+		{
+			perror("write");
+			exit(1);
+		}
 		if (cmd[iter + 1])
 			if (write(1, " ", 1) == -1)
-				return (perror("write"), -1);
+			{
+				perror("write");
+				exit(1);
+			}
 		iter++;
 	}
 	if (nflag == 2)
 		if (write(1, "\n", 1) == -1)
-			return (perror("write"), -1);
-	return (0);
+		{
+			perror("write");
+			exit(1);
+		}
+	exit(0);
 }
 
 int	extend_envp(t_exec *data)
@@ -103,7 +121,8 @@ int	extend_envp(t_exec *data)
 	data->envp_malloc = (size_t)(data->envp_malloc * 1.5);
 	while (data->envp[iter])
 	{
-		if (!ft_strcmp(data->envp[iter], "")) //if "" delete entry and dont copy
+		if (!ft_strcmp(data->envp[iter], ""))
+		// if "" delete entry and dont copy
 		{
 			free(data->envp[iter]);
 			data->envp_count--;
@@ -121,10 +140,10 @@ int	extend_envp(t_exec *data)
 	return (0);
 }
 
-int unset(char **cmd, t_exec *data)
+int	unset(char **cmd, t_exec *data)
 {
 	char	*value;
-	int envp_pos;
+	int		envp_pos;
 
 	if (!cmd[1] || cmd[2] != NULL)
 		return (/* own error */ -1);
@@ -150,18 +169,19 @@ int	check_position(t_exec *data)
 	{
 		if (!ft_strcmp(data->envp[iter], ""))
 			return (iter);
-		iter;
+		iter++;
 	}
 	return (-1);
 }
 
-int export(char **cmd, t_exec *data)
+int	export(char **cmd, t_exec *data)
 {
 	char	*value;
 	size_t	iter;
 	size_t	position;
 
-	if (!cmd[1] || cmd[2] != NULL || !ft_strchr(cmd[1], '=') || cmd[1][0] == '=' || (!ft_isalpha(cmd[1][0]) && cmd[1][0] != '_'))
+	if (!cmd[1] || cmd[2] != NULL || !ft_strchr(cmd[1], '=') || cmd[1][0] == '='
+		|| (!ft_isalpha(cmd[1][0]) && cmd[1][0] != '_'))
 		return (/* own error */ -1);
 	iter = 0;
 	while (cmd[1][iter] != '=')
@@ -189,21 +209,27 @@ int export(char **cmd, t_exec *data)
 	return (0);
 }
 
-int	env(char **envp)
+void	env(char **envp)
 {
 	size_t	iter;
 
 	iter = 0;
 	if (!envp)
-		return (-1);
+		exit(1);
 	while (envp[iter])
 	{
 		if (write(1, envp[iter], ft_strlen(envp[iter])) == -1)
-			return (perror("write"), -1);
+		{
+			perror("write");
+			exit(1);
+		}
 		if (write(1, "\n", 1) == -1)
-			return (perror("write"), -1);
+		{
+			perror("write");
+			exit(1);
+		}
 		iter++;
 	}
-	return (0);
+	write(1, "jo", 2);
+	exit(0);
 }
-

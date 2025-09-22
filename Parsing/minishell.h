@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 13:16:40 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:10:04 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,15 +135,15 @@ int			exec_central(t_input *input, char **envp);
 int			execute_cmds(t_exec *data);
 int			setup_redirect(t_exec *data, t_cmd *cmd);
 int			check_cmd(t_exec *data, t_cmd *cmd);
-int	cmd_flag(t_exec *data, t_cmd *cmd);
-static int	flag_check(t_cmd *cmd);
+int			cmd_flag(t_exec *data, t_cmd *cmd);
+int	flag_check(t_cmd *cmd);
 
 /* own cmds */
-int			pwd(void);
+void		pwd(void);
 int			own_exit(int exit_code);
-int			cd(char *path);
-int			echo(char **cmd, int nflag);
-int			env(char **envp);
+int			cd(t_cmd *cmd);
+void		echo(char **cmd, int nflag);
+void		env(char **envp);
 int			export(char **cmd, t_exec *data);
 int			unset(char **cmd, t_exec *data);
 

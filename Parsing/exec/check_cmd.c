@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 13:19:21 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:09:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	flag_check(t_cmd *cmd)
+int	flag_check(t_cmd *cmd)
 {
 	size_t	iter;
 
