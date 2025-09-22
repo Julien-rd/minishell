@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 18:15:42 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 19:39:18 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int	getpath(char *buf, t_expanded_str *str, size_t path_iter, char **envp,
 		{
 			str->paths[path_iter] = ft_substr(&envp[iter][len + 1], 0,
 					ft_strlen(&envp[iter][len + 1]));
+			if (!str->paths[path_iter])
+				return (perror("getpath"), -1);
 			return (1);
 		}
 		iter++;

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 18:32:57 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 19:52:12 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 		if (ft_strlen(buf) > 0)
 		{
-			expand_input(buf, data.envp, &data);
+			if (expand_input(buf, data.envp, &data) == -1)
+				return (perror("expand_input"), free2d(data.envp), 1);
 			if (parse_string(&data) == -1)
 				return (perror("parsing"), 1);
 			entry_spec(&data);
@@ -105,6 +106,7 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		free(buf);
 	}
+	// free2d(data.envp);
 	return (write(1, "exit\n", 5), 0);
 	return (0);
 }

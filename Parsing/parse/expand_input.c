@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 19:16:51 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 19:43:07 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	check_paths(char *buf, t_input *data, t_expanded_str *str, char **envp)
 	size_t	paths_iter;
 	size_t	path_pos_iter;
 	size_t	len;
+	size_t	path_return;
 
 	paths_iter = 0;
 	path_pos_iter = 0;
@@ -71,18 +72,21 @@ int	check_paths(char *buf, t_input *data, t_expanded_str *str, char **envp)
 		len = pathlen(&buf[iter + 1]);
 		if (!quote_check(iter, buf, data) && buf[iter] == '$' && len)
 		{
-			if(getpath(&buf[iter + 1], str, paths_iter, envp, len))
+			path_return = getpath(&buf[iter + 1], str, paths_iter, envp, len);
+			if (path_return == 1)
 			{
 				data->len += ft_strlen(str->paths[paths_iter]);
 				paths_iter++;
 				str->path_pos[path_pos_iter++] = iter;
 				str->path_pos[path_pos_iter++] = iter + len;
 			}
-			else
+			else if (path_return == 0)
 			{
 				str->path_pos[path_pos_iter++] = iter;
 				str->path_pos[path_pos_iter++] = 0;
 			}
+			else
+				return (-1);
 			iter += len;
 		}
 		else
@@ -127,6 +131,7 @@ int	expand_input(char *buf, char **envp, t_input *data)
 	size_t			iter;
 
 	data->len = 0;
+	data->exp_str_malloc = 1;
 	str.var_count = 0;
 	str.paths = NULL;
 	if (paths_init(buf, data, &str) == -1)
@@ -134,11 +139,14 @@ int	expand_input(char *buf, char **envp, t_input *data)
 	if (str.var_count == 0)
 	{
 		data->exp_str = buf;
+		data->exp_str_malloc = 0;
 		return (0);
 	}
 	if (check_paths(buf, data, &str, envp) == -1)
-		return (-1);
-	expanded_str(buf, data, &str);
+		return (free2d(str.paths), free(str.path_pos), -1);
+	if (expanded_str(buf, data, &str) == -1)
+		return (free2d(str.paths), free(str.path_pos), -1);
 	free2d(str.paths);
+	free(str.path_pos);
 	return (0);
 }
