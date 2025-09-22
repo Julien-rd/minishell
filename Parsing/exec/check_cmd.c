@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 16:16:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 19:08:56 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,36 +42,12 @@ int	options_check(t_cmd *cmd)
 	return (0);
 }
 
-// int	check_cmd(t_exec *data, t_cmd *cmd)
-// {
-// 	int	flag;
-
-// 	data->cmd_flag = EXTERNAL;
-// 	flag = flag_check(cmd);
-// 	if (flag)
-// 	{
-// 		if (!ft_strncmp(cmd->cmd[0], "echo", 5))
-// 			return (data->cmd_flag = ECHO, 0);
-// 		if (!ft_strncmp(cmd->cmd[0], "cd", 3))
-// 			return (data->cmd_flag = INTERNAL, 1);
-// 		if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
-// 			return (data->cmd_flag = PWD, 0);
-// 		if (!ft_strncmp(cmd->cmd[0], "export", 7))
-// 			return (data->cmd_flag = INTERNAL, 1);
-// 		if (!ft_strncmp(cmd->cmd[0], "unset", 6))
-// 			return (data->cmd_flag = INTERNAL, 1);
-// 		if (!ft_strncmp(cmd->cmd[0], "env", 4))
-// 			return (data->cmd_flag = ENV, 0);
-// 		if (!ft_strncmp(cmd->cmd[0], "exit", 5))
-// 			return (data->cmd_flag = EXIT, 1);
-// 	}
-// 	return (0);
-// }
-
 int	cmd_flag(t_exec *data, t_cmd *cmd)
 {
 	data->cmd_flag = EXTERNAL;
 	data->internal_errcode = 0;
+	if (cmd->cmd[0] == NULL)
+		return (0);
 	if (!ft_strncmp(cmd->cmd[0], "echo", 5))
 		return (data->cmd_flag = ECHO, 0);
 	if (!ft_strncmp(cmd->cmd[0], "cd", 3))

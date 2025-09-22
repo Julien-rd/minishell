@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 17:17:53 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/22 19:09:50 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	child_process(t_exec *data, t_cmd *cmd)
 
 	if (setup_redirect(data, cmd) == -1)
 		exit(1);
+	if (cmd->cmd[0] == NULL)
+		exit(0);
 	if (data->cmd_flag != EXTERNAL)
 	{
 		flag = options_check(cmd);
@@ -122,6 +124,8 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 {
 	int	flag;
 
+	if (cmd->cmd[0] == NULL)
+		return (0);
 	flag = options_check(cmd);
 	if (!flag)
 	{
