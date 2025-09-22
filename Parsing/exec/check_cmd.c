@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 10:02:15 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/22 13:19:21 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,59 @@ static int	flag_check(t_cmd *cmd)
 	{
 		if (cmd->cmd[iter][0] == '-')
 		{
-			if (!ft_strncmp(cmd->cmd[0], "cd", 3) && !ft_strncmp(cmd->cmd[1],
+			if (!ft_strncmp(cmd->cmd[0], "echo", 5) && !ft_strncmp(cmd->cmd[1],
 					"-n", 3))
 				return (2);
-			return (0);
+			return (1);
 		}
 		iter++;
 	}
-	return (1);
+	return (0);
 }
 
-int	check_cmd(t_exec *data, t_cmd *cmd)
-{
-	int	flag;
+// int	check_cmd(t_exec *data, t_cmd *cmd)
+// {
+// 	int	flag;
 
-	flag = flag_check(cmd);
-	if (flag)
-	{
-		if (!ft_strncmp(cmd->cmd[0], "echo", 5))
-			echo(cmd->cmd, flag);
-		if (!ft_strncmp(cmd->cmd[0], "cd", 3))
-			cd(cmd->cmd);
-		if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
-			pwd(cmd->cmd);
-		if (!ft_strncmp(cmd->cmd[0], "export", 7))
-			export(cmd->cmd, data);
-		if (!ft_strncmp(cmd->cmd[0], "unset", 6))
-			unset(cmd->cmd);
-		if (!ft_strncmp(cmd->cmd[0], "env", 4))
-			env(cmd->cmd);
-		if (!ft_strncmp(cmd->cmd[0], "exit", 5))
-			exit_cmd(data, cmd);
-	}
+// 	data->cmd_flag = EXTERNAL;
+// 	flag = flag_check(cmd);
+// 	if (flag)
+// 	{
+// 		if (!ft_strncmp(cmd->cmd[0], "echo", 5))
+// 			return (data->cmd_flag = ECHO, 0);
+// 		if (!ft_strncmp(cmd->cmd[0], "cd", 3))
+// 			return (data->cmd_flag = INTERNAL, 1);
+// 		if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
+// 			return (data->cmd_flag = PWD, 0);
+// 		if (!ft_strncmp(cmd->cmd[0], "export", 7))
+// 			return (data->cmd_flag = INTERNAL, 1);
+// 		if (!ft_strncmp(cmd->cmd[0], "unset", 6))
+// 			return (data->cmd_flag = INTERNAL, 1);
+// 		if (!ft_strncmp(cmd->cmd[0], "env", 4))
+// 			return (data->cmd_flag = ENV, 0);
+// 		if (!ft_strncmp(cmd->cmd[0], "exit", 5))
+// 			return (data->cmd_flag = EXIT, 1);
+// 	}
+// 	return (0);
+// }
+
+int	cmd_flag(t_exec *data, t_cmd *cmd)
+{
+	data->cmd_flag = EXTERNAL;
+	data->internal_errcode = 0;
+	if (!ft_strncmp(cmd->cmd[0], "echo", 5))
+		return (data->cmd_flag = ECHO, 0);
+	if (!ft_strncmp(cmd->cmd[0], "cd", 3))
+		return (data->cmd_flag = CD, 1);
+	if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
+		return (data->cmd_flag = PWD, 0);
+	if (!ft_strncmp(cmd->cmd[0], "export", 7))
+		return (data->cmd_flag = INTERNAL, 1);
+	if (!ft_strncmp(cmd->cmd[0], "unset", 6))
+		return (data->cmd_flag = INTERNAL, 1);
+	if (!ft_strncmp(cmd->cmd[0], "env", 4))
+		return (data->cmd_flag = ENV, 0);
+	if (!ft_strncmp(cmd->cmd[0], "exit", 5))
+		return (data->cmd_flag = EXIT, 1);
+	return (0);
 }

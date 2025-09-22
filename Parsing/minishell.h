@@ -1,23 +1,48 @@
-#include "libft_00/libft.h"
-#include <errno.h>
-#include <fcntl.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
+/*   Updated: 2025/09/22 13:16:40 by eprottun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define END 0
-#define CMD 1
-#define INFILE 2
-#define OUTFILE 3
-#define DEFAULT 4
-#define OPERATOR 5
-#define HERE_DOC 6
-#define APPEND_FILE 7
-#define PIPE 8
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# include "libft_00/libft.h"
+# include <errno.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/wait.h>
+# include <unistd.h>
+
+# define END 0
+# define CMD 1
+# define INFILE 2
+# define OUTFILE 3
+# define DEFAULT 4
+# define OPERATOR 5
+# define HERE_DOC 6
+# define APPEND_FILE 7
+# define PIPE 8
+
+# define ECHO 9
+# define CD 10
+# define PWD 11
+# define EXPORT 12
+# define UNSET 13
+# define EXIT 14
+# define ENV 15
+# define EXTERNAL 16
+# define INTERNAL 17
 
 typedef struct s_expanded_str
 {
@@ -63,11 +88,12 @@ typedef struct s_exec
 	size_t	pipe_iter;
 	size_t	pipe_count;
 
+	int		cmd_flag;
+	int		internal_errcode;
 	pid_t	pid;
 	pid_t	last_pid;
 	int		prev_fd;
 	int		fd[2];
-	int		IO[2];
 }			t_exec;
 
 size_t		pathlen(char *path);
@@ -108,11 +134,17 @@ char		*ft_getpath(char **envp, char *cmd);
 int			exec_central(t_input *input, char **envp);
 int			execute_cmds(t_exec *data);
 int			setup_redirect(t_exec *data, t_cmd *cmd);
+int			check_cmd(t_exec *data, t_cmd *cmd);
+int	cmd_flag(t_exec *data, t_cmd *cmd);
+static int	flag_check(t_cmd *cmd);
 
 /* own cmds */
+int			pwd(void);
 int			own_exit(int exit_code);
 int			cd(char *path);
 int			echo(char **cmd, int nflag);
 int			env(char **envp);
-int	export(char **cmd, t_exec *data);
-int	unset(char **cmd, t_exec *data);
+int			export(char **cmd, t_exec *data);
+int			unset(char **cmd, t_exec *data);
+
+#endif
