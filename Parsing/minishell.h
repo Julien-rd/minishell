@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 11:22:51 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 12:16:33 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,14 +142,14 @@ int			setup_redirect(t_exec *data, t_cmd *cmd);
 int			check_cmd(t_exec *data, t_cmd *cmd);
 int			cmd_flag(t_exec *data, t_cmd *cmd);
 int			options_check(t_cmd *cmd);
-void		internal_cmd_error(t_exec *data);
+void	internal_cmd_error(t_exec *data, t_cmd *cmd);
 
 /* own cmds */
-void		pwd(void);
+void		pwd(t_exec *data, t_cmd *cmd);
 int			exit_cmd(t_exec *data, t_cmd *cmd);
 int			cd(t_cmd *cmd, size_t pipe_count);
-void		echo(char **cmd, int nflag);
-void		env(char **envp);
+void		echo(t_exec *data, char **cmd, int nflag);
+void		env(char **envp, t_exec *data, t_cmd *cmd);
 int			export(char **cmd, t_exec *data);
 int			unset(char **cmd, t_exec *data);
 

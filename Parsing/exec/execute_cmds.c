@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 11:48:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 12:21:55 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,39 +41,51 @@ int	cmd_init(t_cmd *cmd)
 	return (0);
 }
 
+void	child_exit_handle(t_exec *data, t_cmd *cmd, int errcode)
+{
+	free2d(data->envp);
+	free2d(data->entries);
+	free(data->input_spec);
+	free(cmd->cmd);
+	if (data->heredoc)
+		free(data->heredoc);
+	exit(errcode);
+}
+
 void	child_process(t_exec *data, t_cmd *cmd)
 {
 	char	*path;
 	int		flag;
 
 	if (setup_redirect(data, cmd) == -1)
-		exit(1);
+		child_exit_handle(data, cmd, 1);
 	if (cmd->cmd[0] == NULL)
-		exit(0);
+		child_exit_handle(data, cmd, 0);
 	if (data->cmd_flag != EXTERNAL)
 	{
 		flag = options_check(cmd);
 		if (data->cmd_flag == ECHO)
-			echo(cmd->cmd, flag);
+			echo(data, cmd->cmd, flag);
 		else if (data->cmd_flag == PWD && flag != 1)
-			pwd();
+			pwd(data, cmd->cmd);
 		else if (data->cmd_flag == ENV && flag != 1)
-			env(data->envp);
+			env(data->envp, data, cmd);
 		else
 		{
-			internal_cmd_error(data);
+			internal_cmd_error(data, cmd);
 			// ERRORHANDLING für exit etc. !NICHT IN PARENTPROCESS
 			// exit(data->internal_errcode);
 		}
 	}
+	//splitfail malloc
 	path = ft_getpath(data->envp, cmd->cmd[0]);
 	if (path == NULL)
 	{
 		perror(cmd->cmd[0]);
-		exit(1);
+		child_exit_handle(data, cmd, 1);
 	}
 	execve(path, cmd->cmd, data->envp);
-	exit(1);
+	child_exit_handle(data, cmd, 1);
 }
 
 void	parent_process(t_exec *data)
