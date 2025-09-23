@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 16:09:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 17:36:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ int	cd(t_exec *data, t_cmd *cmd, size_t pipe_count)
 	if (iter > 2)
 		return (-2);
 	else if (!pipe_count && chdir(cmd->cmd[1]) == -1)
+	{
+		data->exit_code = errno;
 		return (-1);
-	// Error handling chdir kackt ab// path not found
+	}
 	return (0);
 }
 void	pwd(t_exec *data, t_cmd *cmd)

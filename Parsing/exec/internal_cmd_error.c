@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 16:08:28 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 17:53:04 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,31 @@
 
 void	internal_cmd_error(t_exec *data, t_cmd *cmd)
 {
-	size_t iter;
 	long long exit_code;
+	size_t iter;
 
 	iter = 0;
 	if (data->cmd_flag == CD)
 	{
-		while (cmd->cmd[iter])
-			iter++;
-		if (iter > 2)
+		if (data->internal_errcode == -2)
 		{
 			write(2, "cd: too many arguments\n", 23);
 			child_exit_handle(data, cmd, 1);
 		}
-		if (iter == 1)
-		{
-			write(2, "cd: needs one argument\n", 23);
-			child_exit_handle(data, cmd, 1);
-		}
 		else if (!data->pipe_count)
 		{
-			if (data->internal_errcode == -2)
+			if (data->internal_errcode == -1)
 			{
-				perror("cd");
+				write(2, "cd: ", 4);
+				errno = data->exit_code;
+				perror(cmd->cmd[1]);
 				child_exit_handle(data, cmd, 1);
 			}
 		}
 		else if (chdir(cmd->cmd[1]) == -1)
 		{
 			write(2, "cd: ", 4);
-			write(2, cmd->cmd[1], ft_strlen(cmd->cmd[1]));
-			perror(" ");
+			perror(cmd->cmd[1]);
 			child_exit_handle(data, cmd, 1);
 		}
 		child_exit_handle(data, cmd, 0);

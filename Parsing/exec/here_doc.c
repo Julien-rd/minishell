@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 18:14:27 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 18:22:09 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	here_doc(t_exec *data)
 		data->heredoc = NULL;
 		return (0);
 	}
-	data->heredoc = malloc(sizeof(char *) * hdoc_count);
+	data->heredoc = ft_calloc(sizeof(char *), hdoc_count + 1);
 	if (!data->heredoc)
 		return (-1);
 	while (data->input_spec[iter] != END)
