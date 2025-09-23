@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 19:08:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 10:10:28 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	options_check(t_cmd *cmd)
 	iter = 1;
 	if (!cmd)
 		return (-1);
-	if (!ft_strncmp(cmd->cmd[0], "echo", 5))
+	if (!ft_strncmp(cmd->cmd[0], "echo", 5) && cmd->cmd[1])
 	{
-		while (cmd->cmd[iter][0] == '-')
+		while (cmd->cmd[iter] && cmd->cmd[iter][0] == '-')
 		{
 			n_iter = 1;
 			while (cmd->cmd[iter][n_iter] == 'n')

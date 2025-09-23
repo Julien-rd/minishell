@@ -3,28 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 17:44:03 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 09:34:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	cd(t_cmd *cmd)
+int	cd(t_cmd *cmd, size_t pipe_count)
 {
 	size_t	iter;
 
 	while (cmd->cmd[iter])
 		iter++;
 	if (iter > 2)
-	{
-		write(2, "cd: too many arguments", 22);
-		write(2, "\n", 1);
-		return (-1);
-	}
-	else if (chdir(cmd->cmd[1]) == -1)
+		return (-2);
+	else if (!pipe_count && chdir(cmd->cmd[1]) == -1)
 	{
 		perror("cd");
 		return (-1);
@@ -47,31 +43,17 @@ void	pwd(void)
 	exit(0);
 }
 
-void	exit_cmd(t_exec *data, t_cmd *cmd)
+int	exit_cmd(t_exec *data, t_cmd *cmd)
 {
 	size_t	iter;
 
 	iter = 1;
 	if (cmd->cmd[1] == NULL && data->pipe_count == 0)
-	{
-		write(1, "exit", 5);
-		write(2, "\n", 1);
-		exit(12);
-	}
+		return (12);
 	else if (cmd->cmd[1] == NULL)
-		exit(0);
+		return (0);
 	else
-	{
-		write(2, "exit : invalid option --", 24);
-		while (cmd->cmd[iter])
-		{
-			write(2, " ", 1);
-			write(2, cmd->cmd[iter], ft_strlen(cmd->cmd[iter]));
-			iter++;
-		}
-		write(2, "\n", 1);
-		exit(2); // exit failed in pipe error code 2
-	}
+		return (2); // exit failed in pipe error code 2
 }
 
 void	echo(char **cmd, int nflag)
@@ -122,7 +104,8 @@ int	extend_envp(t_exec *data)
 	data->envp_malloc = (size_t)(data->envp_malloc * 1.5);
 	while (data->envp[iter])
 	{
-		if (!ft_strcmp(data->envp[iter], "")) // if "" delete entry and dont copy
+		if (!ft_strcmp(data->envp[iter], ""))
+		// if "" delete entry and dont copy
 		{
 			free(data->envp[iter]);
 			data->envp_count--;
@@ -152,10 +135,10 @@ int	unset(char **cmd, t_exec *data)
 		return (/* own error */ -1);
 	value = ft_strdup("");
 	if (!value)
-		return (perror("unset"), -1);
+		return (-1);
 	if (data->envp_count >= data->envp_malloc)
 		if (extend_envp(data) == -1)
-			return (free(value), perror("unset"), -1);
+			return (free(value), -1);
 	data->envp[envp_pos] = value;
 	return (0);
 }
@@ -194,11 +177,11 @@ int	export(char **cmd, t_exec *data)
 		iter++;
 	value = ft_strdup(cmd[1]);
 	if (!value)
-		return (perror("export"), -1);
+		return (-1);
 	if (data->envp_count >= data->envp_malloc)
 	{
 		if (extend_envp(data) == -1)
-			return (free(value), perror("export"), -1);
+			return (free(value), -1);
 	}
 	position = check_position(data);
 	if (position == -1)

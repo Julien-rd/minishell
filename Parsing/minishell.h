@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 19:53:41 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 09:36:10 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_expanded_str
 	size_t	var_count;
 	char	**paths;
 	size_t	*path_pos;
+	int		exit_code;
 }			t_expanded_str;
 
 typedef struct s_cmd
@@ -71,6 +72,7 @@ typedef struct s_input
 	int		dbl_quote;
 	size_t	len;
 	int		exp_str_malloc;
+	int		exit_code;
 }			t_input;
 
 typedef struct s_exec
@@ -95,6 +97,7 @@ typedef struct s_exec
 	pid_t	last_pid;
 	int		prev_fd;
 	int		fd[2];
+	int		exit_code;
 }			t_exec;
 
 size_t		pathlen(char *path);
@@ -137,12 +140,13 @@ int			execute_cmds(t_exec *data);
 int			setup_redirect(t_exec *data, t_cmd *cmd);
 int			check_cmd(t_exec *data, t_cmd *cmd);
 int			cmd_flag(t_exec *data, t_cmd *cmd);
-int	options_check(t_cmd *cmd);
+int			options_check(t_cmd *cmd);
+void		internal_cmd_error(t_exec *data);
 
 /* own cmds */
 void		pwd(void);
-int			own_exit(int exit_code);
-int			cd(t_cmd *cmd);
+int			exit_cmd(t_exec *data, t_cmd *cmd);
+int			cd(t_cmd *cmd, size_t pipe_count);
 void		echo(char **cmd, int nflag);
 void		env(char **envp);
 int			export(char **cmd, t_exec *data);

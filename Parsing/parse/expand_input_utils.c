@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 19:39:18 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 08:42:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ size_t	pathlen(char *path)
 	size_t	len;
 
 	len = 0;
+	if (path[len] == '?')
+		return (1);
 	if (ft_isalpha(path[len]) || path[len] == '_')
 		while (ft_isalnum(path[len]) || path[len] == '_')
 			len++;
@@ -92,6 +94,13 @@ int	getpath(char *buf, t_expanded_str *str, size_t path_iter, char **envp,
 	size_t	iter;
 
 	iter = 0;
+	if (buf[0] == '?')
+	{
+		str->paths[path_iter] = ft_itoa(str->exit_code);
+		if (!str->paths[path_iter])
+			return (perror("getpath"), -1);
+		return (1);
+	}
 	while (envp[iter])
 	{
 		if (pathcmp(envp[iter], buf, len + 1))

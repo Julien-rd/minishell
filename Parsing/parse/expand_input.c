@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/22 19:43:07 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 10:31:02 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	expanded_str(char *buf, t_input *data, t_expanded_str *str)
 		return (-1);
 	while (buf[iter])
 	{
-		if (str->path_pos[path_pos_iter] == iter)
+		if (str->var_count && str->path_pos[path_pos_iter] == iter)
 		{
 			if (str->path_pos[path_pos_iter + 1] == 0)
 			{
@@ -133,6 +133,7 @@ int	expand_input(char *buf, char **envp, t_input *data)
 	data->len = 0;
 	data->exp_str_malloc = 1;
 	str.var_count = 0;
+	str.exit_code = data->exit_code;
 	str.paths = NULL;
 	if (paths_init(buf, data, &str) == -1)
 		return (-1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 19:09:50 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 09:35:34 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	cmd_init(t_cmd *cmd)
 void	child_process(t_exec *data, t_cmd *cmd)
 {
 	char	*path;
-	int flag;
+	int		flag;
 
 	if (setup_redirect(data, cmd) == -1)
 		exit(1);
@@ -61,8 +61,9 @@ void	child_process(t_exec *data, t_cmd *cmd)
 			env(data->envp);
 		else
 		{
-			//ERRORHANDLING für exit etc. !NICHT IN PARENTPROCESS
-			exit(data->internal_errcode);
+			internal_cmd_error(data);
+			// ERRORHANDLING für exit etc. !NICHT IN PARENTPROCESS
+			// exit(data->internal_errcode);
 		}
 	}
 	path = ft_getpath(data->envp, cmd->cmd[0]);
@@ -130,9 +131,9 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 	if (!flag)
 	{
 		if (data->cmd_flag == CD)
-			return (cd(cmd));
+			return (cd(cmd, data->pipe_count));
 		if (data->cmd_flag == EXIT)
-			return (12);
+			return (exit_cmd(data, cmd));
 		if (data->cmd_flag == EXPORT)
 			return (export(cmd->cmd, data));
 		if (data->cmd_flag == UNSET)
@@ -144,7 +145,7 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 int	execute_cmds(t_exec *data)
 {
 	t_cmd	cmd;
-	
+
 	data->hdoc_iter = 0;
 	data->pipe_iter = 0;
 	while (data->pipe_iter <= data->pipe_count)
@@ -157,8 +158,8 @@ int	execute_cmds(t_exec *data)
 			if (pipe(data->fd) == -1)
 				return (perror("pipe"), -1);
 		cmd_flag(data, &cmd);
-		if (data->pipe_count == 0)
-			data->internal_errcode = own_cmd_exec(data, &cmd);
+		// if (data->pipe_count == 0)
+		data->internal_errcode = own_cmd_exec(data, &cmd);
 		data->pid = fork();
 		if (data->pid == -1)
 			return (perror("fork"), -1);

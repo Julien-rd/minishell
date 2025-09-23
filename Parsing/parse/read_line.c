@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 19:52:12 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 10:27:52 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	entry_spec(t_input	*data)
+void	entry_spec(t_input *data)
 {
 	size_t	iter;
 
@@ -66,7 +66,9 @@ int	create_envp(t_input *data, char *envp[])
 	create_iter = 0;
 	while (create_iter < iter)
 	{
-		data->envp[create_iter] = envp[create_iter];
+		data->envp[create_iter] = ft_strdup(envp[create_iter]);
+		if (!data->envp[create_iter])
+			return (-1);
 		create_iter++;
 	}
 	data->envp[create_iter] = NULL;
@@ -79,12 +81,12 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_input	data;
 	char	*buf;
-	int	exit_code;
 
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	if (create_envp(&data, envp) == -1)
-		return (perror("envp"), 1);
+		return (perror("envp"), free2d(data.envp), 1);
+	data.exit_code = 0;
 	while (1)
 	{
 		buf = readline("minishell>> ");
@@ -94,19 +96,21 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			if (expand_input(buf, data.envp, &data) == -1)
 				return (perror("expand_input"), free2d(data.envp), 1);
-			if (parse_string(&data) == -1)
-				return (perror("parsing"), 1);
-			entry_spec(&data);
-			exit_code = exec_central(&data, envp);
-			if (exit_code == -1)
-				return (perror("execution error"), 1);
-			if (exit_code == 12)
-				return (write(1, "exit\n", 5), 0);
-			add_history(buf);
+			// if (parse_string(&data) == -1)
+			// 	return (perror("parsing"), 1);
+			// entry_spec(&data);
+			// data.exit_code = exec_central(&data, envp);
+			// if (data.exit_code == -1)
+			// 	return (perror("execution error"), 1);
+			// if (data.exit_code == 12)
+			// 	return (write(1, "exit\n", 5), 0);
+			// add_history(buf);
 		}
 		free(buf);
 	}
-	// free2d(data.envp);
+	if (data.exp_str_malloc)
+		free(data.exp_str);
+	free2d(data.envp);
 	return (write(1, "exit\n", 5), 0);
 	return (0);
 }
