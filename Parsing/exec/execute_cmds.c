@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 09:35:34 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 11:48:56 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,12 @@ int	execute_cmds(t_exec *data)
 			return (perror("cmd_init"), -1);
 		if (data->pipe_iter != data->pipe_count)
 			if (pipe(data->fd) == -1)
-				return (perror("pipe"), -1);
+				return (perror("pipe"), free(cmd.cmd), -1);
 		cmd_flag(data, &cmd);
-		// if (data->pipe_count == 0)
 		data->internal_errcode = own_cmd_exec(data, &cmd);
 		data->pid = fork();
 		if (data->pid == -1)
-			return (perror("fork"), -1);
+			return (perror("fork"), free(cmd.cmd), -1);
 		if (data->pipe_iter == data->pipe_count)
 			data->last_pid = data->pid;
 		if (data->pid == 0)
@@ -171,5 +170,6 @@ int	execute_cmds(t_exec *data)
 			parent_process(data);
 		data->pipe_iter++;
 	}
+	free(cmd.cmd);
 	return (kill_children(data));
 }

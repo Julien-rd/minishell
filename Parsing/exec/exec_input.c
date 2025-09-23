@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 11:42:35 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ int	exec_central(t_input *input, char **envp)
 	if (init_data(&data, input, envp) == -1)
 		return (-1);
 	exit_code = execute_cmds(&data);
-	input->envp_count = data.envp_count;
-	input->envp_malloc = data.envp_malloc;
 	free(data.input_spec);
 	free2d(data.entries);
 	if (data.heredoc)
 		free2d(data.heredoc);
+	input->envp_count = data.envp_count;
+	input->envp_malloc = data.envp_malloc;
 	return (exit_code);
 }

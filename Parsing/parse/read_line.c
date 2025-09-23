@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 11:27:53 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 11:46:01 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,13 @@ int	main(int argc, char *argv[], char *envp[])
 			if (expand_input(buf, data.envp, &data) == -1)
 				return (perror("expand_input"), free2d(data.envp), 1);
 			if (parse_string(&data) == -1)
-				return (1);
-			// data.exit_code = exec_central(&data, envp);
-			// if (data.exit_code == -1)
-			// 	return (perror("execution error"), 1);
-			// if (data.exit_code == 12)
-			// 	return (write(1, "exit\n", 5), 0);
-			// add_history(buf);
+				return (free2d(data.envp), 1);
+			data.exit_code = exec_central(&data, envp);
+			if (data.exit_code == -1)
+				return (perror("execution error"), free2d(data.envp), 1);
+			if (data.exit_code == 12)
+				return (write(1, "exit\n", 5), free2d(data.envp), 0);
+			add_history(buf);
 		}
 		free(buf);
 	}
