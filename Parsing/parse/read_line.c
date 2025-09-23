@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 10:36:20 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 11:03:53 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ int	main(int argc, char *argv[], char *envp[])
 			if (expand_input(buf, data.envp, &data) == -1)
 				return (perror("expand_input"), free2d(data.envp), 1);
 			if (parse_string(&data) == -1)
-				return (perror("parsing"), 1);
-			entry_spec(&data);
+				return (1);
 			data.exit_code = exec_central(&data, envp);
 			if (data.exit_code == -1)
 				return (perror("execution error"), 1);

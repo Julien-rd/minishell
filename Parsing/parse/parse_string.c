@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/22 17:35:35 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 11:03:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,11 @@ int	parse_string(t_input *data)
 		return (perror("parsing"), -1);
 	data->input_spec = malloc(sizeof(int) * (data->total_entries + 1));
 	if (!data->input_spec)
-		return (free(data->entries), perror("parsing"), -1);
+		return (perror("parsing"), free(data->entries), -1);
 	input_spec_init(data);
 	if (malloc_entries(data) == -1)
-		return (-1);
+		return (perror("parsing"), free2d(data->entries), free(data->input_spec), -1);
 	fill_entries(data);
+	entry_spec(data);
 	return (0);
 }

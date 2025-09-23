@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:53:08 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/19 14:54:00 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 10:57:20 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,20 @@ int	malloc_ops(size_t *entry, size_t *iter, t_input *data)
 			|| !ft_strncmp(&data->exp_str[*iter], ">>", 2))
 		{
 			data->input_spec[*entry] = OPERATOR;
-			data->entries[(*entry)++] = malloc(3 * sizeof(char));
+			data->entries[*entry] = malloc(3 * sizeof(char));
+			if (!data->entries[*entry])
+				return (-1);
+			(*entry)++;
 			(*iter)++;
 		}
 		else if (data->exp_str[*iter] == '|' || data->exp_str[*iter] == '>'
 			|| data->exp_str[*iter] == '<')
 		{
 			data->input_spec[*entry] = OPERATOR;
-			data->entries[(*entry)++] = malloc(2 * sizeof(char));
+			data->entries[*entry] = malloc(2 * sizeof(char));
+			if (!data->entries[*entry])
+				return (-1);
+			(*entry)++;
 		}
 		(*iter)++;
 	}
