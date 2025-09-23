@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 09:36:10 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 11:22:51 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_exec
 	int		exit_code;
 }			t_exec;
 
+void		entry_spec(t_input *data);
 size_t		pathlen(char *path);
 size_t		pathsize(char *path, char **envp, t_input *data);
 int			expand_input(char *buf, char **envp, t_input *data);
