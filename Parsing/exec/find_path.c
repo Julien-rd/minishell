@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/20 18:56:17 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:31:48 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,8 @@ char	*ft_getpath(char **envp, char *cmd)
 	if (paths == NULL)
 		return (NULL);
 	success_bool = ft_search_paths(paths, &tmp_path, cmd);
+	free2d(paths);
 	if (success_bool != 0)
-	{
-		if (tmp_path)
-			free(tmp_path);
 		return (errno = success_bool, NULL);
-	}
 	return (tmp_path);
 }

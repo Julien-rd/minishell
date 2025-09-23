@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 15:59:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:11:48 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,6 @@ void		echo(t_exec *data, t_cmd *cmd, int nflag);
 void		env(char **envp, t_exec *data, t_cmd *cmd);
 int			export(char **cmd, t_exec *data);
 int			unset(char **cmd, t_exec *data);
+char	*ft_strjointhree(char const *s1, char const *s2, char const *s3);
 
 #endif

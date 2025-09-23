@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 14:28:55 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:14:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	size_t	iter;
 	int		delimiter_not_detected;
 	char	*buf;
+	char	*tmp_str;
 
 	delimiter_not_detected = 1;
 	iter = 0;
@@ -44,14 +45,12 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 		delimiter_not_detected = ft_strcmp(&buf[iter], entry);
 		if (delimiter_not_detected)
 		{
-			data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
-					buf);
+			tmp_str = ft_strjointhree(data->heredoc[hdoc_iter],
+					buf, "\n");
 			if (!data->heredoc[hdoc_iter])
-				return (perror("malloc"), -1);
-			data->heredoc[hdoc_iter] = ft_strjoin(data->heredoc[hdoc_iter],
-					"\n");
-			if (!data->heredoc[hdoc_iter])
-				return (perror("malloc"), -1);
+				return (perror("malloc"), free(buf), -1);
+			free(data->heredoc[hdoc_iter]);
+			data->heredoc[hdoc_iter] = tmp_str;
 		}
 		free(buf);
 	}
@@ -69,6 +68,8 @@ size_t	operator_count(t_exec *data)
 	{
 		if (data->input_spec[iter] == HERE_DOC)
 			hdoc_count++;
+		if (data->input_spec[iter] == PIPE)
+			data->pipe_count++;
 		iter++;
 	}
 	return (hdoc_count);

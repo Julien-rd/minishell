@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 16:10:07 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 17:57:00 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ static int	init_pipe_pos(t_exec *data)
 {
 	size_t	iter;
 	size_t	p_iter;
-	int		pipe_count;
-
-	iter = 0;
+	
 	data->pipe_position = malloc(sizeof(int) * (data->pipe_count + 1));
 	if (!data->pipe_position)
 		return (-1);
 	data->pipe_position[0] = 0;
+	iter = 0;
 	p_iter = 1;
 	while (data->input_spec[iter] != END)
 	{
@@ -33,7 +32,6 @@ static int	init_pipe_pos(t_exec *data)
 		}
 		iter++;
 	}
-	data->pipe_count = p_iter - 1;
 	return (0);
 }
 
@@ -69,6 +67,7 @@ int	exec_central(t_input *input, char **envp)
 	exit_code = execute_cmds(&data);
 	free(data.input_spec);
 	free2d(data.entries);
+	free(data.pipe_position);
 	if (data.heredoc)
 		free2d(data.heredoc);
 	input->envp_count = data.envp_count;
