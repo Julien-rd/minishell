@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 12:16:33 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:59:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft_00/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -73,6 +74,7 @@ typedef struct s_input
 	size_t	len;
 	int		exp_str_malloc;
 	int		exit_code;
+	int		exit;
 }			t_input;
 
 typedef struct s_exec
@@ -97,6 +99,7 @@ typedef struct s_exec
 	pid_t	last_pid;
 	int		prev_fd;
 	int		fd[2];
+	int		exit;
 	int		exit_code;
 }			t_exec;
 
@@ -142,13 +145,15 @@ int			setup_redirect(t_exec *data, t_cmd *cmd);
 int			check_cmd(t_exec *data, t_cmd *cmd);
 int			cmd_flag(t_exec *data, t_cmd *cmd);
 int			options_check(t_cmd *cmd);
-void	internal_cmd_error(t_exec *data, t_cmd *cmd);
+void		internal_cmd_error(t_exec *data, t_cmd *cmd);
+void		child_exit_handle(t_exec *data, t_cmd *cmd, int errcode);
+long long	exit_status(const char *str);
 
 /* own cmds */
 void		pwd(t_exec *data, t_cmd *cmd);
 int			exit_cmd(t_exec *data, t_cmd *cmd);
-int			cd(t_cmd *cmd, size_t pipe_count);
-void		echo(t_exec *data, char **cmd, int nflag);
+int			cd(t_exec *data, t_cmd *cmd, size_t pipe_count);
+void		echo(t_exec *data, t_cmd *cmd, int nflag);
 void		env(char **envp, t_exec *data, t_cmd *cmd);
 int			export(char **cmd, t_exec *data);
 int			unset(char **cmd, t_exec *data);

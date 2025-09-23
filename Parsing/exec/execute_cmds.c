@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 12:21:55 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:54:32 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	{
 		flag = options_check(cmd);
 		if (data->cmd_flag == ECHO)
-			echo(data, cmd->cmd, flag);
+			echo(data, cmd, flag);
 		else if (data->cmd_flag == PWD && flag != 1)
-			pwd(data, cmd->cmd);
+			pwd(data, cmd);
 		else if (data->cmd_flag == ENV && flag != 1)
 			env(data->envp, data, cmd);
 		else
@@ -143,7 +143,7 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 	if (!flag)
 	{
 		if (data->cmd_flag == CD)
-			return (cd(cmd, data->pipe_count));
+			return (cd(data, cmd, data->pipe_count));
 		if (data->cmd_flag == EXIT)
 			return (exit_cmd(data, cmd));
 		if (data->cmd_flag == EXPORT)

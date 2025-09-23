@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 11:10:04 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 14:28:55 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,10 @@ int	here_doc(t_exec *data)
 	iter = 0;
 	hdoc_count = operator_count(data);
 	if (hdoc_count == 0)
+	{
+		data->heredoc = NULL;
 		return (0);
+	}
 	data->heredoc = malloc(sizeof(char *) * hdoc_count);
 	if (!data->heredoc)
 		return (-1);
