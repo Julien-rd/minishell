@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 18:22:09 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 19:00:52 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	data->heredoc[hdoc_iter] = calloc(1, 1);
 	if (!data->heredoc[hdoc_iter])
 		return (-1);
-	while (delimiter_not_detected && data->heredoc[hdoc_iter])
+	while (delimiter_not_detected)
 	{
 		buf = readline("> ");
 		if (!buf)
@@ -45,12 +45,12 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 		delimiter_not_detected = ft_strcmp(&buf[iter], entry);
 		if (delimiter_not_detected)
 		{
-			tmp_str = ft_strjointhree(data->heredoc[hdoc_iter],
-					buf, "\n");
+			tmp_str = data->heredoc[hdoc_iter];
+			data->heredoc[hdoc_iter] = ft_strjointhree(data->heredoc[hdoc_iter], buf, "\n");
 			if (!data->heredoc[hdoc_iter])
-				return (perror("malloc"), free(buf), -1);
-			free(data->heredoc[hdoc_iter]);
-			data->heredoc[hdoc_iter] = tmp_str;
+				return (perror("malloc"), free(tmp_str), free(buf), -1);
+			free(tmp_str);
+			tmp_str = data->heredoc[hdoc_iter];
 		}
 		free(buf);
 	}
