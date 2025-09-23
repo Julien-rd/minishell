@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 10:27:52 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 10:36:20 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,20 +96,18 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			if (expand_input(buf, data.envp, &data) == -1)
 				return (perror("expand_input"), free2d(data.envp), 1);
-			// if (parse_string(&data) == -1)
-			// 	return (perror("parsing"), 1);
-			// entry_spec(&data);
-			// data.exit_code = exec_central(&data, envp);
-			// if (data.exit_code == -1)
-			// 	return (perror("execution error"), 1);
-			// if (data.exit_code == 12)
-			// 	return (write(1, "exit\n", 5), 0);
-			// add_history(buf);
+			if (parse_string(&data) == -1)
+				return (perror("parsing"), 1);
+			entry_spec(&data);
+			data.exit_code = exec_central(&data, envp);
+			if (data.exit_code == -1)
+				return (perror("execution error"), 1);
+			if (data.exit_code == 12)
+				return (write(1, "exit\n", 5), 0);
+			add_history(buf);
 		}
 		free(buf);
 	}
-	if (data.exp_str_malloc)
-		free(data.exp_str);
 	free2d(data.envp);
 	return (write(1, "exit\n", 5), 0);
 	return (0);

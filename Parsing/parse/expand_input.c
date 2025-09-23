@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 10:31:02 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/23 10:31:50 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	expanded_str(char *buf, t_input *data, t_expanded_str *str)
 		return (-1);
 	while (buf[iter])
 	{
-		if (str->var_count && str->path_pos[path_pos_iter] == iter)
+		if (str->var_count * 2 > path_pos_iter && str->path_pos[path_pos_iter] == iter)
 		{
 			if (str->path_pos[path_pos_iter + 1] == 0)
 			{
