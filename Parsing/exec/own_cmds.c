@@ -3,32 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 12:15:17 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/23 11:46:13 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	cd(t_cmd *cmd, size_t pipe_count)
+int	cd(t_exec *data, t_cmd *cmd, size_t pipe_count)
 {
 	size_t	iter;
 
+	iter = 0;
 	while (cmd->cmd[iter])
 		iter++;
 	if (iter > 2)
 		return (-2);
 	else if (!pipe_count && chdir(cmd->cmd[1]) == -1)
-	{
-		perror("cd");
 		return (-1);
-	}
 	// Error handling chdir kackt ab// path not found
 	return (0);
 }
-void	pwd(t_exec *data, t_cmd *cmd)
+void	pwd(void)
 {
 	char	*buf;
 
@@ -36,11 +34,11 @@ void	pwd(t_exec *data, t_cmd *cmd)
 	if (!buf)
 	{
 		perror("getcwd");
-		child_exit_handle(data, cmd, 1);
+		exit(1);
 	}
 	write(1, buf, ft_strlen(buf));
 	write(1, "\n", 1);
-	child_exit_handle(data, cmd, 0);
+	exit(0);
 }
 
 int	exit_cmd(t_exec *data, t_cmd *cmd)
@@ -56,7 +54,7 @@ int	exit_cmd(t_exec *data, t_cmd *cmd)
 		return (2); // exit failed in pipe error code 2
 }
 
-void	echo(t_exec *data, t_cmd *cmd, int nflag)
+void	echo(char **cmd, int nflag)
 {
 	size_t	iter;
 
@@ -64,18 +62,18 @@ void	echo(t_exec *data, t_cmd *cmd, int nflag)
 	if (nflag == -1)
 		return ;
 	iter += nflag;
-	while (cmd->cmd[iter])
+	while (cmd[iter])
 	{
-		if (write(1, cmd->cmd[iter], ft_strlen(cmd->cmd[iter])) == -1)
+		if (write(1, cmd[iter], ft_strlen(cmd[iter])) == -1)
 		{
 			perror("write");
-			child_exit_handle(data, cmd, 1);
+			exit(1);
 		}
-		if (cmd->cmd[iter + 1])
+		if (cmd[iter + 1])
 			if (write(1, " ", 1) == -1)
 			{
 				perror("write");
-				child_exit_handle(data, cmd, 1);
+				exit(1);
 			}
 		iter++;
 	}
@@ -84,10 +82,10 @@ void	echo(t_exec *data, t_cmd *cmd, int nflag)
 		if (write(1, "\n", 1) == -1)
 		{
 			perror("write");
-			child_exit_handle(data, cmd, 1);
+			exit(1);
 		}
 	}
-	child_exit_handle(data, cmd, 0);
+	exit(0);
 }
 
 int	extend_envp(t_exec *data)
@@ -195,26 +193,26 @@ int	export(char **cmd, t_exec *data)
 	return (0);
 }
 
-void	env(char **envp, t_exec *data, t_cmd *cmd)
+void	env(char **envp)
 {
 	size_t	iter;
 
 	iter = 0;
 	if (!envp)
-		child_exit_handle(data, cmd, 1);
+		exit(1);
 	while (envp[iter])
 	{
 		if (write(1, envp[iter], ft_strlen(envp[iter])) == -1)
 		{
 			perror("write");
-			child_exit_handle(data, cmd, 1);
+			exit(1);
 		}
 		if (envp[iter][0] != '\0' && write(1, "\n", 1) == -1)
 		{
 			perror("write");
-			child_exit_handle(data, cmd, 1);
+			exit(1);
 		}
 		iter++;
 	}
-	child_exit_handle(data, cmd, 0);
+	exit(0);
 }
