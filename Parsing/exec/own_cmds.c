@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 11:02:54 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:33:06 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,37 +185,41 @@ int	export(char **cmd, t_exec *data)
 {
 	char	*value;
 	size_t	iter;
+	size_t	inner;
 	size_t	position;
 
-	if (!cmd[1] || cmd[2] != NULL || !ft_strchr(cmd[1], '=') || cmd[1][0] == '='
-		|| (!ft_isalpha(cmd[1][0]) && cmd[1][0] != '_'))
-		return (/* own error */ -1);
-	iter = 0;
-	while (cmd[1][iter] != '=')
+	iter = 1;
+	while (cmd[iter])
 	{
-		if (!ft_isalnum(cmd[1][iter]) && cmd[1][iter] != '_')
+		if (!cmd[iter] || !ft_strchr(cmd[iter], '=') || cmd[iter][0] == '='
+			|| (!ft_isalpha(cmd[iter][0]) && cmd[iter][0] != '_'))
 			return (/* own error */ -1);
+		inner = 1;
+		while (cmd[iter][inner] != '=')
+		{
+			if (!ft_isalnum(cmd[1][inner]) && cmd[1][inner] != '_')
+				return (/* own error */ -1);
+			inner++;
+		}
+		if (cmd[iter][inner] == '=')
+			inner++;
+		value = ft_strdup(&cmd[iter][inner]);
+		if (!value)
+			return (-1);
+		if (data->envp_count >= data->envp_malloc)
+			if (extend_envp(data) == -1)
+				return (free(value), -1);
+		position = check_position(data);
+		if (position == -1)
+		{
+			data->envp[data->envp_count] = value;
+			data->envp_count = data->envp_count + 1;
+			data->envp[data->envp_count] = NULL;
+		}
+		else
+			data->envp[position] = value;
 		iter++;
 	}
-	while (cmd[1][iter])
-		iter++;
-	value = ft_strdup(cmd[1]);
-	if (!value)
-		return (-1);
-	if (data->envp_count >= data->envp_malloc)
-	{
-		if (extend_envp(data) == -1)
-			return (free(value), -1);
-	}
-	position = check_position(data);
-	if (position == -1)
-	{
-		data->envp[data->envp_count] = value;
-		data->envp_count = data->envp_count + 1;
-		data->envp[data->envp_count] = NULL;
-	}
-	else
-		data->envp[position] = value;
 	return (0);
 }
 
