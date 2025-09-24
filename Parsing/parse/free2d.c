@@ -6,25 +6,25 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:57:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 19:11:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/24 11:40:53 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void free2d(char **str)
+void free2d(char ***str)
 {
     size_t iter;
 
     iter = 0;
-    if (str)
+    if (*str)
     {
-        while(str[iter])
+        while((*str)[iter])
         {
-            free(str[iter]);
+            free((*str)[iter]);
             iter++;
         }
-        free(str);
+        free(*str);
     }
-    str = NULL;
+    *str = NULL;
 }

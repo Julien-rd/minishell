@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/24 10:14:52 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:42:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	here_doc(t_exec *data)
 		if (data->input_spec[iter] == HERE_DOC)
 		{
 			if (hdoc_entry(data->entries[iter], data, hdoc_iter) == -1)
-				return (free2d(data->heredoc), -1);
+				return (free2d(&data->heredoc), -1);
 			hdoc_iter++;
 		}
 		iter++;

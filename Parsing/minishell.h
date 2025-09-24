@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 18:11:48 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:40:16 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int			quoteclosed(char *str, char quote, t_input *data);
 int			getpath(char *buf, t_expanded_str *str, size_t path_iter,
 				char **envp, size_t len);
 int			quote_check(size_t iter, char *buf, t_input *data);
-void		free2d(char **str);
+void		free2d(char ***str);
 
 size_t		count_entries(t_input *data);
 int			malloc_ops(size_t *entry, size_t *iter, t_input *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 09:48:39 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:42:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*ft_getpath(char **envp, char *cmd)
 	if (paths == NULL)
 		return (NULL);
 	success_bool = ft_search_paths(paths, &tmp_path, cmd);
-	free2d(paths);
+	free2d(&paths);
 	if (success_bool != 0)
 		return (errno = success_bool, NULL);
 	return (tmp_path);

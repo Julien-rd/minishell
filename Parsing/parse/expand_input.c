@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 10:31:50 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/24 11:42:07 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	paths_init(char *buf, t_input *data, t_expanded_str *str)
 			return (perror(""), -1);
 		str->path_pos = malloc(sizeof(size_t) * str->var_count * 2);
 		if (!str->path_pos)
-			return (free2d(str->paths), perror(""), -1);
+			return (free2d(&str->paths), perror(""), -1);
 	}
 	return (0);
 }
@@ -144,10 +144,10 @@ int	expand_input(char *buf, char **envp, t_input *data)
 		return (0);
 	}
 	if (check_paths(buf, data, &str, envp) == -1)
-		return (free2d(str.paths), free(str.path_pos), -1);
+		return (free2d(&str.paths), free(str.path_pos), -1);
 	if (expanded_str(buf, data, &str) == -1)
-		return (free2d(str.paths), free(str.path_pos), -1);
-	free2d(str.paths);
+		return (free2d(&str.paths), free(str.path_pos), -1);
+	free2d(&str.paths);
 	free(str.path_pos);
 	return (0);
 }

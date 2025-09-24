@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 16:11:40 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/24 11:48:35 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int argc, char *argv[], char *envp[])
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	if (create_envp(&data, envp) == -1)
-		return (perror("envp"), free2d(data.envp), 1);
+		return (perror("envp"), free2d(&data.envp), 1);
 	data.exit_code = 0;
 	while (1)
 	{
@@ -95,19 +95,19 @@ int	main(int argc, char *argv[], char *envp[])
 		if (ft_strlen(buf) > 0)
 		{
 			if (expand_input(buf, data.envp, &data) == -1)
-				return (perror("expand_input"), free2d(data.envp), 1);
+				return (perror("expand_input"), free2d(&data.envp), 1);
 			if (parse_string(&data) == -1)
-				return (free2d(data.envp), 1);
+				return (free2d(&data.envp), 1);
 			data.exit_code = exec_central(&data, envp);
 			if (data.exit_code == -1)
-				return (perror("execution error"), free2d(data.envp), 1);
+				return (perror("execution error"), free2d(&data.envp), 1);
 			if (data.exit)
-				return (write(1, "exit\n", 5), free2d(data.envp), data.exit_code);
+				return (write(1, "exit\n", 5), free2d(&data.envp), data.exit_code);
 			add_history(buf);
 		}
 		free(buf);
 	}
-	free2d(data.envp);
+	free2d(&data.envp);
 	return (write(1, "exit\n", 5), 0);
 	return (0);
 }
