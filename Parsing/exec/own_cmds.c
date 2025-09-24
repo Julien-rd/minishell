@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 11:33:06 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/24 13:10:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,6 @@ int	exit_cmd(t_exec *data, t_cmd *cmd)
 	if (!data->pipe_count)
 		data->exit = 1;
 	return (0);
-	// if (cmd->cmd[1] == NULL && data->pipe_count == 0)
-	// 	return (12);
-	// else if (cmd->cmd[1] == NULL)
-	// 	return (0);
-	// else
-	// 	return (2); // exit failed in pipe error code 2
 }
 
 void	echo(t_exec *data, t_cmd *cmd, int nflag)
@@ -133,6 +127,20 @@ int	extend_envp(t_exec *data)
 	return (0);
 }
 
+int	param_check(char *param)
+{
+	size_t	iter;
+
+	iter = 0;
+	while (param[iter])
+	{
+		if (!ft_isalnum(param[iter]) && param[iter] != '_')
+			return (0);
+		iter++;
+	}
+	return (1);
+}
+
 int	unset(char **cmd, t_exec *data)
 {
 	char	*entry;
@@ -143,20 +151,25 @@ int	unset(char **cmd, t_exec *data)
 	if (!cmd[1])
 		return (0);
 	iter = 1;
-	inner = 1;
 	while (cmd[iter])
 	{
 		if (!cmd[iter][0] || (!ft_isalpha(cmd[iter][0]) && cmd[iter][0] != '_'))
-			return (0);
-		while (cmd[iter][inner])
 		{
-			if (!cmd[iter][inner] || (!ft_isalpha(cmd[iter][inner]) && cmd[iter][inner] != '_'))
-				return (0);
-			inner++;
+			iter++;
+			continue ;
+		}
+		inner = 1;
+		if (!param_check(cmd[iter]))
+		{
+			iter++;
+			continue ;
 		}
 		envp_pos = ft_find_paths(data->envp, cmd[iter]);
 		if (envp_pos == -1)
-			return (0);
+		{
+			iter++;
+			continue ;
+		}
 		entry = ft_calloc(1, 1);
 		if (!entry)
 			return (perror("unset"), -1);
@@ -167,7 +180,7 @@ int	unset(char **cmd, t_exec *data)
 	return (0);
 }
 
-int	check_position(t_exec *data)
+int	check_position(t_exec *data, char *value, size_t inner)
 {
 	size_t	iter;
 
@@ -176,9 +189,22 @@ int	check_position(t_exec *data)
 	{
 		if (!ft_strcmp(data->envp[iter], ""))
 			return (iter);
+		if (!ft_strncmp(data->envp[iter], value, inner))
+			return (iter);
 		iter++;
 	}
 	return (-1);
+}
+
+int	env_check(char *param, size_t *inner)
+{
+	while (param[*inner] && param[*inner] != '=')
+	{
+		if (!ft_isalnum(param[*inner]) && param[*inner] != '_')
+			return (0);
+		(*inner)++;
+	}
+	return (1);
 }
 
 int	export(char **cmd, t_exec *data)
@@ -193,23 +219,28 @@ int	export(char **cmd, t_exec *data)
 	{
 		if (!cmd[iter] || !ft_strchr(cmd[iter], '=') || cmd[iter][0] == '='
 			|| (!ft_isalpha(cmd[iter][0]) && cmd[iter][0] != '_'))
-			return (/* own error */ -1);
-		inner = 1;
-		while (cmd[iter][inner] != '=')
 		{
-			if (!ft_isalnum(cmd[1][inner]) && cmd[1][inner] != '_')
-				return (/* own error */ -1);
-			inner++;
+			iter++;
+			continue ;
 		}
-		if (cmd[iter][inner] == '=')
-			inner++;
-		value = ft_strdup(&cmd[iter][inner]);
+		inner = 1;
+		if (!env_check(cmd[iter], &inner))
+		{
+			iter++;
+			continue ;
+		}	
+		if (cmd[iter][inner] != '=')
+		{
+			iter++;
+			continue ;
+		}	
+		value = ft_strdup(cmd[iter]);
 		if (!value)
 			return (-1);
 		if (data->envp_count >= data->envp_malloc)
 			if (extend_envp(data) == -1)
 				return (free(value), -1);
-		position = check_position(data);
+		position = check_position(data, value, inner + 1);
 		if (position == -1)
 		{
 			data->envp[data->envp_count] = value;
@@ -217,7 +248,10 @@ int	export(char **cmd, t_exec *data)
 			data->envp[data->envp_count] = NULL;
 		}
 		else
+		{
+			free(data->envp[position]);
 			data->envp[position] = value;
+		}
 		iter++;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 11:42:29 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/24 12:25:24 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_find_paths(char *envp[], char *env_name)
 
 	iter = 0;
 	if (!envp)
-		return (2);
+		return (-1);
 	while (envp[iter])
 	{
 		if (ft_strncmp(envp[iter], env_name, ft_strlen(env_name)) == 0)
