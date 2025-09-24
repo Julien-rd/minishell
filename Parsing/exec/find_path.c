@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 18:58:01 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/24 09:48:39 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,22 @@ char	*ft_strjointhree(char const *s1, char const *s2, char const *s3)
 	size_t	j;
 	size_t	k;
 
-	i = -1;
-	j = -1;
-	k = -1;
+	i = 0;
+	j = 0;
+	k = 0;
 	str_join = malloc(sizeof(char) * (ft_strlen(s1)
 				+ ft_strlen(s2) + ft_strlen(s3) + 1));
 	if (!str_join)
 		return (NULL);
-	while (s1[++i])
+	while (s1[i])
+	{
 		str_join[i] = s1[i];
-	while (s2[++j])
-		str_join[i++] = s2[j];
-	while (s3[++k])
-		str_join[i++] = s3[k];
+		i++;
+	}
+	while (s2[j])
+		str_join[i++] = s2[j++];
+	while (s3[k])
+		str_join[i++] = s3[k++];
 	str_join[i] = '\0';
 	return (str_join);
 }

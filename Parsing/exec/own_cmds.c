@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 17:36:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/24 11:02:54 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,13 @@ void	echo(t_exec *data, t_cmd *cmd, int nflag)
 			child_exit_handle(data, cmd, 1);
 		}
 		if (cmd->cmd[iter + 1])
+		{
 			if (write(1, " ", 1) == -1)
 			{
 				perror("write");
 				child_exit_handle(data, cmd, 1);
 			}
+		}
 		iter++;
 	}
 	if (nflag == 0)
@@ -133,21 +135,35 @@ int	extend_envp(t_exec *data)
 
 int	unset(char **cmd, t_exec *data)
 {
-	char	*value;
+	char	*entry;
 	int		envp_pos;
+	size_t	iter;
+	size_t	inner;
 
-	if (!cmd[1] || cmd[2] != NULL)
-		return (/* own error */ -1);
-	envp_pos = ft_find_paths(data->envp, cmd[1]);
-	if (envp_pos == -1)
-		return (/* own error */ -1);
-	value = ft_strdup("");
-	if (!value)
-		return (-1);
-	if (data->envp_count >= data->envp_malloc)
-		if (extend_envp(data) == -1)
-			return (free(value), -1);
-	data->envp[envp_pos] = value;
+	if (!cmd[1])
+		return (0);
+	iter = 1;
+	inner = 1;
+	while (cmd[iter])
+	{
+		if (!cmd[iter][0] || (!ft_isalpha(cmd[iter][0]) && cmd[iter][0] != '_'))
+			return (0);
+		while (cmd[iter][inner])
+		{
+			if (!cmd[iter][inner] || (!ft_isalpha(cmd[iter][inner]) && cmd[iter][inner] != '_'))
+				return (0);
+			inner++;
+		}
+		envp_pos = ft_find_paths(data->envp, cmd[iter]);
+		if (envp_pos == -1)
+			return (0);
+		entry = ft_calloc(1, 1);
+		if (!entry)
+			return (perror("unset"), -1);
+		free(data->envp[envp_pos]);
+		data->envp[envp_pos] = entry;
+		iter++;
+	}
 	return (0);
 }
 

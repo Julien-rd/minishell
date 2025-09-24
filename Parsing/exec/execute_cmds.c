@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/23 19:07:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/24 10:19:33 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	child_exit_handle(t_exec *data, t_cmd *cmd, int errcode)
 	free(data->pipe_position);
 	free(cmd->cmd);
 	if (data->heredoc)
-		free(data->heredoc);
+		free2d(data->heredoc);
 	exit(errcode);
 }
 
