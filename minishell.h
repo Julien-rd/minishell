@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 12:13:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:27:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define _XOPEN_SOURCE 700
 # include "libft_00/libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -22,6 +23,7 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/ioctl.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
@@ -44,6 +46,8 @@
 # define ENV 15
 # define EXTERNAL 16
 # define INTERNAL 17
+
+extern volatile int	current_signal;
 
 typedef struct s_expanded_str
 {
@@ -112,6 +116,8 @@ int			getpath(char *buf, t_expanded_str *str, size_t path_iter,
 				char **envp, size_t len);
 int			quote_check(size_t iter, char *buf, t_input *data);
 void		free2d(char ***str);
+void		setup_main_signals(void);
+void		setup_heredoc_signals(void);
 
 size_t		count_entries(t_input *data);
 int			malloc_ops(size_t *entry, size_t *iter, t_input *data);
@@ -157,6 +163,6 @@ void		echo(t_exec *data, t_cmd *cmd, int nflag);
 void		env(char **envp, t_exec *data, t_cmd *cmd);
 int			export(char **cmd, t_exec *data);
 int			unset(char **cmd, t_exec *data);
-char	*ft_strjointhree(char const *s1, char const *s2, char const *s3);
+char		*ft_strjointhree(char const *s1, char const *s2, char const *s3);
 
 #endif

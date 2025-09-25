@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/24 11:42:14 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/25 14:26:17 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	char	*tmp_str;
 
 	delimiter_not_detected = 1;
+	setup_heredoc_signals();
 	iter = 0;
 	if (entry == NULL)
 		return (1);
@@ -39,8 +40,13 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	while (delimiter_not_detected)
 	{
 		buf = readline("> ");
-		if (!buf)
-			return (perror("buf"), -1);
+		if (current_signal == SIGINT || !buf)
+		{
+			if (buf)
+				free(buf);
+			setup_main_signals();
+			return (-1);
+		}
 		iter = skip_whitspaces(buf);
 		delimiter_not_detected = ft_strcmp(&buf[iter], entry);
 		if (delimiter_not_detected)
@@ -53,6 +59,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 		}
 		free(buf);
 	}
+	setup_main_signals();
 	return (0);
 }
 

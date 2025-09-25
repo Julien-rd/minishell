@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 13:50:25 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:27:58 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+volatile int	current_signal = 0;
 
 void	entry_spec(t_input *data)
 {
@@ -82,13 +84,14 @@ int	main(int argc, char *argv[], char *envp[])
 	t_input	data;
 	char	*buf;
 
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	setup_main_signals();
 	if (create_envp(&data, envp) == -1)
 		return (perror("envp"), free2d(&data.envp), 1);
 	data.exit_code = 0;
+	data.exit = 0;
 	while (1)
 	{
+		current_signal = 0;
 		buf = readline("minishell>> ");
 		if (buf == NULL)
 		{
@@ -102,10 +105,11 @@ int	main(int argc, char *argv[], char *envp[])
 			if (parse_string(&data) == -1)
 				return (free2d(&data.envp), 1);
 			data.exit_code = exec_central(&data, envp);
-			if (data.exit_code == -1)
+			if (data.exit_code == -1 && current_signal == 0)
 				return (perror("execution error"), free2d(&data.envp), 1);
 			if (data.exit)
-				return (write(1, "exit\n", 5), free2d(&data.envp), data.exit_code);
+				return (write(1, "exit\n", 5), free2d(&data.envp),
+					data.exit_code);
 			add_history(buf);
 		}
 		free(buf);
