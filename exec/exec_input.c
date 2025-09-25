@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/24 11:43:00 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/25 14:57:10 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	init_pipe_pos(t_exec *data)
 {
 	size_t	iter;
 	size_t	p_iter;
-	
+
 	data->pipe_position = malloc(sizeof(int) * (data->pipe_count + 1));
 	if (!data->pipe_position)
 		return (-1);
@@ -48,8 +48,11 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	if (input->exp_str_malloc)
 		free(input->exp_str);
 	if (here_doc(data) == -1)
-		return (free2d(&data->envp), free(data->input_spec),
-			free2d(&data->entries), -1);
+	{
+		if (current_signal != SIGINT)
+			free2d(&data->envp);
+		return (free(data->input_spec), free2d(&data->entries), -1);
+	}
 	if (init_pipe_pos(data) == -1)
 		return (free2d(&data->heredoc), free2d(&data->envp),
 			free(data->input_spec), free2d(&data->entries), -1);
