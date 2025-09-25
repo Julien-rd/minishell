@@ -6,18 +6,20 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/23 17:53:04 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/25 17:08:47 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	internal_cmd_error(t_exec *data, t_cmd *cmd)
+void	internal_cmd_error(t_exec *data, t_cmd *cmd, int flag)
 {
 	long long exit_code;
 	size_t iter;
 
 	iter = 0;
+	if (flag == -1 && data->cmd_flag != EXIT)
+			invalid_option(data, cmd);
 	if (data->cmd_flag == CD)
 	{
 		if (data->internal_errcode == -2)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 14:14:36 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:03:54 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@ int	cd(t_exec *data, t_cmd *cmd, size_t pipe_count)
 	}
 	return (0);
 }
-void	pwd(t_exec *data, t_cmd *cmd)
+void	pwd(t_exec *data, t_cmd *cmd, int flag)
 {
 	char	*buf;
 
 	buf = getcwd(NULL, 0);
+	if (flag == -1)
+		return ;
+		// invalid_option(data, cmd);
 	if (!buf)
 	{
 		perror("getcwd");
@@ -228,12 +231,12 @@ int	export(char **cmd, t_exec *data)
 		{
 			iter++;
 			continue ;
-		}	
+		}
 		if (cmd[iter][inner] != '=')
 		{
 			iter++;
 			continue ;
-		}	
+		}
 		value = ft_strdup(cmd[iter]);
 		if (!value)
 			return (-1);
@@ -257,13 +260,15 @@ int	export(char **cmd, t_exec *data)
 	return (0);
 }
 
-void	env(char **envp, t_exec *data, t_cmd *cmd)
+void	env(char **envp, t_exec *data, t_cmd *cmd, int flag)
 {
 	size_t	iter;
 
 	iter = 0;
 	if (!envp)
 		exit(1);
+	if (flag == -1)
+		invalid_option(data, cmd);
 	while (envp[iter])
 	{
 		if (write(1, envp[iter], ft_strlen(envp[iter])) == -1)

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:26:43 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/25 15:04:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:38:40 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,8 @@ static void	sigint_heredoc(int num)
 {
 	current_signal = SIGINT;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	// write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	// rl_replace_line("", 0);
-	// rl_redisplay();
 }
 
 void	setup_main_signals(void)

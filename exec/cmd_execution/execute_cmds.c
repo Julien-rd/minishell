@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 14:14:25 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:19:10 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,23 +67,24 @@ void	child_process(t_exec *data, t_cmd *cmd)
 		flag = options_check(cmd);
 		if (data->cmd_flag == ECHO)
 			echo(data, cmd, flag);
-		else if (data->cmd_flag == PWD && flag != 1)
-			pwd(data, cmd);
-		else if (data->cmd_flag == ENV && flag != 1)
-			env(data->envp, data, cmd);
+		else if (data->cmd_flag == PWD)
+			pwd(data, cmd, flag);
+		else if (data->cmd_flag == ENV)
+			env(data->envp, data, cmd, flag);
 		else
 		{
-			internal_cmd_error(data, cmd);
+			internal_cmd_error(data, cmd, flag);
 			// ERRORHANDLING für exit etc. !NICHT IN PARENTPROCESS
 			// exit(data->internal_errcode);
 		}
 	}
-	//splitfail malloc
+	// splitfail malloc
 	path = ft_getpath(data->envp, cmd->cmd[0]);
 	if (path == NULL)
 	{
-		perror(cmd->cmd[0]);
-		child_exit_handle(data, cmd, 1);
+		write(2, cmd->cmd[0], ft_strlen(cmd->cmd[0]));
+		write(2, ": command not found\n", 20);
+		child_exit_handle(data, cmd, 127);
 	}
 	execve(path, cmd->cmd, data->envp);
 	child_exit_handle(data, cmd, 1);
@@ -141,17 +142,14 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 	if (cmd->cmd[0] == NULL)
 		return (0);
 	flag = options_check(cmd);
-	if (!flag)
-	{
-		if (data->cmd_flag == CD)
-			return (cd(data, cmd, data->pipe_count));
-		if (data->cmd_flag == EXIT)
-			return (exit_cmd(data, cmd));
-		if (data->cmd_flag == EXPORT)
-			return (export(cmd->cmd, data));
-		if (data->cmd_flag == UNSET)
-			return (unset(cmd->cmd, data));
-	}
+	if (data->cmd_flag == CD && !flag)
+		return (cd(data, cmd, data->pipe_count));
+	if (data->cmd_flag == EXIT)
+		return (exit_cmd(data, cmd));
+	if (data->cmd_flag == EXPORT && !flag)
+		return (export(cmd->cmd, data));
+	if (data->cmd_flag == UNSET && !flag)
+		return (unset(cmd->cmd, data));
 	return (0);
 }
 
