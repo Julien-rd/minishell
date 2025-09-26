@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/25 17:19:10 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 10:54:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,12 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	if (cmd->cmd[0] == NULL)
 		child_exit_handle(data, cmd, 0);
 	if (data->cmd_flag != EXTERNAL)
-	{
-		flag = options_check(cmd);
-		if (data->cmd_flag == ECHO)
-			echo(data, cmd, flag);
-		else if (data->cmd_flag == PWD)
-			pwd(data, cmd, flag);
-		else if (data->cmd_flag == ENV)
-			env(data->envp, data, cmd, flag);
-		else
-		{
-			internal_cmd_error(data, cmd, flag);
-			// ERRORHANDLING für exit etc. !NICHT IN PARENTPROCESS
-			// exit(data->internal_errcode);
-		}
-	}
-	// splitfail malloc
-	path = ft_getpath(data->envp, cmd->cmd[0]);
+		builtin_handler(data, cmd);
+	path = ft_getpath(data->envp, cmd->cmd[0]); 	// splitfail malloc
 	if (path == NULL)
-	{
-		write(2, cmd->cmd[0], ft_strlen(cmd->cmd[0]));
-		write(2, ": command not found\n", 20);
-		child_exit_handle(data, cmd, 127);
-	}
+		command_fail(path, data, cmd);
 	execve(path, cmd->cmd, data->envp);
-	child_exit_handle(data, cmd, 1);
+	execve_fail(path, errno, data, cmd);
 }
 
 void	parent_process(t_exec *data)

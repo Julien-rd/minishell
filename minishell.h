@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/25 17:04:09 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 10:53:48 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/ioctl.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
@@ -168,5 +169,9 @@ char				*ft_strjointhree(char const *s1, char const *s2,
 // error messages
 
 void				invalid_option(t_exec *data, t_cmd *cmd);
+void				execve_fail(char *path, int error, t_exec *data,
+						t_cmd *cmd);
+void				command_fail(char *path, t_exec *data, t_cmd *cmd);
+void				builtin_handler(t_exec *data, t_cmd *cmd);
 
 #endif
