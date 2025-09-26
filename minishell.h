@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/26 13:00:03 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 14:57:35 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ extern volatile int	current_signal;
 typedef struct s_expanded_str
 {
 	size_t			var_count;
-	char			**paths;
-	size_t			*path_pos;
+	char			**env_arr;
+	size_t			*env_pos;
 	int				exit_code;
 }					t_expanded_str;
 
@@ -109,11 +109,11 @@ typedef struct s_exec
 }					t_exec;
 
 void				entry_spec(t_input *data);
-size_t				pathlen(char *path);
-size_t				pathsize(char *path, char **envp, t_input *data);
-int					expand_input(char *buf, char **envp, t_input *data);
+size_t				envlen(char *env);
+size_t				envsize(char *env, char **envp, t_input *data);
+int					expand(char *buf, char **envp, t_input *data);
 int					quoteclosed(char *str, char quote, t_input *data);
-int					getpath(char *buf, t_expanded_str *str, size_t path_iter,
+int					get_env(char *buf, t_expanded_str *str, size_t env_iter,
 						char **envp, size_t len);
 int					quote_check(size_t iter, char *buf, t_input *data);
 void				setup_main_signals(void);

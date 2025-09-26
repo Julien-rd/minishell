@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/24 14:15:40 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/26 12:47:09 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,20 @@ int	quote_check(size_t iter, char *buf, t_input *data)
 		return (1);
 	return (return_value);
 }
-size_t	pathlen(char *path)
+size_t	envlen(char *env)
 {
 	size_t	len;
 
 	len = 0;
-	if (path[len] == '?')
+	if (env[len] == '?')
 		return (1);
-	if (ft_isalpha(path[len]) || path[len] == '_')
-		while (ft_isalnum(path[len]) || path[len] == '_')
+	if (ft_isalpha(env[len]) || env[len] == '_')
+		while (ft_isalnum(env[len]) || env[len] == '_')
 			len++;
 	return (len);
 }
 
-int	pathcmp(const char *s1, const char *s2, size_t n)
+int	envcmp(const char *s1, const char *s2, size_t n)
 {
 	unsigned int	i;
 
@@ -87,7 +87,7 @@ int	pathcmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-int	getpath(char *buf, t_expanded_str *str, size_t path_iter, char **envp,
+int	get_env(char *buf, t_expanded_str *str, size_t env_iter, char **envp,
 		size_t len)
 {
 	char	*var_value;
@@ -96,19 +96,19 @@ int	getpath(char *buf, t_expanded_str *str, size_t path_iter, char **envp,
 	iter = 0;
 	if (buf[0] == '?')
 	{
-		str->paths[path_iter] = ft_itoa(str->exit_code);
-		if (!str->paths[path_iter])
-			return (perror("getpath"), -1);
+		str->env_arr[env_iter] = ft_itoa(str->exit_code);
+		if (!str->env_arr[env_iter])
+			return (perror("get_env"), -1);
 		return (1);
 	}
 	while (envp[iter])
 	{
-		if (pathcmp(envp[iter], buf, len + 1))
+		if (envcmp(envp[iter], buf, len + 1))
 		{
-			str->paths[path_iter] = ft_substr(&envp[iter][len + 1], 0,
+			str->env_arr[env_iter] = ft_substr(&envp[iter][len + 1], 0,
 					ft_strlen(&envp[iter][len + 1]));
-			if (!str->paths[path_iter])
-				return (perror("getpath"), -1);
+			if (!str->env_arr[env_iter])
+				return (perror("get_env"), -1);
 			return (1);
 		}
 		iter++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/25 14:34:49 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 12:38:37 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,10 @@ int	main(int argc, char *argv[], char *envp[])
 		current_signal = 0;
 		buf = readline("minishell>> ");
 		if (buf == NULL)
-		{
-			rl_clear_history();
 			break ;
-		}
 		if (ft_strlen(buf) > 0)
 		{
-			if (expand_input(buf, data.envp, &data) == -1)
+			if (expand(buf, data.envp, &data) == -1)
 				return (perror("expand_input"), free2d(&data.envp), 1);
 			if (parse_string(&data) == -1)
 				return (free2d(&data.envp), 1);
@@ -114,7 +111,7 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		free(buf);
 	}
+	rl_clear_history();
 	free2d(&data.envp);
 	return (write(1, "exit\n", 5), 0);
-	return (0);
 }
