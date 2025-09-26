@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/26 10:54:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 17:05:25 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,14 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	char	*path;
 	int		flag;
 
+	setup_child_signals();
 	if (setup_redirect(data, cmd) == -1)
 		child_exit_handle(data, cmd, 1);
 	if (cmd->cmd[0] == NULL)
 		child_exit_handle(data, cmd, 0);
 	if (data->cmd_flag != EXTERNAL)
 		builtin_handler(data, cmd);
-	path = ft_getpath(data->envp, cmd->cmd[0]); 	// splitfail malloc
+	path = ft_getpath(data->envp, cmd->cmd[0]); // splitfail malloc
 	if (path == NULL)
 		command_fail(path, data, cmd);
 	execve(path, cmd->cmd, data->envp);
@@ -109,6 +110,10 @@ int	kill_children(t_exec *data)
 		{
 			if (WIFEXITED(status))
 				return_value = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				return_value = 128 + WTERMSIG(status);
+			else if (WIFSTOPPED(status))
+				return_value = 128 + WSTOPSIG(status);
 		}
 	}
 	if (errno != ECHILD)

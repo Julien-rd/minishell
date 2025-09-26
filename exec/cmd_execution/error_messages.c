@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/26 13:01:36 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 13:53:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	execve_fail(char *path, int error, t_exec *data, t_cmd *cmd)
 		}
 		else if (S_ISREG(st.st_mode))
 		{
+			printf("%s\n", cmd->cmd[0]);
+			fflush(stdout);
 			errno = error;
 			perror(path);
 			if (errno == EACCES || errno == ENOEXEC)

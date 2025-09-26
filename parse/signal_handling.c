@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:26:43 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/25 15:38:40 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 17:12:49 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,21 @@ static void	sigint_handler(int num)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+static void	sigint_child(int num)
+{
+	exit(0);
+	current_signal = SIGINT;
+	ioctl(STDIN_FILENO, TIOCSTI, "hallo\n");
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_redisplay();
+}
 static void	sigint_heredoc(int num)
 {
 	current_signal = SIGINT;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	rl_replace_line("", 0);
 	rl_on_new_line();
+	rl_replace_line("", 0);
 }
 
 void	setup_main_signals(void)
@@ -50,6 +59,17 @@ void	setup_heredoc_signals(void)
 	sa.sa_handler = sigint_heredoc;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	setup_child_signals(void)
+{
+	struct sigaction sa;
+
+	sa.sa_handler = sigint_child;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 }
