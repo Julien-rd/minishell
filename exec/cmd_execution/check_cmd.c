@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/24 14:14:24 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/26 13:00:45 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int	options_check(t_cmd *cmd)
 			iter++;
 		}
 		if (ft_strncmp(cmd->cmd[iter], "-e", 3) && ft_strncmp(cmd->cmd[iter],
-				"-E", 3) && ft_strncmp(cmd->cmd[iter], "--help", 7)
-			&& ft_strncmp(cmd->cmd[iter], "--version", 10))
+				"-E", 3))
 			return (-1);
 		return (iter - 1);
 	}

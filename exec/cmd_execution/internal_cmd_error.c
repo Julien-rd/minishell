@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/25 17:08:47 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 13:00:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	internal_cmd_error(t_exec *data, t_cmd *cmd, int flag)
 	{
 		if (cmd->cmd[1])
 		{
-			exit_code = exit_status(cmd->cmd[1]);
+			exit_code = ft_atoll(cmd->cmd[1]);
 			while (cmd->cmd[1][iter])
 			{
 				if (!ft_isdigit(cmd->cmd[1][iter]))

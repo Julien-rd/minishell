@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/26 10:53:57 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 13:01:36 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,7 @@ void	execve_fail(char *path, int error, t_exec *data, t_cmd *cmd)
 		child_exit_handle(data, cmd, 127);
 	child_exit_handle(data, cmd, 1);
 }
-static int	safe_write(int fd, char *buf, size_t len)
-{
-	if (write(fd, buf, len) == -1)
-		return (perror("write"), -1);
-	return (0);
-}
+
 void	command_fail(char *path, t_exec *data, t_cmd *cmd)
 {
 	if (errno == EACCES)

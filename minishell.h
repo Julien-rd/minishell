@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/26 10:53:48 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/26 13:00:03 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int					quoteclosed(char *str, char quote, t_input *data);
 int					getpath(char *buf, t_expanded_str *str, size_t path_iter,
 						char **envp, size_t len);
 int					quote_check(size_t iter, char *buf, t_input *data);
-void				free2d(char ***str);
 void				setup_main_signals(void);
 void				setup_heredoc_signals(void);
 
@@ -154,7 +153,6 @@ int					cmd_flag(t_exec *data, t_cmd *cmd);
 int					options_check(t_cmd *cmd);
 void				internal_cmd_error(t_exec *data, t_cmd *cmd, int flag);
 void				child_exit_handle(t_exec *data, t_cmd *cmd, int errcode);
-long long			exit_status(const char *str);
 
 /* own cmds */
 void				pwd(t_exec *data, t_cmd *cmd, int flag);
@@ -173,5 +171,10 @@ void				execve_fail(char *path, int error, t_exec *data,
 						t_cmd *cmd);
 void				command_fail(char *path, t_exec *data, t_cmd *cmd);
 void				builtin_handler(t_exec *data, t_cmd *cmd);
+
+// helper
+int					safe_write(int fd, char *buf, size_t len);
+void				free2d(char ***str);
+long long			ft_atoll(const char *str);
 
 #endif
