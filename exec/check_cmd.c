@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 16:18:53 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	options_check(t_cmd *cmd)
 			return (-1);
 		return (iter - 1);
 	}
-	if (cmd->cmd[1] != NULL && cmd->cmd[1][0] == '-')
+	if (cmd->cmd[1] != NULL && cmd->cmd[1][0] == '-' && cmd->cmd[1][1])
 		return (-1);
 	return (0);
 }
