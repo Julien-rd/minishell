@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 15:13:44 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 17:33:34 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int					exit_cmd(t_exec *data, t_cmd *cmd);
 int					cd(t_exec *data, t_cmd *cmd, size_t pipe_count);
 void				echo(t_exec *data, t_cmd *cmd, int nflag);
 void				env(char **envp, t_exec *data, t_cmd *cmd, int flag);
+int					insert_pos(t_exec *data, char *param);
 int					export(char **cmd, t_exec *data);
 int					unset(char **cmd, t_exec *data);
 char				*ft_strjointhree(char const *s1, char const *s2,

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 18:25:51 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,15 @@ void	exit_error(t_exec *data, t_cmd *cmd)
 void	export_unset_error(t_exec *data, t_cmd *cmd, int cmd_flag)
 {
 	if (cmd_flag == EXPORT && data->internal_errcode == -1)
+	{
 		write(2, "export: malloc failed\n", 22);
-	else if (cmd_flag == UNSET && data->internal_errcode == 1) // SOLLTE ES HIER
-		//-1 sein?
+		child_exit_handle(data, cmd, 1);
+	}
+	if (cmd_flag == EXPORT && data->internal_errcode == 1)
+		child_exit_handle(data, cmd, 1);
+	else if (cmd_flag == UNSET && data->internal_errcode == 1)
 		write(2, "unset: malloc failed\n", 21);
-	child_exit_handle(data, cmd, 1);
+	child_exit_handle(data, cmd, 0);
 }
 
 void	cd_error(t_exec *data, t_cmd *cmd)
