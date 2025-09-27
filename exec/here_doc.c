@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 12:29:08 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,20 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	while (delimiter_not_detected)
 	{
 		buf = readline("> ");
-		if (current_signal == SIGINT || !buf)
+		if (current_signal != 0 || !buf)
 		{
 			if (buf)
 				free(buf);
+			if (current_signal != 2)
+			{
+				write(2,
+					"warning: here-document delimited by end-of-file (wanted '",
+					57);
+				write(2, entry, ft_strlen(entry));
+				write(2, "')\n", 3);
+				setup_main_signals();
+				return (0);
+			}
 			setup_main_signals();
 			return (-1);
 		}
