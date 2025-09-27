@@ -2,27 +2,36 @@ NAME = minishell
 CC = cc
 INC_DIR = includes
 CFLAGS = -Ilibft_00 -MMD -g -I$(INC_DIR)
-SRC = helper.c exec/cmd_execution/own_cmds.c exec/cmd_execution/error_messages.c exec/cmd_execution/file_management.c exec/cmd_execution/internal_cmd_error.c \
-exec/cmd_execution/check_cmd.c parse/read_line.c parse/signal_handling.c parse/parse_string/parse_string.c parse/parse_string/parse_string_ops.c \
-parse/parse_string/parse_string_helpers.c parse/expand/expand_input.c parse/expand/expand_input_utils.c exec/here_doc.c \
-exec/cmd_execution/execute_cmds.c exec/cmd_execution/find_path.c exec/exec_input.c
-OBJ = $(SRC:.c=.o)
-DEP = $(SRC:.c=.d)
+OBJ_DIR = obj
+VPATH = exec/cmd_execution parse parse/parse_string parse/expand exec
+SRC = helper.c own_cmds.c error_messages.c file_management.c internal_cmd_error.c \
+check_cmd.c read_line.c signal_handling.c parse_string.c parse_string_ops.c \
+parse_string_helpers.c expand_input.c expand_input_utils.c here_doc.c \
+execute_cmds.c find_path.c exec_input.c
+OBJ = $(SRC:%.c=obj/%.o)
+DEP = $(SRC:%.c=obj/%.d)
 LIBFT_DIR = libft_00
 LIBFT = $(LIBFT_DIR)/libft.a
 
 .SILENT:
 
-all: $(LIBFT) $(NAME)
+all: $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(OBJ)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -MMD -MF $(@:.o=.d) -c $< -o $@
+
+$(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ) 
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline 2>&1
 
 clean: 
 	rm -f $(OBJ) $(DEP)
+	rm -d $(OBJ_DIR)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
