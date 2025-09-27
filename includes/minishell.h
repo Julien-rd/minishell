@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 12:01:17 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 15:13:44 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,6 @@
 extern volatile int	current_signal;
 
 void				entry_spec(t_input *data);
-size_t				envlen(char *env);
-size_t				envsize(char *env, char **envp, t_input *data);
-int					expand(char *buf, char **envp, t_input *data);
-int					quoteclosed(char *str, char quote, t_input *data);
-int					get_env(char *buf, t_expanded_str *str, size_t env_iter,
-						char **envp, size_t len);
-int					quote_check(size_t iter, char *buf, t_input *data);
 
 // SIGNALS
 void				setup_main_signals(void);
@@ -55,6 +48,18 @@ size_t				count_entries(t_input *data);
 int					malloc_ops(size_t *entry, size_t *iter, t_input *data);
 void				fill_ops(size_t *entry, size_t *iter, t_input *data);
 void				fill_string(t_input *data);
+
+/* expand string */
+int					env_init(char *buf, t_input *data, t_expanded_str *str);
+int					quote_check(size_t iter, char *buf, t_input *data);
+size_t				envlen(char *env);
+size_t				envsize(char *env, char **envp, t_input *data);
+int					expand(char *buf, t_input *data);
+int					quoteclosed(char *str, char quote, t_input *data);
+int					get_env(char *buf, t_expanded_str *str,
+						t_expand_helper *exh, char **envp);
+int					check_envs(char *buf, t_input *data, t_expanded_str *str);
+int					expanded_str(char *buf, t_input *data, t_expanded_str *str);
 
 /* parse_string */
 size_t				count_entries(t_input *data);

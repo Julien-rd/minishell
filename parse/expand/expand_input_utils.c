@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 14:39:24 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,9 @@ int	quoteclosed(char *str, char quote, t_input *data)
 	{
 		if (str[iter] == quote)
 		{
-			if (quote == '\'')
-			{
-				data->sgl_quote = 1;
-				return (1);
-			}
-			if (quote == '\"')
-			{
-				data->dbl_quote = 1;
-				return (0);
-			}
+			data->sgl_quote = (quote == '\'');
+			data->dbl_quote = (quote == '\"');
+			return (data->sgl_quote);
 		}
 	}
 	return (0);
@@ -87,8 +80,7 @@ int	envcmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-int	get_env(char *buf, t_expanded_str *str, size_t env_iter, char **envp,
-		size_t len)
+int	get_env(char *buf, t_expanded_str *str, t_expand_helper *exh, char **envp)
 {
 	char	*var_value;
 	size_t	iter;
@@ -96,18 +88,18 @@ int	get_env(char *buf, t_expanded_str *str, size_t env_iter, char **envp,
 	iter = 0;
 	if (buf[0] == '?')
 	{
-		str->env_arr[env_iter] = ft_itoa(str->exit_code);
-		if (!str->env_arr[env_iter])
+		str->env_arr[exh->env_iter] = ft_itoa(str->exit_code);
+		if (!str->env_arr[exh->env_iter])
 			return (perror("get_env"), -1);
 		return (1);
 	}
 	while (envp[iter])
 	{
-		if (envcmp(envp[iter], buf, len + 1))
+		if (envcmp(envp[iter], buf, exh->len + 1))
 		{
-			str->env_arr[env_iter] = ft_substr(&envp[iter][len + 1], 0,
-					ft_strlen(&envp[iter][len + 1]));
-			if (!str->env_arr[env_iter])
+			str->env_arr[exh->env_iter] = ft_substr(&envp[iter][exh->len + 1], 0,
+					ft_strlen(&envp[iter][exh->len + 1]));
+			if (!str->env_arr[exh->env_iter])
 				return (perror("get_env"), -1);
 			return (1);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:46:22 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 15:31:21 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int	token_len(t_input *data, size_t *iter)
 			&& !(data->dbl_quote == 1 && data->exp_str[*iter] == '\"'))
 			count++;
 		toggle_quotes(data, *iter);
-		(*iter)++;
+		if (data->exp_str[*iter])
+			(*iter)++;
 	}
 	return (count);
 }

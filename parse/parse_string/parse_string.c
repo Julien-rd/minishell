@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 15:30:20 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void	fill_entries(t_input *data)
 				&& !(data->dbl_quote == 1 && data->exp_str[iter] == '\"'))
 				data->entries[entry][tmp_count++] = data->exp_str[iter];
 			toggle_quotes(data, iter);
-			iter++;
+			if(data->exp_str[iter])
+				iter++;
 		}
 		data->entries[entry][tmp_count] = '\0';
 		entry++;

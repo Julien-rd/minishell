@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 14:41:25 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	main(int argc, char *argv[], char *envp[])
 		setup_main_signals();
 		if (ft_strlen(buf) > 0)
 		{
-			if (expand(buf, data.envp, &data) == -1)
+			if (expand(buf, &data) == -1)
 				return (perror("expand_input"), free2d(&data.envp), 1);
 			if (parse_string(&data) == -1)
 				return (free2d(&data.envp), 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string_ops.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:53:08 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 15:29:53 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	fill_ops(size_t *entry, size_t *iter, t_input *data)
 		}
 		else if (data->exp_str[*iter] == '<')
 			ft_strlcpy(data->entries[(*entry)++], "<", 2);
-		(*iter)++;
+		if(data->exp_str[*iter])
+			(*iter)++;
 	}
 }
 

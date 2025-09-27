@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 12:29:08 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 15:25:47 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	iter = 0;
 	if (entry == NULL)
 		return (1);
-	data->heredoc[hdoc_iter] = calloc(1, 1);
+	data->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!data->heredoc[hdoc_iter])
 		return (-1);
 	while (delimiter_not_detected)

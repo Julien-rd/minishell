@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_cmds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 14:10:42 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,10 @@ void	pwd(t_exec *data, t_cmd *cmd, int flag)
 		export(cmd->cmd, data); //OLDPWD
 		export(cmd->cmd, data); //PWD
 	}
-	if (write(1, buf, ft_strlen(buf)) == -1)
-	{
-		perror("write");
+	if (safe_write(1, buf, ft_strlen(buf)) == -1)
 		child_exit_handle(data, cmd, 1);
-	}
-	if (write(1, "\n", 1) == -1)
-	{
-		perror("write");
+	if (safe_write(1, "\n", 1) == -1)
 		child_exit_handle(data, cmd, 1);
-	}
 	child_exit_handle(data, cmd, 0);
 }
 
@@ -77,28 +71,19 @@ void	echo(t_exec *data, t_cmd *cmd, int nflag)
 	iter += nflag;
 	while (cmd->cmd[iter])
 	{
-		if (write(1, cmd->cmd[iter], ft_strlen(cmd->cmd[iter])) == -1)
-		{
-			perror("write");
+		if (safe_write(1, cmd->cmd[iter], ft_strlen(cmd->cmd[iter])) == -1)
 			child_exit_handle(data, cmd, 1);
-		}
 		if (cmd->cmd[iter + 1])
 		{
-			if (write(1, " ", 1) == -1)
-			{
-				perror("write");
+			if (safe_write(1, " ", 1) == -1)
 				child_exit_handle(data, cmd, 1);
-			}
 		}
 		iter++;
 	}
 	if (nflag == 0)
 	{
-		if (write(1, "\n", 1) == -1)
-		{
-			perror("write");
+		if (safe_write(1, "\n", 1) == -1)
 			child_exit_handle(data, cmd, 1);
-		}
 	}
 	child_exit_handle(data, cmd, 0);
 }
@@ -118,16 +103,12 @@ int	extend_envp(t_exec *data)
 	while (data->envp[iter])
 	{
 		if (!ft_strcmp(data->envp[iter], ""))
-		// if "" delete entry and dont copy
 		{
 			free(data->envp[iter]);
 			data->envp_count--;
 		}
 		else
-		{
-			new_envp[new_iter] = data->envp[iter];
-			new_iter++;
-		}
+			new_envp[new_iter++] = data->envp[iter];
 		iter++;
 	}
 	new_envp[new_iter] = NULL;
@@ -272,22 +253,16 @@ void	env(char **envp, t_exec *data, t_cmd *cmd, int flag)
 
 	iter = 0;
 	if (!envp)
-		exit(1);
+		child_exit_handle(data, cmd, 1);
 	if (flag == -1)
 		invalid_option(data, cmd);
 	while (envp[iter])
 	{
-		if (write(1, envp[iter], ft_strlen(envp[iter])) == -1)
-		{
-			perror("write");
-			exit(1);
-		}
-		if (envp[iter][0] != '\0' && write(1, "\n", 1) == -1)
-		{
-			perror("write");
-			exit(1);
-		}
+		if (safe_write(1, envp[iter], ft_strlen(envp[iter])) == -1)
+			child_exit_handle(data, cmd, 1);
+		if (envp[iter][0] != '\0' && safe_write(1, "\n", 1) == -1)
+			child_exit_handle(data, cmd, 1);
 		iter++;
 	}
-	exit(0);
+	child_exit_handle(data, cmd, 0);
 }

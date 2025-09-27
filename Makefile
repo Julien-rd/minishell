@@ -3,11 +3,11 @@ CC = cc
 INC_DIR = includes
 CFLAGS = -Ilibft_00 -MMD -g -I$(INC_DIR)
 OBJ_DIR = obj
-VPATH = exec/cmd_execution parse parse/parse_string parse/expand exec
+VPATH = exec/cmd_execution parse parse/parse_string parse/expand exec core
 SRC = helper.c own_cmds.c error_messages.c file_management.c internal_cmd_error.c \
 check_cmd.c read_line.c signal_handling.c parse_string.c parse_string_ops.c \
 parse_string_helpers.c expand_input.c expand_input_utils.c here_doc.c \
-execute_cmds.c find_path.c exec_input.c
+execute_cmds.c find_path.c exec_input.c expanded_input_utils2.c
 OBJ = $(SRC:%.c=obj/%.o)
 DEP = $(SRC:%.c=obj/%.d)
 LIBFT_DIR = libft_00
