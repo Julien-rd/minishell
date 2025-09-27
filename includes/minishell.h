@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:36 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 12:01:17 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "structs.h"
 
-# define _XOPEN_SOURCE 700
 # define END 0
 # define CMD 1
 # define INFILE 2

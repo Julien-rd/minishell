@@ -6,13 +6,14 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:47:36 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:49:25 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 12:01:20 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBRARIES_H
 # define LIBRARIES_H
 
+# define _XOPEN_SOURCE 700
 # include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
