@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 17:33:34 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 18:38:15 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,15 @@ extern volatile int	current_signal;
 
 void				entry_spec(t_input *data);
 
+// NONINTERACTIVE
+void				non_interactive(t_input *data);
+
 // SIGNALS
 void				setup_main_signals(void);
 void				setup_heredoc_signals(void);
 void				setup_child_signals(void);
 void				setup_interactive_signals(void);
+void				setup_noninteractive_signals(void);
 
 size_t				count_entries(t_input *data);
 int					malloc_ops(size_t *entry, size_t *iter, t_input *data);
@@ -82,7 +86,7 @@ void				fill_ops(size_t *entry, size_t *iter, t_input *data);
 int					ft_find_paths(char *envp[], char *env_name);
 int					here_doc(t_exec *data);
 char				*ft_getpath(char **envp, char *cmd);
-int					exec_central(t_input *input, char **envp);
+int					exec_central(t_input *input);
 int					execute_cmds(t_exec *data);
 int					setup_redirect(t_exec *data, t_cmd *cmd);
 int					check_cmd(t_exec *data, t_cmd *cmd);

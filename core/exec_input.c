@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 18:39:18 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	return (0);
 }
 
-int	exec_central(t_input *input, char **envp)
+int	exec_central(t_input *input)
 {
 	t_exec	data;
 	int		exit_code;
 
 	exit_code = 0;
-	if (init_data(&data, input, envp) == -1)
+	if (init_data(&data, input, input->envp) == -1)
 		return (-1);
 	exit_code = execute_cmds(&data);
 	free(data.input_spec);
@@ -75,5 +75,7 @@ int	exec_central(t_input *input, char **envp)
 	input->envp_count = data.envp_count;
 	input->envp_malloc = data.envp_malloc;
 	input->exit = data.exit;
+	if (exit_code == -1)
+		free2d(&data.envp);
 	return (exit_code);
 }

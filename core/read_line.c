@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 14:41:25 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 18:38:35 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,13 @@ int	main(int argc, char *argv[], char *envp[])
 	t_input	data;
 	char	*buf;
 
-	setup_main_signals();
 	if (create_envp(&data, envp) == -1)
 		return (perror("envp"), free2d(&data.envp), 1);
 	data.exit_code = 0;
 	data.exit = 0;
+	if (!isatty(STDIN_FILENO))
+		non_interactive(&data);
+	setup_main_signals();
 	while (1)
 	{
 		rl_replace_line("", 0);
@@ -104,9 +106,9 @@ int	main(int argc, char *argv[], char *envp[])
 				return (perror("expand_input"), free2d(&data.envp), 1);
 			if (parse_string(&data) == -1)
 				return (free2d(&data.envp), 1);
-			data.exit_code = exec_central(&data, envp);
+			data.exit_code = exec_central(&data);
 			if (data.exit_code == -1 && current_signal == 0)
-				return (perror("execution error"), free2d(&data.envp), 1);
+				return (perror("execution error"), 1);
 			if (data.exit)
 				return (write(1, "exit\n", 5), free2d(&data.envp),
 					data.exit_code);
