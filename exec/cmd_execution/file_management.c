@@ -6,11 +6,11 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 14:14:48 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 int	pipe_init(t_exec *data)
 {

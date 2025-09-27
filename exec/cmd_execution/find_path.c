@@ -6,11 +6,11 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 14:14:43 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 int	ft_find_paths(char *envp[], char *env_name)
 {

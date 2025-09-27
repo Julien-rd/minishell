@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free2d.c                                           :+:      :+:    :+:   */
+/*   libraries.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/19 10:57:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Created: 2025/09/27 11:47:36 by eprottun          #+#    #+#             */
+/*   Updated: 2025/09/27 11:49:25 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef LIBRARIES_H
+# define LIBRARIES_H
 
-void free2d(char ***str)
-{
-    size_t iter;
+# include "libft.h"
+# include <errno.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/ioctl.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
-    iter = 0;
-    if (*str)
-    {
-        while((*str)[iter])
-        {
-            free((*str)[iter]);
-            iter++;
-        }
-        free(*str);
-    }
-    *str = NULL;
-}
+#endif

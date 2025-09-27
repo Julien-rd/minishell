@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:28:12 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 volatile int	current_signal = 0;
 

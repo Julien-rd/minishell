@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/25 17:20:35 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 static int	init_pipe_pos(t_exec *data)
 {

@@ -6,11 +6,11 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/26 13:02:11 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 int	expanded_str(char *buf, t_input *data, t_expanded_str *str)
 {

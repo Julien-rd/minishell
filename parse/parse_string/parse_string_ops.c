@@ -6,11 +6,11 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:53:08 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/24 14:14:18 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 void	op_count(char *buf, size_t *iter, size_t *count)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   internal_cmd_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 10:34:17 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	exit_error(t_exec *data, t_cmd *cmd)
 {
