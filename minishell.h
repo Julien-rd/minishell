@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/26 15:17:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 11:10:45 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,11 @@ int					get_env(char *buf, t_expanded_str *str, size_t env_iter,
 						char **envp, size_t len);
 int					quote_check(size_t iter, char *buf, t_input *data);
 
-//SIGNALS
+// SIGNALS
 void				setup_main_signals(void);
 void				setup_heredoc_signals(void);
 void				setup_child_signals(void);
+void				setup_interactive_signals(void);
 
 size_t				count_entries(t_input *data);
 int					malloc_ops(size_t *entry, size_t *iter, t_input *data);

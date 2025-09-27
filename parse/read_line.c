@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/26 17:21:36 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 11:28:12 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,13 @@ int	main(int argc, char *argv[], char *envp[])
 	data.exit = 0;
 	while (1)
 	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		setup_interactive_signals();
 		buf = readline("minishell>> ");
 		if (buf == NULL)
 			break ;
+		setup_main_signals();
 		if (ft_strlen(buf) > 0)
 		{
 			if (expand(buf, data.envp, &data) == -1)

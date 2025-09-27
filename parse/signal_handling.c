@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:26:43 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/26 17:12:49 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 11:32:45 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 static void	sigint_handler(int num)
 {
 	current_signal = SIGINT;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
+	if (write(1, "\n", 1) == -1)
+		return ;
 	rl_replace_line("", 0);
+	rl_on_new_line();
 	rl_redisplay();
 }
 static void	sigint_child(int num)
@@ -37,39 +38,62 @@ static void	sigint_heredoc(int num)
 	rl_replace_line("", 0);
 }
 
+void	setup_interactive_signals(void)
+{
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	sa_int.sa_handler = sigint_handler;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_quit, NULL);
+}
+
 void	setup_main_signals(void)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
-	
-	sa_int.sa_handler = sigint_handler;
+
+	sa_int.sa_handler = SIG_IGN;
 	sigemptyset(&sa_int.sa_mask);
-	sa_int.sa_flags = SA_RESTART;
+	sa_int.sa_flags = 0;
 	sigaction(SIGINT, &sa_int, NULL);
 	sa_quit.sa_handler = SIG_IGN;
 	sigemptyset(&sa_quit.sa_mask);
-	sa_quit.sa_flags = SA_RESTART;
+	sa_quit.sa_flags = 0;
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
 void	setup_heredoc_signals(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
 
-	sa.sa_handler = sigint_heredoc;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	sa_int.sa_handler = sigint_heredoc;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
 void	setup_child_signals(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
 
-	sa.sa_handler = sigint_child;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	sa_int.sa_handler = SIG_DFL;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+	sa_quit.sa_handler = SIG_DFL;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_quit, NULL);
 }

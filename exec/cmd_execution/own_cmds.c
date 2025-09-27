@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/25 17:03:54 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/27 10:59:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,26 @@ int	cd(t_exec *data, t_cmd *cmd, size_t pipe_count)
 		data->exit_code = errno;
 		return (-1);
 	}
+	if(!pipe_count)
+		pwd(data, cmd, 1);
 	return (0);
 }
 void	pwd(t_exec *data, t_cmd *cmd, int flag)
 {
 	char	*buf;
 
-	buf = getcwd(NULL, 0);
 	if (flag == -1)
 		return ;
-		// invalid_option(data, cmd);
+	buf = getcwd(NULL, 0);
 	if (!buf)
 	{
 		perror("getcwd");
 		child_exit_handle(data, cmd, 1);
+	}
+	if (flag == 1)
+	{
+		export(cmd->cmd, data); //OLDPWD
+		export(cmd->cmd, data); //PWD
 	}
 	if (write(1, buf, ft_strlen(buf)) == -1)
 	{
