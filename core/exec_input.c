@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 09:37:27 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 09:39:32 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	init_pipe_pos(t_exec *data)
 	size_t	iter;
 	size_t	p_iter;
 
-	// return (-1);
 	data->pipe_position = malloc(sizeof(int) * (data->pipe_count + 1));
 	if (!data->pipe_position)
 		return (-1);
