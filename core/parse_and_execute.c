@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 16:45:55 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:13:17 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	parse_and_execute(char *buf, t_input *data, int flag)
 		return (0);
 	if (flag == NONINTERACTIVE && buf[len - 1] == '\n')
 		buf[len - 1] = '\0';
-	
 	if (expand(buf, data) == -1)
 		return (free(buf), perror("expand_input"), free2d(&data->envp), -1);
 	if (parse_string(data) == -1)
