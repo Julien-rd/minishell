@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 18:05:21 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 12:35:52 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,20 @@ int	cd(t_exec *data, t_cmd *cmd, size_t pipe_count)
 	iter = 0;
 	while (cmd->cmd[iter])
 		iter++;
-	if (!pipe_count)
-	{
-		tmp_cwd = getcwd(NULL, 0);
-		if (!tmp_cwd)
-			return (perror("cd"), -1);
-	}
 	if (iter > 2)
 		return (-2);
-	else if (!pipe_count && chdir(cmd->cmd[1]) == -1)
+	if (pipe_count)
+		return (0);
+	tmp_cwd = getcwd(NULL, 0);
+	if (!tmp_cwd)
+		return (perror("cd"), -1);
+	if (!pipe_count && chdir(cmd->cmd[1]) == -1)
 	{
 		data->exit_code = errno;
 		return (-1);
 	}
-	if(!pipe_count)
-	{
-		envp_pwd(data, tmp_cwd);
-		free(tmp_cwd);
-	}
+	if (envp_pwd(data, tmp_cwd) == -1)
+		return (perror("cd"), -1);
+	free(tmp_cwd);
 	return (0);
 }

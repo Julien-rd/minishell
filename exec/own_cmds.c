@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 16:59:13 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 12:31:52 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@ void	pwd(t_exec *data, t_cmd *cmd, int flag)
 	{
 		perror("getcwd");
 		child_exit_handle(data, cmd, 1);
-	}
-	if (flag == 1)
-	{
-		export(cmd->cmd, data); //OLDPWD
-		export(cmd->cmd, data); //PWD
 	}
 	if (safe_write(1, buf, ft_strlen(buf)) == -1)
 		return (free(buf), child_exit_handle(data, cmd, 1));
@@ -68,59 +63,6 @@ void	echo(t_exec *data, t_cmd *cmd, int nflag)
 			child_exit_handle(data, cmd, 1);
 	}
 	child_exit_handle(data, cmd, 0);
-}
-
-int	param_check(char *param)
-{
-	size_t	iter;
-
-	iter = 0;
-	while (param[iter])
-	{
-		if (!ft_isalnum(param[iter]) && param[iter] != '_')
-			return (0);
-		iter++;
-	}
-	return (1);
-}
-
-int	unset(char **cmd, t_exec *data)
-{
-	char	*entry;
-	int		envp_pos;
-	size_t	iter;
-	size_t	inner;
-
-	if (!cmd[1])
-		return (0);
-	iter = 1;
-	while (cmd[iter])
-	{
-		if (!cmd[iter][0] || (!ft_isalpha(cmd[iter][0]) && cmd[iter][0] != '_'))
-		{
-			iter++;
-			continue ;
-		}
-		inner = 1;
-		if (!param_check(cmd[iter]))
-		{
-			iter++;
-			continue ;
-		}
-		envp_pos = ft_find_paths(data->envp, cmd[iter]);
-		if (envp_pos == -1)
-		{
-			iter++;
-			continue ;
-		}
-		entry = ft_calloc(1, 1);
-		if (!entry)
-			return (perror("unset"), -1);
-		free(data->envp[envp_pos]);
-		data->envp[envp_pos] = entry;
-		iter++;
-	}
-	return (0);
 }
 
 void	env(char **envp, t_exec *data, t_cmd *cmd, int flag)
