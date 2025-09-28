@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 11:39:09 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 11:53:46 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char *argv[], char *envp[])
 	setup_main_signals();
 	while (1)
 	{
-		current_signal = 0;
+		g_current_signal = 0;
 		setup_interactive_signals();
 		buf = readline("minishell>> ");
 		if (buf == NULL)

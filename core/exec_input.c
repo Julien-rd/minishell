@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 09:39:32 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 11:54:33 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 		free(input->exp_str);
 	if (here_doc(data) == -1)
 	{
-		if (current_signal != SIGINT)
+		if (g_current_signal != SIGINT)
 			free2d(&data->envp);
 		return (free(data->input_spec), free2d(&data->entries), -1);
 	}
