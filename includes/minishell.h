@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 18:38:15 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 11:39:21 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,26 @@
 # define ENV 15
 # define EXTERNAL 16
 # define INTERNAL 17
+# define INTERACTIVE 18
+# define NONINTERACTIVE 19
 
-extern volatile int	current_signal;
+extern volatile int	g_current_signal;
 
 void				entry_spec(t_input *data);
+int					parse_and_execute(char *buf, t_input *data, int flag);
 
 // NONINTERACTIVE
 void				non_interactive(t_input *data);
 
 // SIGNALS
-void				setup_main_signals(void);
 void				setup_heredoc_signals(void);
+void				setup_main_signals(void);
 void				setup_child_signals(void);
 void				setup_interactive_signals(void);
 void				setup_noninteractive_signals(void);
+void				sigint_prompt(int num);
+void				sigint_heredoc(int num);
+void				sigint_main(int num);
 
 size_t				count_entries(t_input *data);
 int					malloc_ops(size_t *entry, size_t *iter, t_input *data);

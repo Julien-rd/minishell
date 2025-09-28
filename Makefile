@@ -8,7 +8,7 @@ SRC = export.c cd.c helper.c own_cmds.c error_messages.c file_management.c inter
 check_cmd.c read_line.c signal_handling.c parse_string.c parse_string_ops.c \
 parse_string_helpers.c expand_input.c expand_input_utils.c here_doc.c \
 execute_cmds.c find_path.c exec_input.c expanded_input_utils2.c get_next_line.c \
-get_next_line_utils.c non_interactive.c
+get_next_line_utils.c non_interactive.c signal_handler.c parse_and_execute.c
 
 OBJ = $(SRC:%.c=obj/%.o)
 DEP = $(SRC:%.c=obj/%.d)

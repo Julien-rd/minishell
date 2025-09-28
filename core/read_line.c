@@ -6,13 +6,13 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 09:35:48 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 11:39:09 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile int	current_signal = 0;
+volatile int	g_current_signal = 0;
 
 void	entry_spec(t_input *data)
 {
@@ -42,14 +42,6 @@ void	entry_spec(t_input *data)
 	}
 }
 
-void	sigint_handler(int num)
-{
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 int	create_envp(t_input *data, char *envp[])
 {
 	size_t	iter;
@@ -77,12 +69,11 @@ int	create_envp(t_input *data, char *envp[])
 	return (0);
 }
 
-/* parse_string - three malloc: entry**, input_spec*, entries */
-/* entry_spec: no error */
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input	data;
 	char	*buf;
+	int		exit_code;
 
 	if (create_envp(&data, envp) == -1)
 		return (perror("envp"), free2d(&data.envp), 1);
@@ -99,23 +90,10 @@ int	main(int argc, char *argv[], char *envp[])
 		if (buf == NULL)
 			break ;
 		setup_main_signals();
-		if (ft_strlen(buf) > 0)
-		{
-			if (expand(buf, &data) == -1)
-				return (perror("expand_input"), free2d(&data.envp), 1);
-			if (parse_string(&data) == -1)
-				return (free2d(&data.envp), 1);
-			data.exit_code = exec_central(&data);
-			printf("%d\n", data.exit_code);
-			if (data.exit_code == -1 && current_signal == 0)
-				return (safe_write(2, "execution error\n", 16), 1);
-			if (data.exit)
-				return (write(1, "exit\n", 5), data.exit_code);
-			add_history(buf);
-		}
-		free(buf);
+		exit_code = parse_and_execute(buf, &data, INTERACTIVE);
+		if (exit_code || data.exit)
+			exit(exit_code);
 	}
 	rl_clear_history();
-	free2d(&data.envp);
-	return (write(1, "exit\n", 5), 0);
+	return (free2d(&data.envp), write(1, "exit\n", 5), 0);
 }

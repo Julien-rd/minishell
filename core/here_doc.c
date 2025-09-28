@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 15:25:47 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 10:39:19 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,51 +22,46 @@ static size_t	skip_whitspaces(char *buf)
 	return (iter);
 }
 
+static int	hdoc_signal_kill(char *buf, char *entry)
+{
+	if (buf)
+		free(buf);
+	if (current_signal != 2)
+	{
+		write(2, "warning: here-document delimited by end-of-file (wanted '",
+			57);
+		write(2, entry, ft_strlen(entry));
+		write(2, "')\n", 3);
+		setup_main_signals();
+		return (0);
+	}
+	setup_main_signals();
+	return (-1);
+}
+
 static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 {
-	size_t	iter;
-	int		delimiter_not_detected;
 	char	*buf;
 	char	*tmp_str;
 
-	delimiter_not_detected = 1;
 	setup_heredoc_signals();
-	iter = 0;
 	if (entry == NULL)
 		return (1);
 	data->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!data->heredoc[hdoc_iter])
 		return (-1);
-	while (delimiter_not_detected)
+	while (1)
 	{
 		buf = readline("> ");
 		if (current_signal != 0 || !buf)
-		{
-			if (buf)
-				free(buf);
-			if (current_signal != 2)
-			{
-				write(2,
-					"warning: here-document delimited by end-of-file (wanted '",
-					57);
-				write(2, entry, ft_strlen(entry));
-				write(2, "')\n", 3);
-				setup_main_signals();
-				return (0);
-			}
-			setup_main_signals();
-			return (-1);
-		}
-		iter = skip_whitspaces(buf);
-		delimiter_not_detected = ft_strcmp(&buf[iter], entry);
-		if (delimiter_not_detected)
-		{
-			tmp_str = ft_strjointhree(data->heredoc[hdoc_iter], buf, "\n");
-			if (!tmp_str)
-				return (perror("malloc"), free(buf), -1);
-			free(data->heredoc[hdoc_iter]);
-			data->heredoc[hdoc_iter] = tmp_str;
-		}
+			return (hdoc_signal_kill(buf, entry));
+		if (ft_strcmp(&buf[skip_whitspaces(buf)], entry) == 0)
+			return (free(buf), 0);
+		tmp_str = ft_strjointhree(data->heredoc[hdoc_iter], buf, "\n");
+		if (!tmp_str)
+			return (perror("malloc"), free(buf), -1);
+		free(data->heredoc[hdoc_iter]);
+		data->heredoc[hdoc_iter] = tmp_str;
 		free(buf);
 	}
 	setup_main_signals();
@@ -88,6 +83,8 @@ size_t	operator_count(t_exec *data)
 			data->pipe_count++;
 		iter++;
 	}
+	if (hdoc_count == 0)
+		data->heredoc = NULL;
 	return (hdoc_count);
 }
 
@@ -101,10 +98,7 @@ int	here_doc(t_exec *data)
 	iter = 0;
 	hdoc_count = operator_count(data);
 	if (hdoc_count == 0)
-	{
-		data->heredoc = NULL;
 		return (0);
-	}
 	data->heredoc = ft_calloc(hdoc_count + 1, sizeof(char *));
 	if (!data->heredoc)
 		return (-1);

@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   non_interactive.c                                  :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 11:37:55 by jromann          ###   ########.fr       */
+/*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
+/*   Updated: 2025/09/28 10:45:13 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	non_interactive(t_input *data)
+void	sigint_prompt(int num)
 {
-	char	*buf;
-	int		exit_code;
-	size_t	len;
+	current_signal = SIGINT;
+	if (safe_write(1, "\n", 1) == -1)
+		return ;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
 
-	setup_noninteractive_signals();
-	buf = get_next_line(STDIN_FILENO);
-	while (buf)
-	{
-		exit_code = parse_and_execute(buf, data, NONINTERACTIVE);
-		if (exit_code || data->exit)
-			return (get_next_line(-1), exit(exit_code));
-		buf = get_next_line(STDIN_FILENO);
-	}
-	free2d(&data->envp);
-	exit(0);
+void	sigint_main(int num)
+{
+	current_signal = SIGINT;
+	if (safe_write(1, "\n", 1) == -1)
+		return ;
+}
+
+void	sigint_heredoc(int num)
+{
+	current_signal = SIGINT;
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
 }
