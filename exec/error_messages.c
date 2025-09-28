@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 15:16:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 16:44:43 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ static void	prepare_arg(char *argv[3], t_exec *data, t_cmd *cmd)
 	}
 	argv[2] = NULL;
 }
-static void	execute_if_cmd_not_found(void)
+static void	execute_if_cmd_not_found(char *path, t_exec *data, t_cmd *cmd)
 {
-	int	fd;
+	int		fd;
+	char	*argv[3];
 
 	fd = open(cmd->cmd[0], O_RDONLY);
 	if (fd != -1)
@@ -47,59 +48,55 @@ static void	execute_if_cmd_not_found(void)
 		close(fd);
 		prepare_arg(argv, data, cmd);
 		execve("./minishell", argv, data->envp);
-		exceve_fail()
+		perror("execve");
+		exit(1);
 	}
 }
 void	execve_fail(char *path, int error, t_exec *data, t_cmd *cmd)
 {
 	struct stat	st;
-	char		*argv[3];
 	int			fd;
 	int			pid;
-			int status;
+	int			status;
 	int			child_exit_code;
+	// int			fd;
+	char	*argv[3];
 
 	if (errno == ENOEXEC)
 	{
-		pid = fork();
-		if (pid == -1)
-			child_exit_handle(data, cmd, 1);
-		if (pid == 0)
-			execve_process(data, &cmd);
-		else
+		fd = open(cmd->cmd[0], O_RDONLY);
+		if (fd != -1)
 		{
-			wait(&status);
-			if (WIFEXITED(status))
-			{
-				child_exit_code = WEXITSTATUS(status);
-				exit(child_exit_code);
-			}
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+			prepare_arg(argv, data, cmd);
+			execve("./minishell", argv, data->envp);
+			child_exit_handle(data, cmd, 1);
 		}
 	}
-}
-if	(stat(path, &st) == 0)
-{
-	if (S_ISDIR(st.st_mode))
+	if (stat(path, &st) == 0)
 	{
-		errno = EISDIR;
-		perror(path);
-		child_exit_handle(data, cmd, 126);
-	}
-	else if (S_ISREG(st.st_mode))
-	{
-		errno = error;
-		if (errno == EACCES || errno == ENOEXEC)
+		if (S_ISDIR(st.st_mode))
 		{
+			errno = EISDIR;
 			perror(path);
 			child_exit_handle(data, cmd, 126);
 		}
+		else if (S_ISREG(st.st_mode))
+		{
+			errno = error;
+			if (errno == EACCES || errno == ENOEXEC)
+			{
+				perror(path);
+				child_exit_handle(data, cmd, 126);
+			}
+		}
 	}
-}
-errno = error;
-perror(path);
-if (errno == ENOENT)
-	child_exit_handle(data, cmd, 127);
-child_exit_handle(data, cmd, 1);
+	errno = error;
+	perror(path);
+	if (errno == ENOENT)
+		child_exit_handle(data, cmd, 127);
+	child_exit_handle(data, cmd, 1);
 }
 
 void	command_fail(char *path, t_exec *data, t_cmd *cmd)

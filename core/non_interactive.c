@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 14:52:17 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 16:43:08 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ void	non_interactive(t_input *data)
 		buf = get_next_line(STDIN_FILENO);
 	}
 	free2d(&data->envp);
-	exit(0);
+	exit(exit_code);
 }
