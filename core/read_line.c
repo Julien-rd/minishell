@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 11:39:09 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 14:49:11 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,17 @@ int	main(int argc, char *argv[], char *envp[])
 	setup_main_signals();
 	while (1)
 	{
-		current_signal = 0;
+		g_current_signal = 0;
 		setup_interactive_signals();
 		buf = readline("minishell>> ");
 		if (buf == NULL)
 			break ;
 		setup_main_signals();
 		exit_code = parse_and_execute(buf, &data, INTERACTIVE);
-		if (exit_code || data.exit)
-			exit(exit_code);
+		if (exit_code == -1)
+			return (1);
+		if (data.exit)
+			return (write(1, "exit\n", 5), exit_code);
 	}
 	rl_clear_history();
 	return (free2d(&data.envp), write(1, "exit\n", 5), 0);
