@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 15:44:19 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 17:24:38 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ extern volatile int	g_current_signal;
 
 void				entry_spec(t_input *data);
 int					parse_and_execute(char *buf, t_input *data, int flag);
+
 
 // NONINTERACTIVE
 void				non_interactive(t_input *data);

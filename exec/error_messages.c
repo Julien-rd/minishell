@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:44:43 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,58 @@ void	invalid_option(t_exec *data, t_cmd *cmd)
 	write(2, ": invalid option\n", 17);
 	child_exit_handle(data, cmd, 2);
 }
+static void	prepare_arg(char *argv[3], t_exec *data, t_cmd *cmd)
+{
+	char	sh[10];
 
+	ft_strlcpy(sh, "minishell", 10);
+	argv[0] = sh;
+	argv[1] = ft_strdup(cmd->cmd[0]);
+	if (!argv[1])
+	{
+		perror("malloc");
+		child_exit_handle(data, cmd, 1);
+	}
+	argv[2] = NULL;
+}
+static void	execute_if_cmd_not_found(char *path, t_exec *data, t_cmd *cmd)
+{
+	int		fd;
+	char	*argv[3];
+
+	fd = open(cmd->cmd[0], O_RDONLY);
+	if (fd != -1)
+	{
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		prepare_arg(argv, data, cmd);
+		execve("./minishell", argv, data->envp);
+		perror("execve");
+		exit(1);
+	}
+}
 void	execve_fail(char *path, int error, t_exec *data, t_cmd *cmd)
 {
 	struct stat	st;
+	int			fd;
+	int			pid;
+	int			status;
+	int			child_exit_code;
+	// int			fd;
+	char	*argv[3];
 
+	if (errno == ENOEXEC)
+	{
+		fd = open(cmd->cmd[0], O_RDONLY);
+		if (fd != -1)
+		{
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+			prepare_arg(argv, data, cmd);
+			execve("./minishell", argv, data->envp);
+			child_exit_handle(data, cmd, 1);
+		}
+	}
 	if (stat(path, &st) == 0)
 	{
 		if (S_ISDIR(st.st_mode))
@@ -37,16 +84,15 @@ void	execve_fail(char *path, int error, t_exec *data, t_cmd *cmd)
 		}
 		else if (S_ISREG(st.st_mode))
 		{
-			printf("%s\n", cmd->cmd[0]);
-			fflush(stdout);
 			errno = error;
-			perror(path);
 			if (errno == EACCES || errno == ENOEXEC)
+			{
+				perror(path);
 				child_exit_handle(data, cmd, 126);
+			}
 		}
 	}
-	// if (error == ENOMEM || error == ETXTBSY || error == EFAULT
-	// 	|| error == EINVAL)
+	errno = error;
 	perror(path);
 	if (errno == ENOENT)
 		child_exit_handle(data, cmd, 127);
