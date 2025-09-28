@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 11:53:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 15:21:08 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,35 @@ void	entry_spec(t_input *data)
 	iter = 0;
 	while (data->entries[iter])
 	{
-		if (data->input_spec[iter] == DEFAULT)
+		if (data->input_spec[iter] == OPERATOR)
 		{
-			if (iter != 0 && data->input_spec[iter - 1] == OPERATOR)
+			if (!ft_strcmp(data->entries[iter], "<<"))
 			{
-				if (!ft_strcmp(data->entries[iter - 1], "<<"))
-					data->input_spec[iter] = HERE_DOC;
-				else if (!ft_strcmp(data->entries[iter - 1], ">>"))
-					data->input_spec[iter] = APPEND_FILE;
-				else if (!ft_strcmp(data->entries[iter - 1], "<"))
-					data->input_spec[iter] = INFILE;
-				else if (!ft_strcmp(data->entries[iter - 1], ">"))
-					data->input_spec[iter] = OUTFILE;
+				data->input_spec[iter] = HERE_DOC_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = HERE_DOC;
 			}
+			else if (!ft_strcmp(data->entries[iter], ">>"))
+			{
+				data->input_spec[iter] = APPEND_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = APPEND_FILE;
+			}
+			else if (!ft_strcmp(data->entries[iter], "<"))
+			{
+				data->input_spec[iter] = INFILE_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = INFILE;
+			}
+			else if (!ft_strcmp(data->entries[iter], ">"))
+			{
+				data->input_spec[iter] = OUTFILE_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = OUTFILE;
+			}
+			else if (!ft_strcmp(data->entries[iter], "|"))
+				data->input_spec[iter] = PIPE;
 		}
-		if (data->input_spec[iter] == OPERATOR
-			&& !ft_strcmp(data->entries[iter], "|"))
-			data->input_spec[iter] = PIPE;
 		iter++;
 	}
 }
@@ -69,31 +81,33 @@ int	create_envp(t_input *data, char *envp[])
 	return (0);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+int    main(int argc, char *argv[], char *envp[])
 {
-	t_input	data;
-	char	*buf;
-	int		exit_code;
+    t_input    data;
+    char    *buf;
+    int        exit_code;
 
-	if (create_envp(&data, envp) == -1)
-		return (perror("envp"), free2d(&data.envp), 1);
-	data.exit_code = 0;
-	data.exit = 0;
-	if (!isatty(STDIN_FILENO))
-		non_interactive(&data);
-	setup_main_signals();
-	while (1)
-	{
-		g_current_signal = 0;
-		setup_interactive_signals();
-		buf = readline("minishell>> ");
-		if (buf == NULL)
-			break ;
-		setup_main_signals();
-		exit_code = parse_and_execute(buf, &data, INTERACTIVE);
-		if (exit_code || data.exit)
-			exit(exit_code);
-	}
-	rl_clear_history();
-	return (free2d(&data.envp), write(1, "exit\n", 5), 0);
+    if (create_envp(&data, envp) == -1)
+        return (perror("envp"), free2d(&data.envp), 1);
+    data.exit_code = 0;
+    data.exit = 0;
+    if (!isatty(STDIN_FILENO))
+        non_interactive(&data);
+    setup_main_signals();
+    while (1)
+    {
+        g_current_signal = 0;
+        setup_interactive_signals();
+        buf = readline("minishell>> ");
+        if (buf == NULL)
+            break ;
+        setup_main_signals();
+        exit_code = parse_and_execute(buf, &data, INTERACTIVE);
+        if (exit_code == -1)
+            return (1);
+        if (data.exit)
+            return (write(1, "exit\n", 5), exit_code);
+    }
+    rl_clear_history();
+    return (free2d(&data.envp), write(1, "exit\n", 5), 0);
 }
