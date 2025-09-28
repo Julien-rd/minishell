@@ -6,17 +6,17 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 16:43:08 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:16:59 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	non_interactive(t_input *data)
+void    non_interactive(t_input *data)
 {
-	char	*buf;
-	int		exit_code;
-	size_t	len;
+    char    *buf;
+    int        exit_code;
+    size_t    len;
 
 	setup_noninteractive_signals();
 	buf = get_next_line(STDIN_FILENO);

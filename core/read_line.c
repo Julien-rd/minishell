@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 14:49:11 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:18:25 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,35 @@ void	entry_spec(t_input *data)
 	iter = 0;
 	while (data->entries[iter])
 	{
-		if (data->input_spec[iter] == DEFAULT)
+		if (data->input_spec[iter] == OPERATOR)
 		{
-			if (iter != 0 && data->input_spec[iter - 1] == OPERATOR)
+			if (!ft_strcmp(data->entries[iter], "<<"))
 			{
-				if (!ft_strcmp(data->entries[iter - 1], "<<"))
-					data->input_spec[iter] = HERE_DOC;
-				else if (!ft_strcmp(data->entries[iter - 1], ">>"))
-					data->input_spec[iter] = APPEND_FILE;
-				else if (!ft_strcmp(data->entries[iter - 1], "<"))
-					data->input_spec[iter] = INFILE;
-				else if (!ft_strcmp(data->entries[iter - 1], ">"))
-					data->input_spec[iter] = OUTFILE;
+				data->input_spec[iter] = HERE_DOC_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = HERE_DOC;
 			}
+			else if (!ft_strcmp(data->entries[iter], ">>"))
+			{
+				data->input_spec[iter] = APPEND_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = APPEND_FILE;
+			}
+			else if (!ft_strcmp(data->entries[iter], "<"))
+			{
+				data->input_spec[iter] = INFILE_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = INFILE;
+			}
+			else if (!ft_strcmp(data->entries[iter], ">"))
+			{
+				data->input_spec[iter] = OUTFILE_OP;
+				if (data->input_spec[iter + 1] == DEFAULT)
+					data->input_spec[iter + 1] = OUTFILE;
+			}
+			else if (!ft_strcmp(data->entries[iter], "|"))
+				data->input_spec[iter] = PIPE;
 		}
-		if (data->input_spec[iter] == OPERATOR
-			&& !ft_strcmp(data->entries[iter], "|"))
-			data->input_spec[iter] = PIPE;
 		iter++;
 	}
 }
@@ -69,11 +81,11 @@ int	create_envp(t_input *data, char *envp[])
 	return (0);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+int    main(int argc, char *argv[], char *envp[])
 {
-	t_input	data;
-	char	*buf;
-	int		exit_code;
+    t_input    data;
+    char    *buf;
+    int        exit_code;
 
 	if (create_envp(&data, envp) == -1)
 		return (perror("envp"), free2d(&data.envp), 1);

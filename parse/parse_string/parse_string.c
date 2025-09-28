@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 15:30:20 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 15:07:15 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,47 @@ void	fill_entries(t_input *data)
 		fill_ops(&entry, &iter, data);
 	}
 }
-/* free function at malloc entries*/
+
+int	syntax_check(t_input *data)
+{
+	size_t	iter;
+
+	iter = 0;
+	while (data->input_spec[iter])
+	{
+		if (data->input_spec[iter] == PIPE)
+		{
+			if (data->input_spec[iter + 1] == END 
+				|| data->input_spec[iter + 1] == PIPE || iter == 0 || (iter != 0 && data->input_spec[iter - 1] == PIPE))
+			{
+				write(1, "syntax error near unexpected token `|'\n", 40);
+				return (-1);
+			}
+		}
+		if (data->input_spec[iter] == INFILE_OP && data->input_spec[iter + 1] != INFILE)
+		{
+			write(1, "syntax error near unexpected token `<'\n", 40);
+			return (-1);
+		}
+		if (data->input_spec[iter] == HERE_DOC_OP && data->input_spec[iter + 1] != HERE_DOC)
+		{
+			write(1, "syntax error near unexpected token `<<'\n", 41);
+			return (-1);
+		}
+		if (data->input_spec[iter] == OUTFILE_OP && data->input_spec[iter + 1] != OUTFILE)
+		{
+			write(1, "syntax error near unexpected token `>'\n", 40);
+			return (-1);
+		}
+		if (data->input_spec[iter] == APPEND_OP && data->input_spec[iter + 1] != APPEND_FILE)
+		{
+			write(1, "syntax error near unexpected token `>>'\n", 41);
+			return (-1);
+		}
+		iter++;
+	}
+	return (0);
+}
 
 int	parse_string(t_input *data)
 {

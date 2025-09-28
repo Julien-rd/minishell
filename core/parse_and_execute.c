@@ -6,15 +6,15 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 17:13:17 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:16:08 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parse_and_execute(char *buf, t_input *data, int flag)
+int    parse_and_execute(char *buf, t_input *data, int flag)
 {
-	size_t	len;
+    size_t    len;
 
 	len = ft_strlen(buf);
 	if (len == 0)
@@ -25,6 +25,8 @@ int	parse_and_execute(char *buf, t_input *data, int flag)
 		return (free(buf), perror("expand_input"), free2d(&data->envp), -1);
 	if (parse_string(data) == -1)
 		return (free(buf), free2d(&data->envp), -1);
+	if (syntax_check(data) == -1)
+		return (free2d(&data->entries), free(data->input_spec), data->exit_code = 2, 0);
 	data->exit_code = exec_central(data);
 	if (data->exit_code == -1 && g_current_signal == 0)
 		return (free(buf), perror("execution error"), -1);

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 12:23:50 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:20:25 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	hdoc_signal_kill(char *buf, char *entry)
 {
 	if (buf)
 		free(buf);
+	if (g_current_signal != 2)
 	if (g_current_signal != 2)
 	{
 		write(2, "warning: here-document delimited by end-of-file (wanted '",
@@ -53,6 +54,7 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	while (1)
 	{
 		buf = readline("> ");
+		if (g_current_signal != 0 || !buf)
 		if (g_current_signal != 0 || !buf)
 			return (hdoc_signal_kill(buf, entry));
 		if (ft_strcmp(&buf[skip_whitspaces(buf)], entry) == 0)

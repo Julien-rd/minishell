@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 15:21:04 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 17:18:41 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@
 # define INTERNAL 17
 # define INTERACTIVE 18
 # define NONINTERACTIVE 19
+# define HERE_DOC_OP 20
+# define APPEND_OP 21
+# define INFILE_OP 22
+# define OUTFILE_OP 23
 
 extern volatile int	g_current_signal;
 
@@ -78,6 +82,7 @@ int					malloc_entries(t_input *data);
 void				input_spec_init(t_input *data);
 void				fill_entries(t_input *data);
 int					parse_string(t_input *data);
+int					syntax_check(t_input *data);
 
 /* parse_string_helpers */
 int					token_len(t_input *data, size_t *iter);
