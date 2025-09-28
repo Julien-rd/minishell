@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 18:38:35 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 09:35:48 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ int	main(int argc, char *argv[], char *envp[])
 	setup_main_signals();
 	while (1)
 	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
+		current_signal = 0;
 		setup_interactive_signals();
 		buf = readline("minishell>> ");
 		if (buf == NULL)
@@ -107,11 +106,11 @@ int	main(int argc, char *argv[], char *envp[])
 			if (parse_string(&data) == -1)
 				return (free2d(&data.envp), 1);
 			data.exit_code = exec_central(&data);
+			printf("%d\n", data.exit_code);
 			if (data.exit_code == -1 && current_signal == 0)
-				return (perror("execution error"), 1);
+				return (safe_write(2, "execution error\n", 16), 1);
 			if (data.exit)
-				return (write(1, "exit\n", 5), free2d(&data.envp),
-					data.exit_code);
+				return (write(1, "exit\n", 5), data.exit_code);
 			add_history(buf);
 		}
 		free(buf);

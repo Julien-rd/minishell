@@ -1,0 +1,41 @@
+# readline.supp -> run with valgrind --suppressions=readline.supp
+{
+   readline_malloc
+   Memcheck:Leak
+   ...
+   fun:malloc
+   ...
+   fun:readline
+}
+
+{
+   readline_realloc
+   Memcheck:Leak
+   ...
+   fun:realloc
+   ...
+   fun:readline
+}
+
+{
+   add_history_leak
+   Memcheck:Leak
+   ...
+   fun:malloc
+   ...
+   fun:add_history
+}
+
+{
+   rl_functions
+   Memcheck:Leak
+   ...
+   fun:*rl_*
+}
+
+{
+   history_functions
+   Memcheck:Leak
+   ...
+   fun:*history*
+}
