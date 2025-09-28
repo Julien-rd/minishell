@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_input_utils2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 15:25:37 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 15:44:49 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 	return (0);
 }
 
-int	env_init(char *buf, t_input *data, t_expanded_str *str)
+int	expand_init(char *buf, t_input *data, t_expanded_str *str)
 {
 	size_t iter;
 
@@ -121,10 +121,10 @@ int	env_init(char *buf, t_input *data, t_expanded_str *str)
 	{
 		str->env_arr = ft_calloc(sizeof(char *), str->var_count + 1);
 		if (!str->env_arr)
-			return (perror(""), -1);
+			return (perror("expand_init"), -1);
 		str->env_pos = malloc(sizeof(size_t) * str->var_count * 2);
 		if (!str->env_pos)
-			return (free(str->env_arr), perror(""), -1);
+			return (perror("expand_init"), free(str->env_arr), -1);
 	}
 	return (0);
 }

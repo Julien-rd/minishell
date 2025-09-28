@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 15:19:53 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:32:45 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@ int    parse_and_execute(char *buf, t_input *data, int flag)
     if (flag == NONINTERACTIVE)
         buf[len - 1] = '\0';
     if (expand(buf, data) == -1)
-        return (free(buf), perror("expand_input"), free2d(&data->envp), -1);
+        return (-1);
+	printf("[%s]\n", data->exp_str);
     if (parse_string(data) == -1)
-        return (free(buf), free2d(&data->envp), -1);
+        return (-1);
 	if (syntax_check(data) == -1)
 		return (free2d(&data->entries), free(data->input_spec), data->exit_code = 2, 0);
     data->exit_code = exec_central(data);
     if (data->exit_code == -1 && g_current_signal == 0)
-        return (free(buf), perror("execution error"), -1);
+        return (perror("execution error"), -1);
     if (data->exit)
-        return (free(buf), free2d(&data->envp), data->exit_code);
+        return (data->exit_code);
     if (flag == INTERACTIVE)
         add_history(buf);
-    free(buf);
     return (0);
 }

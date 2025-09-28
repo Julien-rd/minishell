@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 15:08:29 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 15:44:19 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void				fill_ops(size_t *entry, size_t *iter, t_input *data);
 void				fill_string(t_input *data);
 
 /* expand string */
-int					env_init(char *buf, t_input *data, t_expanded_str *str);
+int					expand_init(char *buf, t_input *data, t_expanded_str *str);
 int					quote_check(size_t iter, char *buf, t_input *data);
 size_t				envlen(char *env);
 size_t				envsize(char *env, char **envp, t_input *data);

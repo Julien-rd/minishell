@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 15:07:13 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/28 15:44:31 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	expand(char *buf, t_input *data)
 	str.var_count = 0;
 	str.exit_code = data->exit_code;
 	str.env_arr = NULL;
-	if (env_init(buf, data, &str) == -1)
+	if (expand_init(buf, data, &str) == -1)
 		return (-1);
 	if (str.var_count == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 15:21:08 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/28 15:40:09 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	create_envp(t_input *data, char *envp[])
 	size_t	create_iter;
 
 	if (!envp)
-		return (-1);
+		return (write(1, "create_envp: envp not found\n", 29), -1);
 	iter = 0;
 	while (envp[iter])
 		iter++;
@@ -68,13 +68,13 @@ int	create_envp(t_input *data, char *envp[])
 	data->envp_malloc = iter * 2;
 	data->envp = malloc((data->envp_malloc + 1) * sizeof(char *));
 	if (!data->envp)
-		return (-1);
+		return (perror("create_envp"), -1);
 	create_iter = 0;
 	while (create_iter < iter)
 	{
 		data->envp[create_iter] = ft_strdup(envp[create_iter]);
 		if (!data->envp[create_iter])
-			return (-1);
+			return (perror("create_envp"), free2d(&data->envp), -1);
 		create_iter++;
 	}
 	data->envp[create_iter] = NULL;
@@ -88,7 +88,7 @@ int    main(int argc, char *argv[], char *envp[])
     int        exit_code;
 
     if (create_envp(&data, envp) == -1)
-        return (perror("envp"), free2d(&data.envp), 1);
+        return (1);
     data.exit_code = 0;
     data.exit = 0;
     if (!isatty(STDIN_FILENO))
@@ -104,9 +104,10 @@ int    main(int argc, char *argv[], char *envp[])
         setup_main_signals();
         exit_code = parse_and_execute(buf, &data, INTERACTIVE);
         if (exit_code == -1)
-            return (1);
+            return (free(buf), free2d(&data.envp), 1);
         if (data.exit)
-            return (write(1, "exit\n", 5), exit_code);
+            return (write(1, "exit\n", 5), free(buf), free2d(&data.envp), exit_code);
+		free(buf);
     }
     rl_clear_history();
     return (free2d(&data.envp), write(1, "exit\n", 5), 0);
