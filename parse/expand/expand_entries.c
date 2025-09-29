@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:29:24 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 14:20:34 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 16:22:13 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	expand_entries(t_input *data)
 		if (!(data->input_spec[iter] >= HERE_DOC_OP
 				&& data->input_spec[iter] <= OUTFILE_OP))
 		{
-			data->entries[iter] = expand(data->entries[iter], data);
+			data->entries[iter] = expand(data->entries[iter], data, &data->input_spec[iter]);
 			if (!data->entries[iter])
 				return (-1);
 		}

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 14:04:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 16:24:42 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@
 # define APPEND_OP 21
 # define INFILE_OP 22
 # define OUTFILE_OP 23
+# define A_HERE_DOC 24
+# define A_APPEND 25
+# define A_INFILE 26
+# define A_OUTFILE 27
+# define NULL_DEFAULT 28
 
 extern volatile int	g_current_signal;
 
@@ -69,13 +74,13 @@ int					expand_init(char *buf, t_input *data, t_expanded_str *str);
 int					quote_check(size_t iter, char *buf, t_input *data);
 size_t				envlen(char *env);
 size_t				envsize(char *env, char **envp, t_input *data);
-char				*expand(char *buf, t_input *data);
+char				*expand(char *buf, t_input *data, int *input_spec);
 int					quoteclosed(char *str, char quote, t_input *data);
 int					get_env(char *buf, t_expanded_str *str,
 						t_expand_helper *exh, char **envp);
 int					check_envs(char *buf, t_input *data, t_expanded_str *str);
 char				*expanded_str(char *buf, t_input *data,
-						t_expanded_str *str);
+						t_expanded_str *str, int *input_spec);
 int					expand_entries(t_input *data);
 
 /* parse_string */
@@ -90,7 +95,7 @@ int					syntax_check(t_input *data);
 int					token_len(char *buf, t_input *data, size_t *iter);
 int					is_token(char c);
 int					is_closed(char *str);
-void				toggle_quotes(char *buf, t_input *data, size_t iter);
+int					toggle_quotes(char *buf, t_input *data, size_t iter);
 
 /* parse_string_ops */
 void				op_count(char *buf, size_t *iter, size_t *count);

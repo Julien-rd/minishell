@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 15:17:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 16:15:12 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	quote_check(size_t iter, char *buf, t_input *data)
 		return_value = quoteclosed(&buf[iter], '\"', data);
 	if (data->sgl_quote == 1)
 		return (1);
-	return (return_value);
+	return (0);
 }
 
 size_t	envlen(char *env)
