@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 10:29:42 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 13:33:16 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	count_entries(t_input *data)
+size_t	count_entries(char *buf, t_input *data)
 {
 	size_t	iter;
 	size_t	count;
@@ -21,19 +21,19 @@ size_t	count_entries(t_input *data)
 	count = 0;
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
-	while (data->exp_str[iter] && !is_token(data->exp_str[iter]))
-		op_count(data->exp_str, &iter, &count);
-	while (data->exp_str[iter])
+	while (buf[iter] && !is_token(buf[iter]))
+		op_count(buf, &iter, &count);
+	while (buf[iter])
 	{
 		count++;
-		while (data->dbl_quote || data->sgl_quote || (data->exp_str[iter]
-				&& is_token(data->exp_str[iter])))
+		while (data->dbl_quote || data->sgl_quote || (buf[iter]
+				&& is_token(buf[iter])))
 		{
-			toggle_quotes(data, iter);
+			toggle_quotes(buf, data, iter);
 			iter++;
 		}
-		while (data->exp_str[iter] && !is_token(data->exp_str[iter]))
-			op_count(data->exp_str, &iter, &count);
+		while (buf[iter] && !is_token(buf[iter]))
+			op_count(buf, &iter, &count);
 	}
 	return (count);
 }
@@ -51,7 +51,7 @@ void	input_spec_init(t_input *data)
 	data->input_spec[iter] = END;
 }
 
-int	malloc_entries(t_input *data)
+int	malloc_entries(char *buf, t_input *data)
 {
 	size_t	iter;
 	size_t	tmp_count;
@@ -59,23 +59,23 @@ int	malloc_entries(t_input *data)
 
 	iter = 0;
 	entry = 0;
-	if (malloc_ops(&entry, &iter, data) == -1)
+	if (malloc_ops(buf, &entry, &iter, data) == -1)
 		return (-1);
-	while (data->exp_str[iter])
+	while (buf[iter])
 	{
-		tmp_count = token_len(data, &iter);
+		tmp_count = token_len(buf, data, &iter);
 		data->entries[entry] = malloc((tmp_count + 1) * sizeof(char));
 		if (!data->entries[entry])
 			return (-1);
 		entry++;
-		if (malloc_ops(&entry, &iter, data) == -1)
+		if (malloc_ops(buf, &entry, &iter, data) == -1)
 			return (-1);
 	}
 	data->entries[entry] = NULL;
 	return (0);
 }
 
-void	fill_entries(t_input *data)
+void	fill_entries(char *buf, t_input *data)
 {
 	size_t	iter;
 	size_t	tmp_count;
@@ -83,24 +83,20 @@ void	fill_entries(t_input *data)
 
 	iter = 0;
 	entry = 0;
-	fill_ops(&entry, &iter, data);
-	while (data->exp_str[iter])
+	fill_ops(buf, &entry, &iter, data);
+	while (buf[iter])
 	{
 		tmp_count = 0;
-		while (data->dbl_quote || data->sgl_quote || (data->exp_str[iter]
-				&& is_token(data->exp_str[iter])))
+		while (data->dbl_quote || data->sgl_quote || (buf[iter]
+				&& is_token(buf[iter])))
 		{
-			iter += toggle_quotes(data, iter);
-			if (!(data->sgl_quote == 1 && data->exp_str[iter] == '\'')
-					&& !(data->dbl_quote == 1 && data->exp_str[iter] == '\"'))
-				data->entries[entry][tmp_count++] = data->exp_str[iter];
-			toggle_quotes(data, iter);
-			if (data->exp_str[iter])
-				iter++;
+			toggle_quotes(buf, data, iter);
+			data->entries[entry][tmp_count++] = buf[iter];
+			iter++;
 		}
 		data->entries[entry][tmp_count] = '\0';
 		entry++;
-		fill_ops(&entry, &iter, data);
+		fill_ops(buf, &entry, &iter, data);
 	}
 }
 
@@ -150,9 +146,9 @@ int	syntax_check(t_input *data)
 	return (0);
 }
 
-int	parse_string(t_input *data)
+int	parse_string(char *buf, t_input *data)
 {
-	data->total_entries = count_entries(data);
+	data->total_entries = count_entries(buf, data);
 	data->entries = malloc(sizeof(char *) * (data->total_entries + 1));
 	if (!data->entries)
 		return (perror("parsing"), -1);
@@ -160,10 +156,10 @@ int	parse_string(t_input *data)
 	if (!data->input_spec)
 		return (perror("parsing"), free(data->entries), -1);
 	input_spec_init(data);
-	if (malloc_entries(data) == -1)
+	if (malloc_entries(buf, data) == -1)
 		return (perror("parsing"), free2d(&data->entries),
 			free(data->input_spec), -1);
-	fill_entries(data);
+	fill_entries(buf, data);
 	entry_spec(data);
 	return (0);
 }

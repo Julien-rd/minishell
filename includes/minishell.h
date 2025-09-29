@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 10:30:33 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 13:35:33 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ void				sigint_prompt(int num);
 void				sigint_heredoc(int num);
 void				sigint_main(int num);
 
-size_t				count_entries(t_input *data);
-int					malloc_ops(size_t *entry, size_t *iter, t_input *data);
-void				fill_ops(size_t *entry, size_t *iter, t_input *data);
+int					malloc_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
+void				fill_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
 void				fill_string(t_input *data);
 
 /* expand string */
@@ -76,23 +75,23 @@ int					check_envs(char *buf, t_input *data, t_expanded_str *str);
 int					expanded_str(char *buf, t_input *data, t_expanded_str *str);
 
 /* parse_string */
-size_t				count_entries(t_input *data);
-int					malloc_entries(t_input *data);
+size_t				count_entries(char *buf, t_input *data);
+int					malloc_entries(char *buf, t_input *data);
 void				input_spec_init(t_input *data);
-void				fill_entries(t_input *data);
-int					parse_string(t_input *data);
+void				fill_entries(char *buf, t_input *data);
+int					parse_string(char *buf, t_input *data);
 int					syntax_check(t_input *data);
 
 /* parse_string_helpers */
-int					token_len(t_input *data, size_t *iter);
+int					token_len(char *buf, t_input *data, size_t *iter);
 int					is_token(char c);
 int					is_closed(char *str);
-int					toggle_quotes(t_input *data, size_t iter);
+void				toggle_quotes(char *buf, t_input *data, size_t iter);
 
 /* parse_string_ops */
 void				op_count(char *buf, size_t *iter, size_t *count);
-int					malloc_ops(size_t *entry, size_t *iter, t_input *data);
-void				fill_ops(size_t *entry, size_t *iter, t_input *data);
+int					malloc_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
+void				fill_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
 
 int					ft_find_paths(char *envp[], char *env_name);
 int					here_doc(t_exec *data);

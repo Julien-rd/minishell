@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_execute.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 12:28:04 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 13:46:06 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	parse_and_execute(char *buf, t_input *data, int flag)
 		return (0);
 	if (flag == NONINTERACTIVE)
 		buf[len - 1] = '\0';
-	if (expand(buf, data) == -1)
+	if (parse_string(buf, data) == -1)
 		return (-1);
-	if (parse_string(data) == -1)
+	if (expand(buf, data) == -1)
 		return (-1);
 	if (syntax_check(data) == -1)
 		return (free2d(&data->entries), free(data->input_spec),
