@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:53:08 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 15:29:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 10:30:00 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	fill_ops(size_t *entry, size_t *iter, t_input *data)
 		}
 		else if (data->exp_str[*iter] == '<')
 			ft_strlcpy(data->entries[(*entry)++], "<", 2);
-		if(data->exp_str[*iter])
+		if (data->exp_str[*iter])
 			(*iter)++;
 	}
 }

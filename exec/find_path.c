@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 11:56:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/29 10:33:07 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ char	*ft_strjointhree(char const *s1, char const *s2, char const *s3)
 	i = 0;
 	j = 0;
 	k = 0;
-	str_join = malloc(sizeof(char) * (ft_strlen(s1)
-				+ ft_strlen(s2) + ft_strlen(s3) + 1));
+	str_join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)
+				+ ft_strlen(s3) + 1));
 	if (!str_join)
 		return (NULL);
 	while (s1[i])
@@ -95,7 +95,7 @@ char	*ft_getpath(char **envp, char *cmd)
 		return (cmd);
 	path_pos = ft_find_paths(envp, "PATH");
 	if (!path_pos)
-		return (/*own error*/NULL);
+		return (/*own error*/ NULL);
 	paths = ft_split(&envp[path_pos][5], ':');
 	if (paths == NULL)
 		return (NULL);

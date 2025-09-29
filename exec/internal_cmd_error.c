@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   internal_cmd_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 18:25:51 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/29 10:32:37 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,17 @@ void	exit_error(t_exec *data, t_cmd *cmd)
 	exit_code = ft_atoll(cmd->cmd[1]);
 	if (exit_code == 0)
 	{
-		if (write(2, "exit: ", 6) == -1)
-			perror("write");
-		if (write(2, cmd->cmd[1], ft_strlen(cmd->cmd[1])) == -1)
-			perror("write");
-		if (write(2, ": numeric argument required\n", 28) == -1)
-			perror("write");
+		if (safe_write(2, "exit: ", 6) == -1)
+			child_exit_handle(data, cmd, 1);
+		if (safe_write(2, cmd->cmd[1], ft_strlen(cmd->cmd[1])) == -1)
+			child_exit_handle(data, cmd, 1);
+		if (safe_write(2, ": numeric argument required\n", 28) == -1)
+			child_exit_handle(data, cmd, 1);
 		child_exit_handle(data, cmd, 2);
 	}
 	if (cmd->cmd[2])
 	{
-		if (write(2, "exit: too many arguments\n", 25) == -1)
-			perror("write");
+		safe_write(2, "exit: too many arguments\n", 25);
 		child_exit_handle(data, cmd, 1);
 	}
 	child_exit_handle(data, cmd, exit_code);

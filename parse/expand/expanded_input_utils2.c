@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_input_utils2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 15:44:49 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/29 10:29:36 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	expanded_str(char *buf, t_input *data, t_expanded_str *str)
 		if (str->var_count * 2 > exh.env_pos_iter
 			&& str->env_pos[exh.env_pos_iter] == iter)
 			iter += ex_encounter(data, &exh, str, iter);
-		else
+		else if (buf[iter] != '\'' && buf[iter] != '\"')
 			data->exp_str[exh.str_iter++] = buf[iter];
 		iter++;
 	}
@@ -87,7 +87,8 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 	while (buf[iter])
 	{
 		exh.len = envlen(&buf[iter + 1]);
-		if (!quote_check(iter, buf, data) && buf[iter] == '$' && exh.len)
+		if (!quote_check(iter, buf, data) && buf[iter] == '$' && exh.len
+			&& str->var_count)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh, data->envp);
 			if (check_return_get_env(iter, str, &exh, data) == -1)
@@ -103,7 +104,7 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 
 int	expand_init(char *buf, t_input *data, t_expanded_str *str)
 {
-	size_t iter;
+	size_t	iter;
 
 	iter = 0;
 	data->dbl_quote = 0;

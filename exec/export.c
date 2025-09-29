@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 18:24:52 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/29 10:33:16 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	input_check(char *param)
 {
 	size_t	iter;
-	
+
 	if (!ft_isalpha(param[0]) && param[0] != '_')
 		return (-1);
 	iter = 1;
@@ -61,7 +61,7 @@ int	insert_pos(t_exec *data, char *param)
 {
 	size_t	iter;
 	size_t	end_of_name;
-	
+
 	end_of_name = 0;
 	while (param[end_of_name] != '=')
 		end_of_name++;
@@ -82,7 +82,7 @@ int	insert_pos(t_exec *data, char *param)
 	return (-1);
 }
 
-int insert_env(t_exec *data, char *entry)
+int	insert_env(t_exec *data, char *entry)
 {
 	char	*new;
 	size_t	position;
@@ -112,11 +112,11 @@ int	export(char **cmd, t_exec *data)
 {
 	size_t	iter;
 	int		return_value;
-	
+
 	iter = 1;
 	return_value = 0;
 	while (cmd[iter])
-	{	
+	{
 		if (input_check(cmd[iter]) == -1)
 		{
 			write(1, "export: `", 10);
@@ -124,12 +124,12 @@ int	export(char **cmd, t_exec *data)
 			write(1, "': not a valid identifier\n", 26);
 			iter++;
 			return_value = 1;
-			continue;
+			continue ;
 		}
 		if (!ft_strchr(cmd[iter], '='))
 		{
 			iter++;
-			continue;
+			continue ;
 		}
 		if (insert_env(data, cmd[iter]) == -1)
 			return (-1);

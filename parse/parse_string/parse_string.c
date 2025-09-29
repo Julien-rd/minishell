@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 09:46:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 10:29:42 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ size_t	count_entries(t_input *data)
 	while (data->exp_str[iter])
 	{
 		count++;
-		while (data->dbl_quote || data->sgl_quote
-			|| (data->exp_str[iter] && is_token(data->exp_str[iter])))
+		while (data->dbl_quote || data->sgl_quote || (data->exp_str[iter]
+				&& is_token(data->exp_str[iter])))
 		{
 			toggle_quotes(data, iter);
 			iter++;
@@ -87,15 +87,15 @@ void	fill_entries(t_input *data)
 	while (data->exp_str[iter])
 	{
 		tmp_count = 0;
-		while (data->dbl_quote || data->sgl_quote
-			|| (data->exp_str[iter] && is_token(data->exp_str[iter])))
+		while (data->dbl_quote || data->sgl_quote || (data->exp_str[iter]
+				&& is_token(data->exp_str[iter])))
 		{
 			iter += toggle_quotes(data, iter);
 			if (!(data->sgl_quote == 1 && data->exp_str[iter] == '\'')
-				&& !(data->dbl_quote == 1 && data->exp_str[iter] == '\"'))
+					&& !(data->dbl_quote == 1 && data->exp_str[iter] == '\"'))
 				data->entries[entry][tmp_count++] = data->exp_str[iter];
 			toggle_quotes(data, iter);
-			if(data->exp_str[iter])
+			if (data->exp_str[iter])
 				iter++;
 		}
 		data->entries[entry][tmp_count] = '\0';
@@ -113,29 +113,34 @@ int	syntax_check(t_input *data)
 	{
 		if (data->input_spec[iter] == PIPE)
 		{
-			if (data->input_spec[iter + 1] == END 
-				|| data->input_spec[iter + 1] == PIPE || iter == 0 || (iter != 0 && data->input_spec[iter - 1] == PIPE))
+			if (data->input_spec[iter + 1] == END || data->input_spec[iter
+				+ 1] == PIPE || iter == 0 || (iter != 0 && data->input_spec[iter
+					- 1] == PIPE))
 			{
 				write(1, "syntax error near unexpected token `|'\n", 40);
 				return (-1);
 			}
 		}
-		if (data->input_spec[iter] == INFILE_OP && data->input_spec[iter + 1] != INFILE)
+		if (data->input_spec[iter] == INFILE_OP && data->input_spec[iter
+			+ 1] != INFILE)
 		{
 			write(1, "syntax error near unexpected token `<'\n", 40);
 			return (-1);
 		}
-		if (data->input_spec[iter] == HERE_DOC_OP && data->input_spec[iter + 1] != HERE_DOC)
+		if (data->input_spec[iter] == HERE_DOC_OP && data->input_spec[iter
+			+ 1] != HERE_DOC)
 		{
 			write(1, "syntax error near unexpected token `<<'\n", 41);
 			return (-1);
 		}
-		if (data->input_spec[iter] == OUTFILE_OP && data->input_spec[iter + 1] != OUTFILE)
+		if (data->input_spec[iter] == OUTFILE_OP && data->input_spec[iter
+			+ 1] != OUTFILE)
 		{
 			write(1, "syntax error near unexpected token `>'\n", 40);
 			return (-1);
 		}
-		if (data->input_spec[iter] == APPEND_OP && data->input_spec[iter + 1] != APPEND_FILE)
+		if (data->input_spec[iter] == APPEND_OP && data->input_spec[iter
+			+ 1] != APPEND_FILE)
 		{
 			write(1, "syntax error near unexpected token `>>'\n", 41);
 			return (-1);
@@ -156,7 +161,8 @@ int	parse_string(t_input *data)
 		return (perror("parsing"), free(data->entries), -1);
 	input_spec_init(data);
 	if (malloc_entries(data) == -1)
-		return (perror("parsing"), free2d(&data->entries), free(data->input_spec), -1);
+		return (perror("parsing"), free2d(&data->entries),
+			free(data->input_spec), -1);
 	fill_entries(data);
 	entry_spec(data);
 	return (0);

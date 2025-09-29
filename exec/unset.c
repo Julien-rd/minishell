@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:58:58 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 12:36:26 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/29 10:31:25 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	var_check(char *param)
 {
 	size_t	iter;
-	
+
 	if (!ft_isalpha(param[0]) && param[0] != '_')
 		return (-1);
 	iter = 1;

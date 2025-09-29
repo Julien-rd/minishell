@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/27 14:39:24 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 10:29:03 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	quoteclosed(char *str, char quote, t_input *data)
 	}
 	return (0);
 }
+
 int	quote_check(size_t iter, char *buf, t_input *data)
 {
 	int	return_value;
@@ -51,6 +52,7 @@ int	quote_check(size_t iter, char *buf, t_input *data)
 		return (1);
 	return (return_value);
 }
+
 size_t	envlen(char *env)
 {
 	size_t	len;
@@ -97,8 +99,8 @@ int	get_env(char *buf, t_expanded_str *str, t_expand_helper *exh, char **envp)
 	{
 		if (envcmp(envp[iter], buf, exh->len + 1))
 		{
-			str->env_arr[exh->env_iter] = ft_substr(&envp[iter][exh->len + 1], 0,
-					ft_strlen(&envp[iter][exh->len + 1]));
+			str->env_arr[exh->env_iter] = ft_substr(&envp[iter][exh->len + 1],
+					0, ft_strlen(&envp[iter][exh->len + 1]));
 			if (!str->env_arr[exh->env_iter])
 				return (perror("get_env"), -1);
 			return (1);
