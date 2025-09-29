@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 16:28:44 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/29 09:46:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int	syntax_check(t_input *data)
 	iter = 0;
 	while (data->input_spec[iter])
 	{
-		printf("%d\n", data->input_spec[iter]);
 		if (data->input_spec[iter] == PIPE)
 		{
 			if (data->input_spec[iter + 1] == END 

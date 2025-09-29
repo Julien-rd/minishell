@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 17:20:25 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 09:53:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	hdoc_signal_kill(char *buf, char *entry)
 	if (buf)
 		free(buf);
 	if (g_current_signal != 2)
-	if (g_current_signal != 2)
 	{
 		write(2, "warning: here-document delimited by end-of-file (wanted '",
 			57);
@@ -45,29 +44,28 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	char	*buf;
 	char	*tmp_str;
 
-	setup_heredoc_signals();
 	if (entry == NULL)
 		return (1);
+	setup_heredoc_signals();
 	data->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!data->heredoc[hdoc_iter])
-		return (-1);
+		return (setup_main_signals(), -1);
 	while (1)
 	{
 		buf = readline("> ");
 		if (g_current_signal != 0 || !buf)
-		if (g_current_signal != 0 || !buf)
-			return (hdoc_signal_kill(buf, entry));
+			if (g_current_signal != 0 || !buf)
+				return (hdoc_signal_kill(buf, entry));
 		if (ft_strcmp(&buf[skip_whitspaces(buf)], entry) == 0)
-			return (free(buf), 0);
+			return (setup_main_signals(), free(buf), 0);
 		tmp_str = ft_strjointhree(data->heredoc[hdoc_iter], buf, "\n");
 		if (!tmp_str)
-			return (perror("malloc"), free(buf), -1);
+			return (perror("malloc"), setup_main_signals(), free(buf), -1);
 		free(data->heredoc[hdoc_iter]);
 		data->heredoc[hdoc_iter] = tmp_str;
 		free(buf);
 	}
-	setup_main_signals();
-	return (0);
+	return (setup_main_signals(), 0);
 }
 
 size_t	operator_count(t_exec *data)

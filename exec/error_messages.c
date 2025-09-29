@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 16:44:43 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 09:43:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	execve_fail(char *path, int error, t_exec *data, t_cmd *cmd)
 			close(fd);
 			prepare_arg(argv, data, cmd);
 			execve("./minishell", argv, data->envp);
-			child_exit_handle(data, cmd, 1);
+			child_exit_handle(data, cmd, 127);
 		}
 	}
 	if (stat(path, &st) == 0)

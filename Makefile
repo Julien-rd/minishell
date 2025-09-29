@@ -33,7 +33,7 @@ $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
 
 clean: 
 	rm -f $(OBJ) $(DEP)
-	rm -d $(OBJ_DIR)
+	rm -rf $(OBJ_DIR)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
