@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   non_interactive.c                                  :+:      :+:    :+:   */
+/*   new_expand_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 12:32:54 by jromann          ###   ########.fr       */
+/*   Created: 2025/09/29 12:29:24 by jromann           #+#    #+#             */
+/*   Updated: 2025/09/29 12:59:02 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	non_interactive(t_input *data)
+void	check_str(char *str)
 {
-	char	*buf;
-	int		exit_code;
-	size_t	len;
+	size_t	iter;
 
-	setup_noninteractive_signals();
-	buf = get_next_line(STDIN_FILENO);
-	while (buf)
+	iter = 0;
+	while (str[iter])
 	{
-		exit_code = parse_and_execute(buf, data, NONINTERACTIVE);
-		if (exit_code || data->exit)
-			return (free(buf), get_next_line(-1), exit(exit_code));
-		free(buf);
-		buf = get_next_line(STDIN_FILENO);
 	}
-	free2d(&data->envp);
-	exit(data->exit_code);
+}
+
+int	new_expand_str(t_input *data)
+{
+	size_t iter;
+
+	iter = 0;
+	while (data->entries[iter])
+	{
+		if (!(data->input_spec[iter] >= HERE_DOC_OP
+				&& data->input_spec[iter] <= OUTFILE_OP))
+		{
+			data->entries[iter] = expand(data->entries[iter], data);
+			if (!data->entries[iter])
+				return (-1);
+		}
+		iter++;
+	}
 }

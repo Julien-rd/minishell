@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 12:28:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 12:33:16 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (exit_code == -1)
 			return (free(buf), free2d(&data.envp), 1);
 		if (data.exit)
-			return (safe_write(1, "exit\n", 5), free(buf), free2d(&data.envp),
+			return (free(buf), safe_write(1, "exit\n", 5), free2d(&data.envp),
 				exit_code);
 		free(buf);
 	}

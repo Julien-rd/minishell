@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 10:49:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 13:39:16 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static void	execute_if_cmd_not_found(char *path, t_exec *data, t_cmd *cmd, int *
 	fd = open(cmd->cmd[0], O_RDONLY);
 	if (fd != -1)
 	{
-		dup2(fd, STDIN_FILENO);
+		if(dup2(fd, STDIN_FILENO) == -1)
+			return (perror("dup2"), close(fd), child_exit_handle(data, cmd, 1));
 		close(fd);
 		prepare_arg(argv, data, cmd);
 		execve("./minishell", argv, data->envp);
