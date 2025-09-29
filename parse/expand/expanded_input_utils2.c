@@ -6,13 +6,13 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 13:22:55 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 15:09:13 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ex_encounter(t_input *data, t_expand_helper *exh,
+static int	ex_encounter(char *str_new, t_expand_helper *exh,
 		t_expanded_str *str, size_t iter)
 {
 	if (str->env_pos[exh->env_pos_iter + 1] == 0)
@@ -20,8 +20,7 @@ static int	ex_encounter(t_input *data, t_expand_helper *exh,
 	else
 	{
 		exh->len = ft_strlen(str->env_arr[exh->env_iter]);
-		ft_memcpy(&data->exp_str[exh->str_iter], str->env_arr[exh->env_iter],
-			exh->len);
+		ft_memcpy(str_new, str->env_arr[exh->env_iter], exh->len);
 		exh->env_iter++;
 		exh->str_iter += exh->len;
 		exh->env_pos_iter += 2;
@@ -29,29 +28,33 @@ static int	ex_encounter(t_input *data, t_expand_helper *exh,
 	return (envlen(&exh->buf[iter + 1]));
 }
 
-int	expanded_str(char *buf, t_input *data, t_expanded_str *str)
+char	*expanded_str(char *buf, t_input *data, t_expanded_str *str)
 {
 	size_t			iter;
 	t_expand_helper	exh;
+	char			*exp_str;
 
 	exh.env_iter = 0;
 	exh.env_pos_iter = 0;
 	exh.str_iter = 0;
 	iter = 0;
+	data->dbl_quote = 0;
+	data->sgl_quote = 0;
 	exh.buf = buf;
-	data->exp_str = ft_calloc(sizeof(char), data->len + 1);
-	if (!data->exp_str)
-		return (-1);
+	exp_str = ft_calloc(sizeof(char), data->len + 1);
+	if (!exp_str)
+		return (NULL);
 	while (buf[iter])
 	{
+		quote_check(iter, buf, data);
 		if (str->var_count * 2 > exh.env_pos_iter
 			&& str->env_pos[exh.env_pos_iter] == iter)
-			iter += ex_encounter(data, &exh, str, iter);
-		else
-			data->exp_str[exh.str_iter++] = buf[iter];
+			iter += ex_encounter(&exp_str[exh.str_iter], &exh, str, iter);
+		else if ((buf[iter] != '\'' && data->sgl_quote) || (data->dbl_quote && buf[iter] != '\"'))
+			exp_str[exh.str_iter++] = buf[iter];
 		iter++;
 	}
-	return (0);
+	return (exp_str);
 }
 
 static int	check_return_get_env(size_t iter, t_expanded_str *str,
@@ -87,7 +90,8 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 	while (buf[iter])
 	{
 		exh.len = envlen(&buf[iter + 1]);
-		if (!quote_check(iter, buf, data) && buf[iter] == '$' && exh.len)
+		if (!quote_check(iter, buf, data) && buf[iter] == '$' && exh.len
+			&& str->var_count)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh, data->envp);
 			if (check_return_get_env(iter, str, &exh, data) == -1)
@@ -103,7 +107,7 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 
 int	expand_init(char *buf, t_input *data, t_expanded_str *str)
 {
-	size_t iter;
+	size_t	iter;
 
 	iter = 0;
 	data->dbl_quote = 0;

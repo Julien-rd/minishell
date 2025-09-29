@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 13:53:58 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/29 14:01:05 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,19 @@ int	parse_and_execute(char *buf, t_input *data, int flag)
 		buf[len - 1] = '\0';
 	if (parse_string(buf, data) == -1)
 		return (-1);
-	if (expand(buf, data) == -1)
+	if (expand_entries(data) == -1)
 		return (-1);
+    size_t    iter;
+    iter = 0;
+    if (data->entries)
+    {
+        while (data->entries[iter])
+        {
+            printf("%zu:  [%s][%d]\n", iter, data->entries[iter], data->input_spec[iter]);
+            iter++;
+        }
+    }
+    return (0);
 	if (syntax_check(data) == -1)
 		return (free2d(&data->entries), free(data->input_spec),
 			data->exit_code = 2, 0);

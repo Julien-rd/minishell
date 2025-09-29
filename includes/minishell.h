@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 13:35:33 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/29 14:04:05 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ void				sigint_prompt(int num);
 void				sigint_heredoc(int num);
 void				sigint_main(int num);
 
-int					malloc_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
-void				fill_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
+int					malloc_ops(char *buf, size_t *entry, size_t *iter,
+						t_input *data);
+void				fill_ops(char *buf, size_t *entry, size_t *iter,
+						t_input *data);
 void				fill_string(t_input *data);
 
 /* expand string */
@@ -67,12 +69,14 @@ int					expand_init(char *buf, t_input *data, t_expanded_str *str);
 int					quote_check(size_t iter, char *buf, t_input *data);
 size_t				envlen(char *env);
 size_t				envsize(char *env, char **envp, t_input *data);
-int					expand(char *buf, t_input *data);
+char				*expand(char *buf, t_input *data);
 int					quoteclosed(char *str, char quote, t_input *data);
 int					get_env(char *buf, t_expanded_str *str,
 						t_expand_helper *exh, char **envp);
 int					check_envs(char *buf, t_input *data, t_expanded_str *str);
-int					expanded_str(char *buf, t_input *data, t_expanded_str *str);
+char				*expanded_str(char *buf, t_input *data,
+						t_expanded_str *str);
+int					expand_entries(t_input *data);
 
 /* parse_string */
 size_t				count_entries(char *buf, t_input *data);
@@ -90,8 +94,10 @@ void				toggle_quotes(char *buf, t_input *data, size_t iter);
 
 /* parse_string_ops */
 void				op_count(char *buf, size_t *iter, size_t *count);
-int					malloc_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
-void				fill_ops(char *buf, size_t *entry, size_t *iter, t_input *data);
+int					malloc_ops(char *buf, size_t *entry, size_t *iter,
+						t_input *data);
+void				fill_ops(char *buf, size_t *entry, size_t *iter,
+						t_input *data);
 
 int					ft_find_paths(char *envp[], char *env_name);
 int					here_doc(t_exec *data);
