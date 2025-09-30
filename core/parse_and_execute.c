@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_execute.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/30 14:37:58 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/30 19:05:05 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // int	parse_and_execute(char *buf, t_input *data, int flag)
 // {
 // 	(void)flag;
-	
+
 // 	// while (data->entries)
 // 	// {
 // 	// 	printf("[%s][%d]\n", data->entries->raw_entry, data->entries->spec);
@@ -36,10 +36,17 @@ int	parse_and_execute(char *buf, t_input *data, int flag)
 		buf[len - 1] = '\0';
 	if (ultimate(buf, data) == -1)
 		return (-1);
-	return (0);
+	// t_entry	*tmp = data->entries;
+    // while (tmp != NULL) 
+	// {
+	// 	int i = -1;
+	// 	if (tmp->expanded)
+	// 		while(tmp->expanded[++i])
+	// 			printf("%s\n", tmp->expanded[i]);
+    //     tmp = tmp->next;
+    // }
 	if (syntax_check(data) == -1)
-		return (free(data->input_spec),
-			data->exit_code = 2, 0);
+		return (data->exit_code = 2, 0);
 	data->exit_code = exec_central(data);
 	if (data->exit_code == -1 && g_current_signal == 0)
 		return (perror("execution error"), -1);

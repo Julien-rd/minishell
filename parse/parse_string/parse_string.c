@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 11:44:43 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/30 12:11:06 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/30 18:51:18 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,45 +103,78 @@ void	input_spec_init(t_input *data)
 int	syntax_check(t_input *data)
 {
 	size_t	iter;
+	t_entry	*entry;
 
+	entry = data->entries;
 	iter = 0;
-	while (data->input_spec[iter])
+	while (entry != NULL)
 	{
-		if (data->input_spec[iter] == PIPE)
+		if (entry->spec == PIPE)
 		{
-			if (data->input_spec[iter + 1] == END || data->input_spec[iter
-				+ 1] == PIPE || iter == 0 || (iter != 0 && data->input_spec[iter
-					- 1] == PIPE))
+			if (entry->next == NULL || entry->next->spec == PIPE
+				|| entry == data->entries)
 			{
 				write(1, "syntax error near unexpected token `|'\n", 40);
 				return (-1);
 			}
 		}
-		if (data->input_spec[iter] == INFILE_OP && data->input_spec[iter
-			+ 1] != INFILE)
+		if (entry->spec == INFILE_OP && (entry->next == NULL
+				|| entry->next->spec != INFILE))
 		{
-			write(1, "syntax error near unexpected token `<'\n", 40);
+			if (entry->next == NULL)
+				write(1, "syntax error near unexpected token `newline'\n", 45);
+			else
+			{
+				write(1, "syntax error near unexpected token `", 36);
+				write(1, entry->next->raw_entry,
+					ft_strlen(entry->next->raw_entry));
+				write(1, "'\n", 2);
+			}
 			return (-1);
 		}
-		if (data->input_spec[iter] == HERE_DOC_OP && data->input_spec[iter
-			+ 1] != HERE_DOC)
+		if (entry->spec == HERE_DOC_OP && (entry->next == NULL
+				|| entry->next->spec != HERE_DOC))
 		{
-			write(1, "syntax error near unexpected token `<<'\n", 41);
+			if (entry->next == NULL)
+				write(1, "syntax error near unexpected token `newline'\n", 45);
+			else
+			{
+				write(1, "syntax error near unexpected token `", 36);
+				write(1, entry->next->raw_entry,
+					ft_strlen(entry->next->raw_entry));
+				write(1, "'\n", 2);
+			}
 			return (-1);
 		}
-		if (data->input_spec[iter] == OUTFILE_OP && data->input_spec[iter
-			+ 1] != OUTFILE)
+		if (entry->spec == OUTFILE_OP && (entry->next == NULL
+				|| entry->next->spec != OUTFILE))
 		{
-			write(1, "syntax error near unexpected token `>'\n", 40);
+			if (entry->next == NULL)
+				write(1, "syntax error near unexpected token `newline'\n", 45);
+			else
+			{
+				write(1, "syntax error near unexpected token `", 36);
+				write(1, entry->next->raw_entry,
+					ft_strlen(entry->next->raw_entry));
+				write(1, "'\n", 2);
+			}
 			return (-1);
 		}
-		if (data->input_spec[iter] == APPEND_OP && data->input_spec[iter
-			+ 1] != APPEND_FILE)
+		if (entry->spec == APPEND_OP && (entry->next == NULL
+				|| entry->next->spec != APPEND_FILE))
 		{
-			write(1, "syntax error near unexpected token `>>'\n", 41);
+			if (entry->next == NULL)
+				write(1, "syntax error near unexpected token `newline'\n", 45);
+			else
+			{
+				write(1, "syntax error near unexpected token `", 36);
+				write(1, entry->next->raw_entry,
+					ft_strlen(entry->next->raw_entry));
+				write(1, "'\n", 2);
+			}
 			return (-1);
 		}
-		iter++;
+		entry = entry->next;
 	}
 	return (0);
 }

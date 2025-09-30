@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 09:53:29 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/30 19:15:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,19 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 
 size_t	operator_count(t_exec *data)
 {
-	size_t	iter;
 	size_t	hdoc_count;
+	t_entry	*iter;
 
+	iter = data->list;
 	iter = 0;
 	hdoc_count = 0;
-	while (data->input_spec[iter] != END)
+	while (iter != NULL)
 	{
-		if (data->input_spec[iter] == HERE_DOC)
+		if (iter->spec == HERE_DOC)
 			hdoc_count++;
-		if (data->input_spec[iter] == PIPE)
+		if (iter->spec == PIPE)
 			data->pipe_count++;
-		iter++;
+		iter = iter->next;
 	}
 	if (hdoc_count == 0)
 		data->heredoc = NULL;
@@ -90,27 +91,27 @@ size_t	operator_count(t_exec *data)
 
 int	here_doc(t_exec *data)
 {
-	size_t	iter;
+	t_entry	*iter;
 	size_t	hdoc_iter;
 	size_t	hdoc_count;
 
 	hdoc_iter = 0;
-	iter = 0;
+	iter = data->list;
 	hdoc_count = operator_count(data);
 	if (hdoc_count == 0)
 		return (0);
 	data->heredoc = ft_calloc(hdoc_count + 1, sizeof(char *));
 	if (!data->heredoc)
 		return (-1);
-	while (data->input_spec[iter] != END)
+	while (iter != NULL)
 	{
-		if (data->input_spec[iter] == HERE_DOC)
+		if (iter->spec == HERE_DOC)
 		{
-			if (hdoc_entry(data->entries[iter], data, hdoc_iter) == -1)
+			if (hdoc_entry(iter->expanded[0], data, hdoc_iter) == -1)
 				return (free2d(&data->heredoc), -1);
 			hdoc_iter++;
 		}
-		iter++;
+		iter = iter->next;
 	}
 	return (0);
 }

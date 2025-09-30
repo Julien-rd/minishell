@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ultimate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:22:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/30 14:55:49 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:40:12 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,7 +302,7 @@ int	expansion(t_input *data)
 	size_t test;
 	
 	cur = data->entries;
-	while (cur)
+	while (cur )
 	{
 		if (!(cur->spec >= HERE_DOC_OP && cur->spec <= OUTFILE_OP)
 			&& cur->spec != PIPE && cur->spec != HERE_DOC)
@@ -312,20 +312,20 @@ int	expansion(t_input *data)
 				return (-1);
 			if (expanded_split(expanded_str, cur, data) == -1)
 				return (-1);
-			test = 0;
-			printf("ENTRY: \n<\n");
-			printf("pointer: %p\n", cur->expanded);
-			printf("exp_count: [%d]\n", cur->exp_count);
-			if (cur->expanded)
-			{
-				while (cur->expanded[test])
-				{
-					printf("content: [%s]\n", cur->expanded[test]);
-					test++;
-				}
-				fflush(stdout);
-			}
-			printf(">\n");
+			// test = 0;
+			// printf("ENTRY: \n<\n");
+			// printf("pointer: %p\n", cur->expanded);
+			// printf("exp_count: [%d]\n", cur->exp_count);
+			// if (cur->expanded)
+			// {
+			// 	while (cur->expanded[test])
+			// 	{
+			// 		printf("content: [%s]\n", cur->expanded[test]);
+			// 		test++;
+			// 	}
+			// 	fflush(stdout);
+			// }
+			// printf(">\n");
 		}
 		cur = cur->next;
 	}
