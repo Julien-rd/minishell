@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ultimate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:22:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/30 13:49:04 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/30 14:55:49 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,22 +221,111 @@ TOTAL GOAL:
 // 	exp_str = expand(entry);
 // }
 
+char	*fill_content(char *exp_str, size_t iter, t_input *data, size_t	entry_len)
+{
+	size_t	entry_iter;
+	char	*content;
+
+	entry_iter = 0;
+	data->dbl_quote = 0;
+	data->sgl_quote = 0;
+	content = malloc((entry_len + 1) * sizeof(char));
+	if (!content)
+		return (NULL);
+	while (exp_str[iter] && !is_whitespace(exp_str[iter])
+		| data->dbl_quote | data->sgl_quote)
+	{
+		iter += toggle_quotes(exp_str, data, iter);
+		if (!((exp_str[iter] == '\'' && data->sgl_quote)
+			|| (exp_str[iter] == '\"' && data->dbl_quote)))
+			content[entry_iter++] = exp_str[iter];
+		iter++;
+	}
+	content[entry_iter] = '\0';
+	return (content);
+}
+
+char	**lst_to_expand(t_list *head)
+{
+	char	**expanded;
+	size_t	iter;
+
+	iter = 0;
+	expanded = malloc((ft_lstsize(head) + 1) * sizeof(char *));
+	if (!expanded)
+		return (NULL);
+	while (head)
+	{
+		expanded[iter] = head->content;
+		iter++;
+		head = head->next;
+	}
+	expanded[iter] = NULL;
+	return (expanded);
+}
+
+int expanded_split(char *exp_str, t_entry *entry, t_input *data)
+{
+	t_list	*node;
+	t_list	*head;
+	size_t	iter;
+	size_t	entry_len;
+
+	iter = 0;
+	head = NULL;
+	data->dbl_quote = 0;
+	data->sgl_quote = 0;
+	if (!exp_str[0])
+		return (0);
+	while (exp_str[iter])
+	{
+		while (is_whitespace(exp_str[iter]))
+			iter++;
+		entry_len = token_len(exp_str, data, iter);
+		node = ft_lstnew(fill_content(exp_str, iter, data, entry_len));
+		if (!head)
+			head = node;
+		else
+			ft_lstadd_back(&head, node);
+		iter += entry_len + (entry_len == 0);
+	}
+	entry->expanded = lst_to_expand(head);
+	if (!entry->expanded)
+		return (-1);
+	return (0);
+}
+
 int	expansion(t_input *data)
 {
 	t_entry	*cur;
-
+	char	*expanded_str;
+	size_t test;
+	
 	cur = data->entries;
 	while (cur)
 	{
 		if (!(cur->spec >= HERE_DOC_OP && cur->spec <= OUTFILE_OP)
 			&& cur->spec != PIPE && cur->spec != HERE_DOC)
 		{
-			cur->expanded_str = expand(cur, data);
-			if (!cur->expanded_str)
+			expanded_str = expand(cur, data);
+			if (!expanded_str)
 				return (-1);
-			printf("[%s]\n", cur->expanded_str);
-			printf("count: [%d]\n", cur->exp_count);
-			fflush(stdout);
+			if (expanded_split(expanded_str, cur, data) == -1)
+				return (-1);
+			test = 0;
+			printf("ENTRY: \n<\n");
+			printf("pointer: %p\n", cur->expanded);
+			printf("exp_count: [%d]\n", cur->exp_count);
+			if (cur->expanded)
+			{
+				while (cur->expanded[test])
+				{
+					printf("content: [%s]\n", cur->expanded[test]);
+					test++;
+				}
+				fflush(stdout);
+			}
+			printf(">\n");
 		}
 		cur = cur->next;
 	}
