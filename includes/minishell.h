@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 16:24:42 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/30 13:48:28 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ extern volatile int	g_current_signal;
 
 void				entry_spec(t_input *data);
 int					parse_and_execute(char *buf, t_input *data, int flag);
+int					ultimate(char *buf, t_input *data);
 
 // NONINTERACTIVE
 void				non_interactive(t_input *data);
@@ -70,17 +71,17 @@ void				fill_ops(char *buf, size_t *entry, size_t *iter,
 void				fill_string(t_input *data);
 
 /* expand string */
-int					expand_init(char *buf, t_input *data, t_expanded_str *str);
+int					expand_init(t_entry *cur, t_input *data,
+						t_expanded_str *str);
 int					quote_check(size_t iter, char *buf, t_input *data);
 size_t				envlen(char *env);
 size_t				envsize(char *env, char **envp, t_input *data);
-char				*expand(char *buf, t_input *data, int *input_spec);
+char				*expand(t_entry *cur, t_input *data);
 int					quoteclosed(char *str, char quote, t_input *data);
 int					get_env(char *buf, t_expanded_str *str,
 						t_expand_helper *exh, char **envp);
 int					check_envs(char *buf, t_input *data, t_expanded_str *str);
-char				*expanded_str(char *buf, t_input *data,
-						t_expanded_str *str, int *input_spec);
+char				*expanded_str(char *buf, t_input *data, t_expanded_str *str);
 int					expand_entries(t_input *data);
 
 /* parse_string */
@@ -92,10 +93,10 @@ int					parse_string(char *buf, t_input *data);
 int					syntax_check(t_input *data);
 
 /* parse_string_helpers */
-int					token_len(char *buf, t_input *data, size_t *iter);
+int					token_len(char *buf, t_input *data, size_t iter);
 int					is_token(char c);
 int					is_closed(char *str);
-int					toggle_quotes(char *buf, t_input *data, size_t iter);
+int					toggle_quotes(char *str, t_input *data, size_t iter);
 
 /* parse_string_ops */
 void				op_count(char *buf, size_t *iter, size_t *count);

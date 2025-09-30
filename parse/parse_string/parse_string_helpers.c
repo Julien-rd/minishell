@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:46:22 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 15:53:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/30 12:14:21 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,17 @@ int	toggle_quotes(char *buf, t_input *data, size_t iter)
 	return (r_value);
 }
 
-int	token_len(char *buf, t_input *data, size_t *iter)
-{
-	size_t	count;
+// int	token_len(char *buf, t_input *data, size_t *iter)
+// {
+// 	size_t	count;
 
-	count = 0;
-	while (data->dbl_quote || data->sgl_quote || (buf[*iter]
-			&& is_token(buf[*iter])))
-	{
-		toggle_quotes(buf, data, *iter);
-		count++;
-		(*iter)++;
-	}
-	return (count);
-}
+// 	count = 0;
+// 	while (data->dbl_quote || data->sgl_quote || (buf[*iter]
+// 			&& is_token(buf[*iter])))
+// 	{
+// 		toggle_quotes(buf, data, *iter);
+// 		count++;
+// 		(*iter)++;
+// 	}
+// 	return (count);
+// }

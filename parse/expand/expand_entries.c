@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:29:24 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 16:22:13 by jromann          ###   ########.fr       */
+/*   Updated: 2025/09/30 12:05:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ void	check_str(char *str)
 	}
 }
 
-int	expand_entries(t_input *data)
-{
-	size_t iter;
+// int	expand_entries(t_input *data)
+// {
+// 	size_t iter;
 
-	iter = 0;
-	while (data->entries[iter])
-	{
-		if (!(data->input_spec[iter] >= HERE_DOC_OP
-				&& data->input_spec[iter] <= OUTFILE_OP))
-		{
-			data->entries[iter] = expand(data->entries[iter], data, &data->input_spec[iter]);
-			if (!data->entries[iter])
-				return (-1);
-		}
-		iter++;
-	}
-	return (0);
-}
+// 	iter = 0;
+// 	while (data->entries[iter])
+// 	{
+// 		if (!(data->input_spec[iter] >= HERE_DOC_OP
+// 				&& data->input_spec[iter] <= OUTFILE_OP))
+// 		{
+// 			data->entries[iter] = expand(data->entries[iter], data, &data->input_spec[iter]);
+// 			if (!data->entries[iter])
+// 				return (-1);
+// 		}
+// 		iter++;
+// 	}
+// 	return (0);
+// }
