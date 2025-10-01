@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/30 18:14:35 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 16:35:34 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,13 @@ int	envcmp(const char *s1, const char *s2, size_t n)
 
 int	get_env(char *buf, t_expanded_str *str, t_expand_helper *exh, char **envp)
 {
-	char	*var_value;
 	size_t	iter;
 
 	iter = 0;
 	if (buf[0] == '?')
 	{
+		if (g_current_signal == SIGINT)
+			str->exit_code = 130;
 		str->env_arr[exh->env_iter] = ft_itoa(str->exit_code);
 		if (!str->env_arr[exh->env_iter])
 			return (perror("get_env"), -1);

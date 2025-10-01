@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:20 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:33:24 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,14 @@ char	*remove_quotes(char *to_strip, size_t len)
 	}
 	stripped[stripped_iter] = '\0';
 	return (stripped);
+}
+
+size_t	skip_whitspaces(char *buf)
+{
+	size_t	iter;
+
+	iter = 0;
+	while ((buf[iter] >= 9 && buf[iter] <= 13) || buf[iter] == 32)
+		iter++;
+	return (iter);
 }

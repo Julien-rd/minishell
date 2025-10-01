@@ -6,44 +6,55 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 14:40:14 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 16:27:54 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t	skip_whitspaces(char *buf)
+static int	expand_hdoc_entry(t_entry *buf, t_input *data, int expand_flag)
 {
-	size_t	iter;
+	char	*tmp;
 
-	iter = 0;
-	while ((buf[iter] >= 9 && buf[iter] <= 13) || buf[iter] == 32)
-		iter++;
-	return (iter);
+	if (expand_flag == 0)
+		return (0);
+	tmp = expand(buf, data);
+	if (!tmp)
+		return (-1);
+	free(buf->raw_entry);
+	buf->raw_entry = tmp;
+	return (0);
 }
 
-static int	hdoc_signal_kill(char *buf, char *entry)
+static int	hdoc_mode(t_input *data, int expand_flag, char *delimiter,
+		size_t hdoc_iter)
 {
-	if (buf)
-		free(buf);
-	if (g_current_signal != 2)
+	t_entry	buf;
+	char	*tmp_str;
+
+	while (1)
 	{
-		write(2, "warning: here-document delimited by end-of-file (wanted '",
-			57);
-		write(2, entry, ft_strlen(entry));
-		write(2, "')\n", 3);
-		setup_main_signals();
-		return (0);
+		buf.raw_entry = readline("> ");
+		if (g_current_signal != 0 || !buf.raw_entry)
+			return (hdoc_signal_kill(buf.raw_entry, delimiter));
+		if (ft_strcmp(&buf.raw_entry[skip_whitspaces(buf.raw_entry)],
+				delimiter) == 0)
+			return (setup_main_signals(), free(buf.raw_entry), 0);
+		if (expand_hdoc_entry(&buf, data, expand_flag) == -1)
+			return (setup_main_signals(), free(buf.raw_entry), -1);
+		tmp_str = ft_strjointhree(data->heredoc[hdoc_iter], buf.raw_entry,
+				"\n");
+		if (!tmp_str)
+			return (perror("malloc"), setup_main_signals(), free(buf.raw_entry),
+				-1);
+		free(data->heredoc[hdoc_iter]);
+		data->heredoc[hdoc_iter] = tmp_str;
+		free(buf.raw_entry);
 	}
-	setup_main_signals();
-	return (-1);
 }
 
 static int	hdoc_entry(t_entry *iter, t_input *data, size_t hdoc_iter)
 {
-	t_entry menu;
-	char	*tmp_str;
-	char	*tmp_str2;
 	char	*delimiter;
 	int		expand_flag;
 
@@ -59,28 +70,8 @@ static int	hdoc_entry(t_entry *iter, t_input *data, size_t hdoc_iter)
 		return (-1);
 	if (ft_strncmp(delimiter, iter->raw_entry, ft_strlen(delimiter) + 1) == 0)
 		expand_flag = 1;
-	while (1)
-	{
-		menu.raw_entry = readline("> ");
-		if (g_current_signal != 0 || !menu.raw_entry)
-				return (hdoc_signal_kill(menu.raw_entry, delimiter));
-		if (ft_strcmp(&menu.raw_entry[skip_whitspaces(menu.raw_entry)], delimiter) == 0)
-			return (setup_main_signals(), free(menu.raw_entry), 0);
-		if (expand_flag == 1)
-		{
-			tmp_str2 = expand(&menu, data);
-			if (!tmp_str2)
-				return (free(menu.raw_entry), -1);
-			free(menu.raw_entry);
-			menu.raw_entry = tmp_str2;
-		}
-		tmp_str = ft_strjointhree(data->heredoc[hdoc_iter], menu.raw_entry, "\n");
-		if (!tmp_str)
-			return (perror("malloc"), setup_main_signals(), free(menu.raw_entry), -1);
-		free(data->heredoc[hdoc_iter]);
-		data->heredoc[hdoc_iter] = tmp_str;
-		free(menu.raw_entry);
-	}
+	if (hdoc_mode(data, expand_flag, delimiter, hdoc_iter) == -1)
+		return (setup_main_signals(), -1);
 	return (setup_main_signals(), 0);
 }
 

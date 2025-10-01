@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/30 18:14:29 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 16:30:18 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ char	*expanded_str(char *buf, t_input *data, t_expanded_str *str)
 	data->sgl_quote = 0;
 	exh.buf = buf;
 	exp_str = ft_calloc(sizeof(char), data->len + 1);
-	if (!exp_str)
-		return (NULL);
-	while (buf[iter])
+	while (exp_str && buf[iter])
 	{
 		toggle_quotes(buf, data, iter);
 		if (str->var_count * 2 > exh.env_pos_iter
@@ -107,7 +105,7 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 	return (0);
 }
 
-int	expand_init(t_entry	*cur, t_input *data, t_expanded_str *str)
+int	expand_init(t_entry *cur, t_input *data, t_expanded_str *str)
 {
 	size_t	iter;
 
@@ -116,7 +114,8 @@ int	expand_init(t_entry	*cur, t_input *data, t_expanded_str *str)
 	data->sgl_quote = 0;
 	while (cur->raw_entry[iter])
 	{
-		if (!quote_check(iter, cur->raw_entry, data) && cur->raw_entry[iter] == '$')
+		if (!quote_check(iter, cur->raw_entry, data)
+			&& cur->raw_entry[iter] == '$')
 		{
 			if (envlen(&cur->raw_entry[iter + 1]) > 0)
 				str->var_count++;

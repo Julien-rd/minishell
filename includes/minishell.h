@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 16:18:12 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:43:15 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void				setup_noninteractive_signals(void);
 void				sigint_prompt(int num);
 void				sigint_heredoc(int num);
 void				sigint_main(int num);
+int					hdoc_signal_kill(char *buf, char *entry);
 
 int					malloc_ops(char *buf, size_t *entry, size_t *iter,
 						t_input *data);
@@ -83,7 +84,6 @@ int					get_env(char *buf, t_expanded_str *str,
 int					check_envs(char *buf, t_input *data, t_expanded_str *str);
 char				*expanded_str(char *buf, t_input *data,
 						t_expanded_str *str);
-int					expand_entries(t_input *data);
 
 /* parse_string */
 size_t				count_entries(char *buf, t_input *data);
@@ -142,6 +142,8 @@ int					safe_write(int fd, char *buf, size_t len);
 void				free2d(char ***str);
 long long			ft_atoll(const char *str);
 char				*remove_quotes(char *to_strip, size_t len);
+size_t				skip_whitspaces(char *buf);
+
 
 
 /**********************************  BUILD_ENTRY_LIST  ********************************************/
