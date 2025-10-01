@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 09:16:59 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 12:15:44 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ static int	hdoc_entry(char *entry, t_exec *data, size_t hdoc_iter)
 	char	*tmp_str;
 
 	if (entry == NULL)
+	{
 		return (1);
+	}
 	setup_heredoc_signals();
 	data->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!data->heredoc[hdoc_iter])

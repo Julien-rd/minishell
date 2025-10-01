@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 11:01:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 12:29:11 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	cmd_init(t_cmd *cmd)
 			iter = -1;
 			while(l_iter->expanded && l_iter->expanded[++iter])
 				cmd->cmd[cmd_iter++] = l_iter->expanded[iter];
-			l_iter = l_iter->next;
-		}
+			}
+		l_iter = l_iter->next;
 	}
 	cmd->cmd[cmd_iter] = NULL;
 	iter = -1;

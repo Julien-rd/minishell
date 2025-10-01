@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 10:27:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 12:36:34 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int	setup_redirect(t_exec *data, t_cmd *cmd)
 	t_entry	*iter;
 
 	iter = cmd->line;
-	fflush(stdout);
 	if (pipe_init(data) == -1)
 		return (-1);
 	while (iter && iter->spec != PIPE)
