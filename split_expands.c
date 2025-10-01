@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:55:41 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:05:57 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ int	split_expands(char *exp_str, t_entry *entry, t_input *data)
 
 	iter = 0;
 	head = NULL;
-	data->dbl_quote = 0;
-	data->sgl_quote = 0;
 	if (!exp_str[0])
 		return (0);
 	while (exp_str[iter])
