@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 13:46:03 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:18:12 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,4 +143,8 @@ void				free2d(char ***str);
 long long			ft_atoll(const char *str);
 char				*remove_quotes(char *to_strip, size_t len);
 
+
+/**********************************  BUILD_ENTRY_LIST  ********************************************/
+
+int	build_entry_list(char *buf, t_input *data);
 #endif

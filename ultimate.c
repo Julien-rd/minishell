@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ultimate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:22:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 14:59:57 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 16:40:53 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ void	lstadd(t_entry **lst, t_entry *new)
 {
 	t_entry	*last;
 
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	
 	last = lstlast(*lst);
 	last->next = new;
 }
@@ -108,74 +114,6 @@ int	token_len(char *buf, t_input *data, size_t iter)
 		iter++;
 	}
 	return (count);
-}
-
-int	create_list(char *buf, t_input *data)
-{
-	size_t	iter;
-	size_t	entry_len;
-	t_entry	*entry;
-	char	*raw_str;
-
-	data->entries = NULL;
-	iter = 0;
-	while (buf[iter])
-	{
-		entry_len = token_len(buf, data, iter);
-		if (!entry_len)
-		{
-			iter++;
-			continue ;
-		}
-		raw_str = malloc((entry_len + 1) * sizeof(char));
-		if (!raw_str)
-			return (perror("create_list"), -1);
-		ft_strlcpy(raw_str, &buf[iter], entry_len + 1);
-		entry = newnode(raw_str);
-		if (data->entries == NULL)
-			data->entries = entry;
-		else
-			lstadd(&data->entries, entry);
-		iter += entry_len;
-	}
-	return (0);
-}
-
-void	entry_spec(t_input *data)
-{
-	t_entry	*cur;
-
-	cur = data->entries;
-	while (cur)
-	{
-		if (!ft_strcmp(cur->raw_entry, "<<"))
-		{
-			cur->spec = HERE_DOC_OP;
-			if (cur->next)
-				cur->next->spec = HERE_DOC;
-		}
-		else if (!ft_strcmp(cur->raw_entry, ">>"))
-		{
-			cur->spec = APPEND_OP;
-			if (cur->next)
-				cur->next->spec = APPEND_FILE;
-		}
-		else if (!ft_strcmp(cur->raw_entry, "<"))
-		{
-			cur->spec = INFILE_OP;
-			if (cur->next)
-				cur->next->spec = INFILE;
-		}
-		else if (!ft_strcmp(cur->raw_entry, ">"))
-		{
-			cur->spec = OUTFILE_OP;
-			if (cur->next)
-				cur->next->spec = OUTFILE;
-		}
-		else if (!ft_strcmp(cur->raw_entry, "|"))
-			cur->spec = PIPE;
-		cur = cur->next;
-	}
 }
 
 size_t	exp_len(char *env)
@@ -345,7 +283,7 @@ int	expansion(t_input *data)
 			{
 				if (g_current_signal == SIGINT)
 					data->exit_code = 130;
-				if (g_current_signal != SIGINT)
+				else
 				{
 					free2d(&data->envp);
 					data->exit_code = 0;
@@ -355,18 +293,5 @@ int	expansion(t_input *data)
 		}
 		cur = cur->next;
 	}
-	return (0);
-}
-
-int	ultimate(char *buf, t_input *data)
-{
-	// create list with raw elements
-	if (create_list(buf, data) == -1)
-		return (-1);
-	// specify operators, files, DEFAULTS
-	entry_spec(data);
-	// expand each raw_entry inside list_node
-	if (expansion(data) == -1)
-		return (-1);
 	return (0);
 }
