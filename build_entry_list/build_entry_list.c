@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 18:56:54 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	here_doc_caller(t_input *data)
 				data->exit_code = 130;
 			else
 			{
-				free2d(&data->envp->vars);
+				free2d(&data->envp.vars);
 				data->exit_code = 0;
 			}
 			return (-1);

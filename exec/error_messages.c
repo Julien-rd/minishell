@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:08:27 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	execute_if_cmd_not_found(char *path, t_exec *data, t_cmd *cmd, int *
 			return (perror("dup2"), close(fd), child_exit_handle(data, cmd, 1));
 		close(fd);
 		prepare_arg(argv, data, cmd);
-		execve("./minishell", argv, data->envp->vars);
+		execve("./minishell", argv, data->envp.vars);
 		return (perror("execve"), child_exit_handle(data, cmd, 1));
 	}
 	*error = errno;
@@ -113,7 +113,7 @@ void	builtin_handler(t_exec *data, t_cmd *cmd)
 	else if (data->cmd_flag == PWD)
 		pwd(data, cmd, flag);
 	else if (data->cmd_flag == ENV)
-		env(data->envp->vars, data, cmd, flag);
+		env(data->envp.vars, data, cmd, flag);
 	else
 		internal_cmd_error(data, cmd, flag);
 }
