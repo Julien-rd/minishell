@@ -3,12 +3,12 @@ CC = cc
 INC_DIR = includes
 CFLAGS = -Ilibft_00 -MMD -g -I$(INC_DIR)
 OBJ_DIR = obj
-VPATH = exec/cmd_execution parse parse/parse_string parse/expand exec core get_next_line
-SRC = export.c unset.c cd.c helper.c own_cmds.c error_messages.c file_management.c internal_cmd_error.c \
-check_cmd.c read_line.c signal_handling.c parse_string.c parse_string_ops.c \
-parse_string_helpers.c expand_input.c expand_input_utils.c here_doc.c \
-execute_cmds.c find_path.c exec_input.c expanded_input_utils2.c get_next_line.c \
-get_next_line_utils.c non_interactive.c signal_handler.c parse_and_execute.c ultimate.c
+VPATH = exec/cmd_execution build_entry_list exec core core/signals get_next_line build_entry_list/expand build_entry_list/here_doc
+SRC = split_expands.c syntax_check.c build_entry_list.c build_helpers.c export.c unset.c cd.c helper.c own_cmds.c error_messages.c file_management.c internal_cmd_error.c \
+check_cmd.c main.c signal_handlers.c \
+expand.c expand_helper.c expand_helper2.c here_doc.c \
+execute_cmds.c find_path.c exec_central.c get_next_line.c \
+get_next_line_utils.c non_interactive.c signal_setups.c parse_and_execute.c
 
 OBJ = $(SRC:%.c=obj/%.o)
 DEP = $(SRC:%.c=obj/%.d)

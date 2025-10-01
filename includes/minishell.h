@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 16:43:15 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 18:35:01 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,9 @@
 
 extern volatile int	g_current_signal;
 
-void				entry_spec(t_input *data);
-int					parse_and_execute(char *buf, t_input *data, int flag);
-int					ultimate(char *buf, t_input *data);
+/*********************************************  CORE  *********************************************/
 
-// NONINTERACTIVE
-void				non_interactive(t_input *data);
-
-// SIGNALS
+/******  Signals  ******/
 void				setup_heredoc_signals(void);
 void				setup_main_signals(void);
 void				setup_child_signals(void);
@@ -65,13 +60,36 @@ void				sigint_heredoc(int num);
 void				sigint_main(int num);
 int					hdoc_signal_kill(char *buf, char *entry);
 
+/******  Helpers  ******/
+int					safe_write(int fd, char *buf, size_t len);
+void				free2d(char ***str);
+long long			ft_atoll(const char *str);
+char				*remove_quotes(char *to_strip, size_t len);
+size_t				skip_whitspaces(char *buf);
+int					is_whitespace(char c);
+int					toggle_quotes(char *str, t_input *data, size_t iter);
+int					is_token(char c);
+
+/***************************************  BUILD_ENTRY_LIST  ***************************************/
+
+int	build_entry_list(char *buf, t_input *data);
+
+//BUILD_HELPERS
+t_entry				*lstlast(t_entry *lst);
+void				lstadd(t_entry **lst, t_entry *new);
+t_entry				*newnode(char *raw_str);
+int					parse_and_execute(char *buf, t_input *data, int flag);
+
+// NONINTERACTIVE
+void				non_interactive(t_input *data);
+
 int					malloc_ops(char *buf, size_t *entry, size_t *iter,
 						t_input *data);
 void				fill_ops(char *buf, size_t *entry, size_t *iter,
 						t_input *data);
 void				fill_string(t_input *data);
 
-/* expand string */
+/********************************************* EXPAND *********************************************/
 int					expand_init(t_entry *cur, t_input *data,
 						t_expanded_str *str);
 int					quote_check(size_t iter, char *buf, t_input *data);
@@ -95,9 +113,7 @@ int					syntax_check(t_input *data);
 
 /* parse_string_helpers */
 int					token_len(char *buf, t_input *data, size_t iter);
-int					is_token(char c);
 int					is_closed(char *str);
-int					toggle_quotes(char *str, t_input *data, size_t iter);
 
 /* parse_string_ops */
 void				op_count(char *buf, size_t *iter, size_t *count);
@@ -138,15 +154,5 @@ void				command_fail(char *path, t_exec *data, t_cmd *cmd);
 void				builtin_handler(t_exec *data, t_cmd *cmd);
 
 // helper
-int					safe_write(int fd, char *buf, size_t len);
-void				free2d(char ***str);
-long long			ft_atoll(const char *str);
-char				*remove_quotes(char *to_strip, size_t len);
-size_t				skip_whitspaces(char *buf);
 
-
-
-/**********************************  BUILD_ENTRY_LIST  ********************************************/
-
-int	build_entry_list(char *buf, t_input *data);
 #endif

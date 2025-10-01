@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 16:33:24 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 18:23:16 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,34 @@ int	safe_write(int fd, char *buf, size_t len)
 	if (write(fd, buf, len) == -1)
 		return (perror("write"), -1);
 	return (0);
+}
+
+int	is_token(char c)
+{
+	if (c == 32 || (c >= 9 && c <= 13) || c == '>' || c == '<' || c == '|')
+		return (0);
+	return (1);
+}
+
+int	is_whitespace(char c)
+{
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
+}
+
+int	toggle_quotes(char *buf, t_input *data, size_t iter)
+{
+	int	r_value;
+
+	r_value = 0;
+	if (buf[iter] == '\'' && !data->dbl_quote && (data->sgl_quote
+		|| (ft_strchr(&buf[iter + 1], '\''))) && ++r_value)
+		data->sgl_quote = !data->sgl_quote;
+	else if (buf[iter] == '\"' && !data->sgl_quote && (data->dbl_quote
+			|| (ft_strchr(&buf[iter + 1], '\"'))) && ++r_value)
+		data->dbl_quote = !data->dbl_quote;
+	return (r_value);
 }
 
 long long	ft_atoll(const char *str)

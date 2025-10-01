@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 13:28:54 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:45:36 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_cmd
 {
 	char			**cmd;
 	t_entry			*line;
-	// char			**line;
 	int				*line_spec;
 }					t_cmd;
 
@@ -56,7 +55,7 @@ typedef struct s_input
 	char			**heredoc;
 	size_t			envp_count;
 	size_t			envp_malloc;
-	char			*exp_str;
+	// char			*exp_str;
 	t_entry			*entries;
 	int				*input_spec;
 	size_t			total_entries;
