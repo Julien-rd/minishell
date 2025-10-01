@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 15:02:39 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 10:32:23 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,32 @@
 
 int	cmd_init(t_cmd *cmd)
 {
-	size_t	iter;
+	t_entry	*l_iter;
 	size_t	cmd_tokens;
 	size_t	cmd_iter;
+	size_t	iter;
 
-	iter = 0;
+	iter = cmd->line;
 	cmd_tokens = 0;
-	while (cmd->line_spec[iter] != END && cmd->line_spec[iter] != PIPE)
+	while (iter && iter->spec != PIPE)
 	{
-		if (cmd->line_spec[iter] == DEFAULT)
+		if (iter->spec == DEFAULT)
+		{
+
 			cmd_tokens++;
-		iter++;
+		}
+		iter = iter->next;
 	}
 	cmd->cmd = malloc((cmd_tokens + 1) * sizeof(char *));
 	if (!cmd->cmd)
 		return (-1);
-	iter = 0;
+	iter = cmd->line;;
 	cmd_iter = 0;
-	while (cmd->line_spec[iter] != END && cmd->line_spec[iter] != PIPE)
+	while (iter && iter->spec != PIPE)
 	{
-		if (cmd->line_spec[iter] == DEFAULT)
-			cmd->cmd[cmd_iter++] = cmd->line[iter];
-		iter++;
+		if (iter->spec == DEFAULT)
+			cmd->cmd[cmd_iter++] = iter->expanded[0];
+		iter = iter->next;
 	}
 	cmd->cmd[cmd_iter] = NULL;
 	return (0);
@@ -43,13 +47,13 @@ int	cmd_init(t_cmd *cmd)
 
 void	child_exit_handle(t_exec *data, t_cmd *cmd, int errcode)
 {
-	free2d(&data->envp);
-	free2d(&data->entries);
-	free(data->input_spec);
-	free(data->pipe_position);
-	free(cmd->cmd);
-	if (data->heredoc)
-		free2d(&data->heredoc);
+	// free2d(&data->envp);
+	// free2d(&data->entries);
+	// free(data->input_spec);
+	// free(data->pipe_position);
+	// free(cmd->cmd);
+	// if (data->heredoc)
+	// 	free2d(&data->heredoc);
 	exit(errcode);
 }
 
@@ -58,7 +62,7 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	char	*path;
 	int		flag;
 
-	setup_child_signals();
+	setup_child_signals();;
 	if (setup_redirect(data, cmd) == -1)
 		child_exit_handle(data, cmd, 1);
 	if (cmd->cmd[0] == NULL)
@@ -69,7 +73,8 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	if (path == NULL)
 		command_fail(path, data, cmd);
 	execve(path, cmd->cmd, data->envp);
-	execve_fail(path, errno, data, cmd);
+	// execve_fail(path, errno, data, cmd);
+	exit(1);
 }
 
 void	parent_process(t_exec *data)
@@ -138,17 +143,37 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 		return (unset(cmd->cmd, data));
 	return (0);
 }
+void find_start(t_cmd	*cmd, t_exec *data, size_t pipe_count)
+{
+	t_entry	*l_iter;
+	size_t iter;
+	
+	iter = 0;
+	(void) pipe_count;
+	l_iter = data->list;
+	while(l_iter && iter < data->pipe_position[data->pipe_iter])
+	{
+		l_iter = l_iter->next;
+		iter++;
+	}
+	cmd->line = l_iter;
+	// cmd->line_spec = &l_iter->spec;
+}
 
 int	execute_cmds(t_exec *data)
 {
 	t_cmd	cmd;
+	t_entry	*iter;
 
 	data->hdoc_iter = 0;
 	data->pipe_iter = 0;
 	while (data->pipe_iter <= data->pipe_count)
 	{
-		cmd.line = &data->entries[data->pipe_position[data->pipe_iter]];
-		cmd.line_spec = &data->input_spec[data->pipe_position[data->pipe_iter]];
+		// cmd.line = &data->entries[data->pipe_position[data->pipe_iter]];
+		// cmd.line_spec = &data->input_spec[data->pipe_position[data->pipe_iter]];
+		find_start(&cmd, data, data->pipe_iter);
+		// printf("%d\n", cmd.line_spec[0]);
+		// exit(0);
 		if (cmd_init(&cmd) == -1)
 			return (perror("cmd_init"), -1);
 		if (data->pipe_iter != data->pipe_count)

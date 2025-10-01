@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/30 19:15:29 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 09:16:59 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ size_t	operator_count(t_exec *data)
 	t_entry	*iter;
 
 	iter = data->list;
-	iter = 0;
 	hdoc_count = 0;
 	while (iter != NULL)
 	{

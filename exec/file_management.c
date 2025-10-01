@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/29 13:20:33 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 10:27:16 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int	outfile_init(char *file_name, int flag)
 {
 	int	fd_out;
 
-	fd_out = open(file_name, O_WRONLY | O_CREAT | (flag == OUTFILE)
-			* O_TRUNC + (flag == APPEND_FILE) * O_APPEND, 0644);
+	fd_out = open(file_name, O_WRONLY | O_CREAT | (flag == OUTFILE) * O_TRUNC
+			+ (flag == APPEND_FILE) * O_APPEND, 0644);
 	if (fd_out == -1)
 		return (perror(file_name), -1);
 	if (dup2(fd_out, 1) == -1)
@@ -79,29 +79,46 @@ int	outfile_init(char *file_name, int flag)
 		return (perror(file_name), -1);
 	return (0);
 }
+static int	ambiguous(t_entry *iter)
+{
+	if (!(iter->spec == INFILE || iter->spec == OUTFILE || iter->spec == APPEND_FILE))
+		return (0);
+	if (iter->expanded == NULL || (iter->expanded[0] && iter->expanded[1]))
+	{
+		if (safe_write(2, iter->raw_entry, ft_strlen(iter->raw_entry)) == -1)
+			return (-1);
+		if (safe_write(2, ": ambiguous redirect\n", 21) == -1)
+			return (-1);
+		return (1);
+	}
+	return (0);
+}
 
 int	setup_redirect(t_exec *data, t_cmd *cmd)
 {
-	size_t	iter;
+	t_entry	*iter;
 
-	iter = 0;
+	iter = cmd->line;
+	fflush(stdout);
 	if (pipe_init(data) == -1)
 		return (-1);
-	while (cmd->line_spec[iter] != END && cmd->line_spec[iter] != PIPE)
+	while (iter && iter->spec != PIPE)
 	{
-		if (cmd->line_spec[iter] == INFILE)
-			if (infile_init(cmd->line[iter]) == -1)
+		if (ambiguous(iter))
+			return (-1);
+		if (iter->spec == INFILE)
+			if (infile_init(iter->expanded[0]) == -1)
 				return (-1);
-		if (cmd->line_spec[iter] == HERE_DOC)
+		if (iter->spec == HERE_DOC)
 			if (heredoc_init(data) == -1)
 				return (-1);
-		if (cmd->line_spec[iter] == OUTFILE)
-			if (outfile_init(cmd->line[iter], OUTFILE) == -1)
+		if (iter->spec == OUTFILE)
+			if (outfile_init(iter->expanded[0], OUTFILE) == -1)
 				return (-1);
-		if (cmd->line_spec[iter] == APPEND_FILE)
-			if (outfile_init(cmd->line[iter], APPEND_FILE) == -1)
+		if (iter->spec == APPEND_FILE)
+			if (outfile_init(iter->expanded[0], APPEND_FILE) == -1)
 				return (-1);
-		iter++;
+		iter = iter->next;
 	}
 	return (0);
 }

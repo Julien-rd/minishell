@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/30 18:57:13 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 08:49:47 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ typedef struct s_expanded_str
 typedef struct s_cmd
 {
 	char			**cmd;
-	char			**line;
+	t_entry			*line;
+	// char			**line;
 	int				*line_spec;
 }					t_cmd;
 

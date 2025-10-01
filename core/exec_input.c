@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/30 19:13:37 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 09:39:12 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static int	init_pipe_pos(t_exec *data)
 	if (!data->pipe_position)
 		return (-1);
 	data->pipe_position[0] = 0;
-	iter = 0;
 	p_iter = 1;
 	while (iter != NULL)
 	{
@@ -38,11 +37,6 @@ static int	init_pipe_pos(t_exec *data)
 	}
 	return (0);
 }
-char			*raw_entry;
-int				spec;
-char			**expanded;
-int				exp_count;
-struct s_entry	*next;
 
 static int	init_data(t_exec *data, t_input *input, char **envp)
 {
@@ -77,8 +71,8 @@ int	exec_central(t_input *input)
 	if (init_data(&data, input, input->envp) == -1)
 		return (-1);
 	exit_code = execute_cmds(&data);
-	free(data.input_spec);
-	free2d(&data.entries);
+	// free(data.input_spec);
+	// free2d(&data.entries);
 	free(data.pipe_position);
 	free2d(&data.heredoc);
 	input->envp_count = data.envp_count;
