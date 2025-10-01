@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 18:57:04 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 		if (!quote_check(iter, buf, data) && buf[iter] == '$' && exh.len
 			&& str->var_count)
 		{
-			exh.env_return = get_env(&buf[iter + 1], str, &exh, data->envp->vars);
+			exh.env_return = get_env(&buf[iter + 1], str, &exh, data->envp.vars);
 			if (check_return_get_env(iter, str, &exh, data) == -1)
 				return (-1);
 			iter += exh.len;

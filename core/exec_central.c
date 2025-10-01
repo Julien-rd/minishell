@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_central.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:31:03 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 19:39:04 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ static int	init_pipe_pos(t_exec *data)
 static int	init_data(t_exec *data, t_input *input, char **envp)
 {
 	data->envp = input->envp;
-	data->envp->count = input->envp->count;
-	data->envp->malloc = input->envp->malloc;
+	data->envp.count = input->envp.count;
+	data->envp.malloc = input->envp.malloc;
 	data->entries = input->entries;
 	data->pipe_count = 0;
 	data->exit = 0;
 	data->exit_code = input->exit_code;
 	data->heredoc = input->heredoc;
 	if (init_pipe_pos(data) == -1)
-		return (free2d(&data->heredoc), free2d(&data->envp->vars), -1);
+		return (free2d(&data->heredoc), free2d(&data->envp.vars), -1);
 	return (0);
 }
 
@@ -70,15 +70,15 @@ int	exec_central(t_input *input)
 
 	exit_code = 0;
 	// return -1;
-	if (init_data(&data, input, input->envp->vars) == -1)
+	if (init_data(&data, input, input->envp.vars) == -1)
 		return (-1);
 	exit_code = execute_cmds(&data);
 	free(data.pipe_position);
 	// free2d(&data.heredoc);
-	input->envp->count = data.envp->count;
-	input->envp->malloc = data.envp->malloc;
+	input->envp.count = data.envp.count;
+	input->envp.malloc = data.envp.malloc;
 	input->exit = data.exit;
 	if (exit_code == -1)
-		free2d(&data.envp->vars);
+		free2d(&data.envp.vars);
 	return (exit_code);
 }
