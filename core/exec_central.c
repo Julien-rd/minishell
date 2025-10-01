@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_central.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:07:55 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 19:19:31 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	count_pipes(t_exec *data)
 {
 	t_entry	*node;
 
-	node = data->list;
+	node = data->entries;
 	while (node != NULL)
 	{
 		if (node->spec == PIPE)
@@ -37,7 +37,7 @@ static int	init_pipe_pos(t_exec *data)
 		return (-1);
 	data->pipe_position[iter++] = 0;
 	counter = 0;
-	node = data->list;
+	node = data->entries;
 	while (node != NULL)
 	{
 		if (node->spec == PIPE)
@@ -53,7 +53,7 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	data->envp = input->envp;
 	data->envp->count = input->envp->count;
 	data->envp->malloc = input->envp->malloc;
-	data->list = input->entries;
+	data->entries = input->entries;
 	data->pipe_count = 0;
 	data->exit = 0;
 	data->exit_code = input->exit_code;

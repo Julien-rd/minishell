@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 18:59:35 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:18:12 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_cmd
 {
 	char			**cmd;
 	t_entry			*line;
-	int				*line_spec;
 }					t_cmd;
 
 typedef struct s_envp
@@ -60,9 +59,7 @@ typedef struct s_input
 {
 	t_envp			*envp;
 	char			**heredoc;
-	// char			*exp_str;
 	t_entry			*entries;
-	// size_t			total_entries;
 	int				sgl_quote;
 	int				dbl_quote;
 	size_t			len;
@@ -76,9 +73,7 @@ typedef struct s_exec
 
 	char			**heredoc;
 	size_t			hdoc_iter;
-	t_entry			*list;
-	char			**entries;
-	int				*input_spec;
+	t_entry			*entries;
 
 	int				*pipe_position;
 	size_t			pipe_iter;
