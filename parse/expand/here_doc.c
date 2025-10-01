@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 13:43:41 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:48:48 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,6 @@ static int	hdoc_signal_kill(char *buf, char *entry)
 	return (-1);
 }
 
-// static char *extract_delimiter(char *entry, int *expand)
-// {
-// 	int len;
-// 	size_t iter;
-// 	char *str;
-
-// 	len = ft_strlen(entry);
-// 	str = ft_calloc(sizeof(char), len + 1);
-// 	while(entry[iter])
-// 	{
-
-// 	}
-// 	if (entry[0] == '\"' && entry[1] && entry[len - 1] == '\"')
-// 	{
-// 		*expand = 1;
-// 	}
-// 	else
-// 	{
-// 		*expand = 0;
-// 	}
-// }
-
 static int	hdoc_entry(t_entry *iter, t_input *data, size_t hdoc_iter)
 {
 	t_entry menu;
@@ -71,13 +49,14 @@ static int	hdoc_entry(t_entry *iter, t_input *data, size_t hdoc_iter)
 
 	expand_flag = 0;
 	if (iter->raw_entry == NULL)
-		return (1);
+		return (-1);
 	setup_heredoc_signals();
 	data->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!data->heredoc[hdoc_iter])
 		return (setup_main_signals(), -1);
-	// delimiter = remove_quotes(iter->raw_entry);
-	delimiter = iter->raw_entry;
+	delimiter = remove_quotes(iter->raw_entry, ft_strlen(iter->raw_entry));
+	if (!delimiter)
+		return (-1);
 	if (ft_strncmp(delimiter, iter->raw_entry, ft_strlen(delimiter) + 1) == 0)
 		expand_flag = 1;
 	while (1)

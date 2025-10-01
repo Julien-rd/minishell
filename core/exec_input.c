@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 13:34:49 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:54:45 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	exec_central(t_input *input)
 	// free(data.input_spec);
 	// free2d(&data.entries);
 	free(data.pipe_position);
-	free2d(&data.heredoc);
+	// free2d(&data.heredoc);
 	input->envp_count = data.envp_count;
 	input->envp_malloc = data.envp_malloc;
 	input->exit = data.exit;

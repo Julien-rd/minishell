@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 13:43:33 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:20 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	*remove_quotes(char *to_strip, size_t len)
 	t_input	data;
 	char	*stripped;
 	
+	stripped_iter = 0;
 	data.dbl_quote = 0;
 	data.sgl_quote = 0;
 	stripped = malloc((len + 1) * sizeof(char));
