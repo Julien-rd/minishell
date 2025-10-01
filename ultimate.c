@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:22:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 13:34:15 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 14:59:57 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,27 +338,18 @@ int	expansion(t_input *data)
 				return (-1);
 			if (expanded_split(expanded_str, cur, data) == -1)
 				return (-1);
-			// test = 0;
-			// printf("ENTRY: \n<\n");
-			// printf("pointer: %p\n", cur->expanded);
-			// printf("exp_count: [%d]\n", cur->exp_count);
-			// if (cur->expanded)
-			// {
-			// 	while (cur->expanded[test])
-			// 	{
-			// 		printf("content: [%s]\n", cur->expanded[test]);
-			// 		test++;
-			// 	}
-			// 	fflush(stdout);
-			// }
-			// printf(">\n");
 		}
 		else if (cur->spec == HERE_DOC_OP)
 		{
 			if (here_doc(data) == -1)
 			{
+				if (g_current_signal == SIGINT)
+					data->exit_code = 130;
 				if (g_current_signal != SIGINT)
+				{
 					free2d(&data->envp);
+					data->exit_code = 0;
+				}
 				return (-1);
 			}
 		}

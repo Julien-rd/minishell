@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 13:48:48 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:40:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static int	hdoc_entry(t_entry *iter, t_input *data, size_t hdoc_iter)
 	{
 		menu.raw_entry = readline("> ");
 		if (g_current_signal != 0 || !menu.raw_entry)
-			if (g_current_signal != 0 || !menu.raw_entry)
 				return (hdoc_signal_kill(menu.raw_entry, delimiter));
 		if (ft_strcmp(&menu.raw_entry[skip_whitspaces(menu.raw_entry)], delimiter) == 0)
 			return (setup_main_signals(), free(menu.raw_entry), 0);
