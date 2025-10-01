@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 14:24:24 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 19:06:05 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	cmd_init(t_cmd *cmd)
 
 void	child_exit_handle(t_exec *data, t_cmd *cmd, int errcode)
 {
-	// free2d(&data->envp);
+	// free2d(&data->envp->vars);
 	// free2d(&data->entries);
 	// free(data->input_spec);
 	// free(data->pipe_position);
@@ -75,10 +75,10 @@ void	child_process(t_exec *data, t_cmd *cmd)
 		child_exit_handle(data, cmd, 0);
 	if (data->cmd_flag != EXTERNAL)
 		builtin_handler(data, cmd);
-	path = ft_getpath(data->envp, cmd->cmd[0]); // splitfail malloc
+	path = ft_getpath(data->envp->vars, cmd->cmd[0]); // splitfail malloc
 	if (path == NULL || cmd->cmd[0][0] == 0)
 		command_fail(path, data, cmd);
-	execve(path, cmd->cmd, data->envp);
+	execve(path, cmd->cmd, data->envp->vars);
 	execve_fail(path, errno, data, cmd);
 }
 

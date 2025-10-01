@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 17:22:33 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:05:00 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static int	init_pipe_pos(t_exec *data)
 static int	init_data(t_exec *data, t_input *input, char **envp)
 {
 	data->envp = input->envp;
-	data->envp_count = input->envp_count;
-	data->envp_malloc = input->envp_malloc;
+	data->envp->count = input->envp->count;
+	data->envp->malloc = input->envp->malloc;
 	data->list = input->entries;
 	// data->input_spec = input->input_spec;
 	// data->entries = input->entries;
@@ -60,7 +60,7 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	// 	free(input->exp_str);
 	data->heredoc = input->heredoc;
 	if (init_pipe_pos(data) == -1)
-		return (free2d(&data->heredoc), free2d(&data->envp), -1);
+		return (free2d(&data->heredoc), free2d(&data->envp->vars), -1);
 	return (0);
 }
 
@@ -70,17 +70,17 @@ int	exec_central(t_input *input)
 	int		exit_code;
 
 	exit_code = 0;
-	if (init_data(&data, input, input->envp) == -1)
+	if (init_data(&data, input, input->envp->vars) == -1)
 		return (-1);
 	exit_code = execute_cmds(&data);
 	// free(data.input_spec);
 	// free2d(&data.entries);
 	free(data.pipe_position);
 	// free2d(&data.heredoc);
-	input->envp_count = data.envp_count;
-	input->envp_malloc = data.envp_malloc;
+	input->envp->count = data.envp->count;
+	input->envp->malloc = data.envp->malloc;
 	input->exit = data.exit;
 	if (exit_code == -1)
-		free2d(&data.envp);
+		free2d(&data.envp->vars);
 	return (exit_code);
 }

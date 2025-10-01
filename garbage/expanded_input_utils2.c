@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_input_utils2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 14:03:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 19:02:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@
 // 		exh.len = envlen(&buf[iter + 1]);
 // 		if (!quote_check(iter, buf, data) && buf[iter] == '$' && exh.len)
 // 		{
-// 			exh.env_return = get_env(&buf[iter + 1], str, &exh, data->envp);
+// 			exh.env_return = get_env(&buf[iter + 1], str, &exh, data->envp->vars);
 // 			if (check_return_get_env(iter, str, &exh, data) == -1)
 // 				return (-1);
 // 			iter += exh.len;

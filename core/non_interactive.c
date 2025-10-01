@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 18:03:40 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:02:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void	non_interactive(t_input *data)
 		free(buf);
 		buf = get_next_line(STDIN_FILENO);
 	}
-	free2d(&data->envp);
+	free2d(&data->envp->vars);
 	exit(data->exit_code);
 }

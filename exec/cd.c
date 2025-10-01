@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/28 12:35:52 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:02:42 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,19 @@ int envp_pwd(t_exec *data, char	*tmp_cwd)
 	size_t	iter;
 
 	iter = 0;
-	while (data->envp[iter])
+	while (data->envp->vars[iter])
 	{
-		if (!ft_strncmp(data->envp[iter], "OLDPWD=", 7))
+		if (!ft_strncmp(data->envp->vars[iter], "OLDPWD=", 7))
 		{
-			if (update_pwd_entry(&data->envp[iter], "OLDPWD=", tmp_cwd) == -1)
+			if (update_pwd_entry(&data->envp->vars[iter], "OLDPWD=", tmp_cwd) == -1)
 				return (-1);
 		}
-		if (!ft_strncmp(data->envp[iter], "PWD=", 4))
+		if (!ft_strncmp(data->envp->vars[iter], "PWD=", 4))
 		{
 			cwd = getcwd(NULL, 0);
 			if (!cwd)
 				return (perror("cd"), -1);
-			if (update_pwd_entry(&data->envp[iter], "PWD=", cwd) == -1)
+			if (update_pwd_entry(&data->envp->vars[iter], "PWD=", cwd) == -1)
 				return (-1);
 			free(cwd);
 		}
