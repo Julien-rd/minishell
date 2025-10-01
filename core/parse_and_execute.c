@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 18:03:32 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 21:36:09 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	parse_and_execute(char *buf, t_input *data, int flag)
 		return (0);
 	if (flag == NONINTERACTIVE)
 		buf[len - 1] = '\0';
-	if (build_entry_list(buf, data) == -1)
+	if (parsing(buf, data) == -1)
 		return (-1);
 	if (syntax_check(data) == -1)
 		return (data->exit_code = 2, 0);

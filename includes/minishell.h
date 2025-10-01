@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 20:52:53 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 21:35:42 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ int					is_whitespace(char c);
 int					toggle_quotes(char *str, t_input *data, size_t iter);
 int					is_token(char c);
 
-/***************************************  BUILD_ENTRY_LIST  ***************************************/
+/*******************************************  PARSING  *******************************************/
 
-int					build_entry_list(char *buf, t_input *data);
+int					parsing(char *buf, t_input *data);
 
 // BUILD_HELPERS
 t_entry				*lstlast(t_entry *lst);

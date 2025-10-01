@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 21:05:03 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 21:29:39 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ void find_start(t_cmd	*cmd, t_exec *data)
 		iter++;
 	}
 	cmd->line = l_iter;
-	// cmd->line_spec = &l_iter->spec;
 }
 
 int	execute_cmds(t_exec *data)
