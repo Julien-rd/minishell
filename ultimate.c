@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ultimate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:22:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 10:46:14 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 12:28:38 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,24 @@
 
 #include "minishell.h"
 
-t_entry	*lstlast(t_entry *lst)
+t_entry *lstlast(t_entry *lst)
 {
 	while (lst->next != NULL)
 		lst = lst->next;
 	return (lst);
 }
 
-void	lstadd(t_entry **lst, t_entry *new)
+void lstadd(t_entry **lst, t_entry *new)
 {
-	t_entry	*last;
+	t_entry *last;
 
 	last = lstlast(*lst);
 	last->next = new;
 }
 
-t_entry	*newnode(char *raw_str)
+t_entry *newnode(char *raw_str)
 {
-	t_entry	*new_lst;
+	t_entry *new_lst;
 
 	new_lst = malloc(sizeof(t_entry));
 	if (new_lst == NULL)
@@ -51,7 +51,14 @@ t_entry	*newnode(char *raw_str)
 	return (new_lst);
 }
 
-int	is_whitespace(char c)
+int	is_token(char c)
+{
+	if (c == 32 || (c >= 9 && c <= 13) || c == '>' || c == '<' || c == '|')
+		return (0);
+	return (1);
+}
+
+int is_whitespace(char c)
 {
 	if (c == 32 || (c >= 9 && c <= 13))
 		return (1);
@@ -68,15 +75,32 @@ int	is_whitespace(char c)
 // 		data->dbl_quote = !data->dbl_quote;
 // }
 
-int	token_len(char *buf, t_input *data, size_t iter)
+int operator_case(char *buf, t_input *data, size_t iter)
 {
-	size_t	count;
+	if (buf[iter] == '|')
+		return (1);
+	if (buf[iter] == '>' && buf[iter + 1] != '>')
+		return (1);
+	if (buf[iter] == '<' && buf[iter + 1] != '<')
+		return (1);
+	if (buf[iter] == '>' && buf[iter + 1] == '>')
+		return (2);
+	if (buf[iter] == '<' && buf[iter + 1] == '<')
+		return (2);
+	return (0);
+}
+
+int token_len(char *buf, t_input *data, size_t iter)
+{
+	size_t count;
 
 	count = 0;
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
-	while (data->dbl_quote || data->sgl_quote || (buf[iter]
-			&& !is_whitespace(buf[iter])))
+	count = operator_case(buf, data, iter);
+	if (count > 0)
+		return (count);
+	while (data->dbl_quote || data->sgl_quote || (buf[iter] && is_token(buf[iter])))
 	{
 		toggle_quotes(buf, data, iter);
 		count++;
@@ -85,12 +109,12 @@ int	token_len(char *buf, t_input *data, size_t iter)
 	return (count);
 }
 
-int	create_list(char *buf, t_input *data)
+int create_list(char *buf, t_input *data)
 {
-	size_t	iter;
-	size_t	entry_len;
-	t_entry	*entry;
-	char	*raw_str;
+	size_t iter;
+	size_t entry_len;
+	t_entry *entry;
+	char *raw_str;
 
 	data->entries = NULL;
 	iter = 0;
@@ -100,7 +124,7 @@ int	create_list(char *buf, t_input *data)
 		if (!entry_len)
 		{
 			iter++;
-			continue ;
+			continue;
 		}
 		raw_str = malloc((entry_len + 1) * sizeof(char));
 		if (!raw_str)
@@ -116,9 +140,9 @@ int	create_list(char *buf, t_input *data)
 	return (0);
 }
 
-void	entry_spec(t_input *data)
+void entry_spec(t_input *data)
 {
-	t_entry	*cur;
+	t_entry *cur;
 
 	cur = data->entries;
 	while (cur)
@@ -153,9 +177,9 @@ void	entry_spec(t_input *data)
 	}
 }
 
-size_t	exp_len(char *env)
+size_t exp_len(char *env)
 {
-	size_t	len;
+	size_t len;
 
 	len = 0;
 	if (env[len] == '?')
@@ -166,10 +190,10 @@ size_t	exp_len(char *env)
 	return (len);
 }
 
-int	expand_count(t_entry *entry, t_input *data)
+int expand_count(t_entry *entry, t_input *data)
 {
-	size_t	iter;
-	int		count;
+	size_t iter;
+	int count;
 
 	iter = 0;
 	count = 0;
@@ -178,9 +202,7 @@ int	expand_count(t_entry *entry, t_input *data)
 	while (entry->raw_entry[iter])
 	{
 		toggle_quotes(entry->raw_entry, data, iter);
-		if (!data->dbl_quote && !data->sgl_quote
-			&& entry->raw_entry[iter] == '$' && exp_len(&entry->raw_entry[iter
-				+ 1]))
+		if (!data->dbl_quote && !data->sgl_quote && entry->raw_entry[iter] == '$' && exp_len(&entry->raw_entry[iter + 1]))
 			count++;
 	}
 	return (count);
@@ -221,10 +243,10 @@ TOTAL GOAL:
 // 	exp_str = expand(entry);
 // }
 
-char	*fill_content(char *exp_str, size_t iter, t_input *data, size_t	entry_len)
+char *fill_content(char *exp_str, size_t iter, t_input *data, size_t entry_len)
 {
-	size_t	entry_iter;
-	char	*content;
+	size_t entry_iter;
+	char *content;
 
 	entry_iter = 0;
 	data->dbl_quote = 0;
@@ -232,12 +254,10 @@ char	*fill_content(char *exp_str, size_t iter, t_input *data, size_t	entry_len)
 	content = malloc((entry_len + 1) * sizeof(char));
 	if (!content)
 		return (NULL);
-	while (exp_str[iter] && !is_whitespace(exp_str[iter])
-		| data->dbl_quote | data->sgl_quote)
+	while (exp_str[iter] && !is_whitespace(exp_str[iter]) | data->dbl_quote | data->sgl_quote)
 	{
 		iter += toggle_quotes(exp_str, data, iter);
-		if (!((exp_str[iter] == '\'' && data->sgl_quote)
-			|| (exp_str[iter] == '\"' && data->dbl_quote)))
+		if (!((exp_str[iter] == '\'' && data->sgl_quote) || (exp_str[iter] == '\"' && data->dbl_quote)))
 			content[entry_iter++] = exp_str[iter];
 		iter++;
 	}
@@ -245,10 +265,10 @@ char	*fill_content(char *exp_str, size_t iter, t_input *data, size_t	entry_len)
 	return (content);
 }
 
-char	**lst_to_expand(t_list *head)
+char **lst_to_expand(t_list *head)
 {
-	char	**expanded;
-	size_t	iter;
+	char **expanded;
+	size_t iter;
 
 	iter = 0;
 	expanded = malloc((ft_lstsize(head) + 1) * sizeof(char *));
@@ -266,10 +286,10 @@ char	**lst_to_expand(t_list *head)
 
 int expanded_split(char *exp_str, t_entry *entry, t_input *data)
 {
-	t_list	*node;
-	t_list	*head;
-	size_t	iter;
-	size_t	entry_len;
+	t_list *node;
+	t_list *head;
+	size_t iter;
+	size_t entry_len;
 
 	iter = 0;
 	head = NULL;
@@ -295,17 +315,16 @@ int expanded_split(char *exp_str, t_entry *entry, t_input *data)
 	return (0);
 }
 
-int	expansion(t_input *data)
+int expansion(t_input *data)
 {
-	t_entry	*cur;
-	char	*expanded_str;
+	t_entry *cur;
+	char *expanded_str;
 	size_t test;
-	
+
 	cur = data->entries;
-	while (cur )
+	while (cur)
 	{
-		if (!(cur->spec >= HERE_DOC_OP && cur->spec <= OUTFILE_OP)
-			&& cur->spec != PIPE && cur->spec != HERE_DOC)
+		if (!(cur->spec >= HERE_DOC_OP && cur->spec <= OUTFILE_OP) && cur->spec != PIPE && cur->spec != HERE_DOC)
 		{
 			expanded_str = expand(cur, data);
 			if (!expanded_str)
@@ -332,7 +351,7 @@ int	expansion(t_input *data)
 	return (0);
 }
 
-int	ultimate(char *buf, t_input *data)
+int ultimate(char *buf, t_input *data)
 {
 	// create list with raw elements
 	if (create_list(buf, data) == -1)

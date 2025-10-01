@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 12:29:11 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 12:38:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	cmd_init(t_cmd *cmd)
 	cmd->cmd = malloc((cmd_tokens + 1) * sizeof(char *));
 	if (!cmd->cmd)
 		return (-1);
-	l_iter = cmd->line;;
+	l_iter = cmd->line;
 	cmd_iter = 0;
 	while (l_iter && l_iter->spec != PIPE)
 	{
@@ -43,7 +43,7 @@ int	cmd_init(t_cmd *cmd)
 			iter = -1;
 			while(l_iter->expanded && l_iter->expanded[++iter])
 				cmd->cmd[cmd_iter++] = l_iter->expanded[iter];
-			}
+		}
 		l_iter = l_iter->next;
 	}
 	cmd->cmd[cmd_iter] = NULL;
