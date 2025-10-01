@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/30 18:14:41 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:34:40 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int					quoteclosed(char *str, char quote, t_input *data);
 int					get_env(char *buf, t_expanded_str *str,
 						t_expand_helper *exh, char **envp);
 int					check_envs(char *buf, t_input *data, t_expanded_str *str);
-char				*expanded_str(char *buf, t_input *data, t_expanded_str *str);
+char				*expanded_str(char *buf, t_input *data,
+						t_expanded_str *str);
 int					expand_entries(t_input *data);
 
 /* parse_string */
@@ -106,7 +107,7 @@ void				fill_ops(char *buf, size_t *entry, size_t *iter,
 						t_input *data);
 
 int					ft_find_paths(char *envp[], char *env_name);
-int					here_doc(t_exec *data);
+int					here_doc(t_input *data);
 char				*ft_getpath(char **envp, char *cmd);
 int					exec_central(t_input *input);
 int					execute_cmds(t_exec *data);
