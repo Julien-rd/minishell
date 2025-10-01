@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 20:05:57 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:25:15 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	**lst_to_expand(t_list *head)
 	iter = 0;
 	expanded = malloc((ft_lstsize(head) + 1) * sizeof(char *));
 	if (!expanded)
-		return (NULL);
+		return (perror("lst_to_expand"), NULL);
 	while (head)
 	{
 		expanded[iter] = head->content;
@@ -92,6 +92,7 @@ int	split_expands(char *exp_str, t_entry *entry, t_input *data)
 	t_list	*head;
 	size_t	iter;
 	size_t	entry_len;
+	char	*content;
 
 	iter = 0;
 	head = NULL;
@@ -101,12 +102,17 @@ int	split_expands(char *exp_str, t_entry *entry, t_input *data)
 	{
 		iter += skip_whitspaces(&exp_str[iter]);
 		entry_len = token_len(exp_str, data, iter);
-		node = ft_lstnew(fill_content(exp_str, iter, data, entry_len));
+		content = remove_quotes(&exp_str[iter], entry_len);
+		if (!content)
+			return (perror("split_expands"), -1);
+		node = ft_lstnew(content);
+		if (!node || !node->content)
+			return (perror("split_expands"), -1);
 		ft_lstadd_back(&head, node);
 		iter += entry_len + (entry_len == 0);
 	}
 	entry->expanded = lst_to_expand(head);
 	if (!entry->expanded)
-		return (-1);
+		return (perror("split_expands"), -1);
 	return (0);
 }
