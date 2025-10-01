@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_line.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 14:43:39 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 19:04:39 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,20 @@ int	create_envp(t_input *data, char *envp[])
 	iter = 0;
 	while (envp[iter])
 		iter++;
-	data->envp_count = iter;
-	data->envp_malloc = iter * 2;
-	data->envp = malloc((data->envp_malloc + 1) * sizeof(char *));
-	if (!data->envp)
+	data->envp->count = iter;
+	data->envp->malloc = iter * 2;
+	data->envp = malloc((data->envp->malloc + 1) * sizeof(char *));
+	if (!data->envp->vars)
 		return (perror("create_envp"), -1);
 	create_iter = 0;
 	while (create_iter < iter)
 	{
-		data->envp[create_iter] = ft_strdup(envp[create_iter]);
-		if (!data->envp[create_iter])
-			return (perror("create_envp"), free2d(&data->envp), -1);
+		data->envp->vars[create_iter] = ft_strdup(envp[create_iter]);
+		if (!data->envp->vars[create_iter])
+			return (perror("create_envp"), free2d(&data->envp->vars), -1);
 		create_iter++;
 	}
-	data->envp[create_iter] = NULL;
+	data->envp->vars[create_iter] = NULL;
 	return (0);
 }
 
@@ -103,12 +103,12 @@ int	main(int argc, char *argv[], char *envp[])
 		setup_main_signals();
 		exit_code = parse_and_execute(buf, &data, INTERACTIVE);
 		if (exit_code == -1 && g_current_signal == 0)
-			return (free(buf), free2d(&data.envp), 1);
+			return (free(buf), free2d(&data.envp->vars), 1);
 		if (data.exit)
-			return (free(buf), safe_write(1, "exit\n", 5), free2d(&data.envp),
+			return (free(buf), safe_write(1, "exit\n", 5), free2d(&data.envp->vars),
 				exit_code);
 		free(buf);
 	}
 	rl_clear_history();
-	return (free2d(&data.envp), safe_write(1, "exit\n", 5), 0);
+	return (free2d(&data.envp->vars), safe_write(1, "exit\n", 5), 0);
 }
