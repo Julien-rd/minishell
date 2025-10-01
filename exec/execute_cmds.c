@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 13:45:14 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:24:24 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	if (path == NULL || cmd->cmd[0][0] == 0)
 		command_fail(path, data, cmd);
 	execve(path, cmd->cmd, data->envp);
-	// execve_fail(path, errno, data, cmd);
-	exit(1);
+	execve_fail(path, errno, data, cmd);
 }
 
 void	parent_process(t_exec *data)
@@ -175,11 +174,7 @@ int	execute_cmds(t_exec *data)
 	data->pipe_iter = 0;
 	while (data->pipe_iter <= data->pipe_count)
 	{
-		// cmd.line = &data->entries[data->pipe_position[data->pipe_iter]];
-		// cmd.line_spec = &data->input_spec[data->pipe_position[data->pipe_iter]];
 		find_start(&cmd, data, data->pipe_iter);
-		// printf("%d\n", cmd.line_spec[0]);
-		// exit(0);
 		if (cmd_init(&cmd) == -1)
 			return (perror("cmd_init"), -1);
 		if (data->pipe_iter != data->pipe_count)

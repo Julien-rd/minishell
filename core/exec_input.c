@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 13:54:45 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:27:04 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 static int	init_pipe_pos(t_exec *data)
 {
 	t_entry	*iter;
-	size_t pipe_count;
 	size_t	counter;
 	size_t	p_iter;
 
 	counter = 0;
 	iter = data->list;
-	pipe_count = 0;
 	while (iter != NULL)
 	{
 		if (iter->spec == PIPE)
-			pipe_count++;
+			data->pipe_count++;
 		iter = iter->next;
 	}
 	data->pipe_position = malloc(sizeof(int) * (data->pipe_count + 1));
