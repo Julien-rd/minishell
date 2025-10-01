@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 11:01:31 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 18:58:49 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,8 @@ void	command_fail(char *path, t_exec *data, t_cmd *cmd)
 			child_exit_handle(data, cmd, 1);
 		child_exit_handle(data, cmd, 127);
 	}
-	else
-	{
-		perror(cmd->cmd[0]);
-		child_exit_handle(data, cmd, 1);
-	}
+	perror(cmd->cmd[0]);
+	child_exit_handle(data, cmd, 1);
 }
 
 void	builtin_handler(t_exec *data, t_cmd *cmd)
