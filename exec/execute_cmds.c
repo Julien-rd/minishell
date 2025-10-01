@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 10:32:23 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 10:38:54 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,33 @@ int	cmd_init(t_cmd *cmd)
 	size_t	cmd_iter;
 	size_t	iter;
 
-	iter = cmd->line;
+	l_iter = cmd->line;
 	cmd_tokens = 0;
-	while (iter && iter->spec != PIPE)
+	while (l_iter && l_iter->spec != PIPE)
 	{
-		if (iter->spec == DEFAULT)
+		if (l_iter->spec == DEFAULT)
 		{
-
-			cmd_tokens++;
+			iter = -1;
+			while(l_iter->expanded[++iter])
+				cmd_tokens++;
 		}
-		iter = iter->next;
+		l_iter = l_iter->next;
 	}
 	cmd->cmd = malloc((cmd_tokens + 1) * sizeof(char *));
 	if (!cmd->cmd)
 		return (-1);
-	iter = cmd->line;;
+	l_iter = cmd->line;;
 	cmd_iter = 0;
-	while (iter && iter->spec != PIPE)
+	while (l_iter && l_iter->spec != PIPE)
 	{
-		if (iter->spec == DEFAULT)
-			cmd->cmd[cmd_iter++] = iter->expanded[0];
-		iter = iter->next;
+		if (l_iter->spec == DEFAULT)
+		iter = -1;
+		while(l_iter->expanded[++iter])
+			cmd->cmd[cmd_iter++] = l_iter->expanded[iter];
+		l_iter = l_iter->next;
 	}
 	cmd->cmd[cmd_iter] = NULL;
+	iter = -1;
 	return (0);
 }
 
