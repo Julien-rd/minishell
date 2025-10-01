@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 09:00:40 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 11:01:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,14 @@ void	command_fail(char *path, t_exec *data, t_cmd *cmd)
 			child_exit_handle(data, cmd, 1);
 		child_exit_handle(data, cmd, 126);
 	}
-	else if (errno == ENOENT)
+	else if (errno == ENOENT || cmd->cmd[0][0] == 0)
 	{
-		if (safe_write(2, cmd->cmd[0], ft_strlen(cmd->cmd[0])) == -1)
+		if(cmd->cmd[0][0] == 0)
+		{
+			if (safe_write(2, "''", 2) == -1)
+				child_exit_handle(data, cmd, 1);
+		}
+		else if (safe_write(2, cmd->cmd[0], ft_strlen(cmd->cmd[0])) == -1)
 			child_exit_handle(data, cmd, 1);
 		if (safe_write(2, ": command not found\n", 20) == -1)
 			child_exit_handle(data, cmd, 1);

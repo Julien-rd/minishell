@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 10:38:54 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 11:01:16 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	cmd_init(t_cmd *cmd)
 		if (l_iter->spec == DEFAULT)
 		{
 			iter = -1;
-			while(l_iter->expanded[++iter])
+			while(l_iter->expanded && l_iter->expanded[++iter])
 				cmd_tokens++;
 		}
 		l_iter = l_iter->next;
@@ -39,10 +39,12 @@ int	cmd_init(t_cmd *cmd)
 	while (l_iter && l_iter->spec != PIPE)
 	{
 		if (l_iter->spec == DEFAULT)
-		iter = -1;
-		while(l_iter->expanded[++iter])
-			cmd->cmd[cmd_iter++] = l_iter->expanded[iter];
-		l_iter = l_iter->next;
+		{
+			iter = -1;
+			while(l_iter->expanded && l_iter->expanded[++iter])
+				cmd->cmd[cmd_iter++] = l_iter->expanded[iter];
+			l_iter = l_iter->next;
+		}
 	}
 	cmd->cmd[cmd_iter] = NULL;
 	iter = -1;
@@ -74,7 +76,7 @@ void	child_process(t_exec *data, t_cmd *cmd)
 	if (data->cmd_flag != EXTERNAL)
 		builtin_handler(data, cmd);
 	path = ft_getpath(data->envp, cmd->cmd[0]); // splitfail malloc
-	if (path == NULL)
+	if (path == NULL || cmd->cmd[0][0] == 0)
 		command_fail(path, data, cmd);
 	execve(path, cmd->cmd, data->envp);
 	// execve_fail(path, errno, data, cmd);
