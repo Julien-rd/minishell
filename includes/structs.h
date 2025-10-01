@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 08:49:47 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:28:54 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_cmd
 typedef struct s_input
 {
 	char			**envp;
+	char			**heredoc;
 	size_t			envp_count;
 	size_t			envp_malloc;
 	char			*exp_str;

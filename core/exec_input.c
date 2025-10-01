@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 12:27:10 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:34:49 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,25 @@
 static int	init_pipe_pos(t_exec *data)
 {
 	t_entry	*iter;
+	size_t pipe_count;
 	size_t	counter;
 	size_t	p_iter;
 
 	counter = 0;
 	iter = data->list;
+	pipe_count = 0;
+	while (iter != NULL)
+	{
+		if (iter->spec == PIPE)
+			pipe_count++;
+		iter = iter->next;
+	}
 	data->pipe_position = malloc(sizeof(int) * (data->pipe_count + 1));
 	if (!data->pipe_position)
 		return (-1);
 	data->pipe_position[0] = 0;
 	p_iter = 1;
+	iter = data->list;
 	while (iter != NULL)
 	{
 		if (iter->spec == PIPE)
@@ -51,12 +60,7 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	data->exit_code = input->exit_code;
 	// if (input->exp_str_malloc)
 	// 	free(input->exp_str);
-	if (here_doc(data) == -1)
-    {
-		if (g_current_signal != SIGINT)
-            free2d(&data->envp);
-	    return (-1);
-    }
+	data->heredoc = input->heredoc;
 	if (init_pipe_pos(data) == -1)
 		return (free2d(&data->heredoc), free2d(&data->envp), -1);
 	return (0);
