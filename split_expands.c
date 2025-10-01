@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:28:47 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:55:41 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,7 @@ int	split_expands(char *exp_str, t_entry *entry, t_input *data)
 		iter += skip_whitspaces(&exp_str[iter]);
 		entry_len = token_len(exp_str, data, iter);
 		node = ft_lstnew(fill_content(exp_str, iter, data, entry_len));
-		if (!head)
-			head = node;
-		else
-			ft_lstadd_back(&head, node);
+		ft_lstadd_back(&head, node);
 		iter += entry_len + (entry_len == 0);
 	}
 	entry->expanded = lst_to_expand(head);
