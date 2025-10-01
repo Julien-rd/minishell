@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:37:46 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:05:23 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_expanded_str
 	char			**env_arr;
 	size_t			*env_pos;
 	int				exit_code;
+	int				flag;
 }					t_expanded_str;
 
 typedef struct s_cmd
@@ -53,7 +54,7 @@ typedef struct s_envp
 	char			**vars;
 	size_t			count;
 	size_t			malloc;
-}	t_envp;
+}					t_envp;
 
 typedef struct s_input
 {

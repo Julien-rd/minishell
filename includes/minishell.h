@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:25:49 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 20:04:44 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int					expand_init(t_entry *cur, t_input *data,
 int					quote_check(size_t iter, char *buf, t_input *data);
 size_t				envlen(char *env);
 size_t				envsize(char *env, char **envp, t_input *data);
-char				*expand(t_entry *cur, t_input *data);
+char				*expand(t_entry *cur, t_input *data, int flag);
 int					quoteclosed(char *str, char quote, t_input *data);
 int					get_env(char *buf, t_expanded_str *str,
 						t_expand_helper *exh, char **envp);

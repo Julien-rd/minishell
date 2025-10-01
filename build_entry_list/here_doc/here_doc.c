@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 16:27:54 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 20:04:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	expand_hdoc_entry(t_entry *buf, t_input *data, int expand_flag)
 
 	if (expand_flag == 0)
 		return (0);
-	tmp = expand(buf, data);
+	tmp = expand(buf, data, HERE_DOC);
 	if (!tmp)
 		return (-1);
 	free(buf->raw_entry);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_entry_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:06:50 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	expand_raw_entry(t_input *data)
 		if (!(cur->spec >= HERE_DOC_OP && cur->spec <= OUTFILE_OP)
 			&& cur->spec != PIPE && cur->spec != HERE_DOC)
 		{
-			expanded_str = expand(cur, data);
+			expanded_str = expand(cur, data, DEFAULT);
 			if (!expanded_str)
 				return (-1);
 			if (split_expands(expanded_str, cur, data) == -1)

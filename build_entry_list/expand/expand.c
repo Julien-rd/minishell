@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:03:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:16:39 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand(t_entry *cur, t_input *data)
+char	*expand(t_entry *cur, t_input *data, int flag)
 {
 	char			**env_arr;
 	t_expanded_str	str;
 	size_t			iter;
 	char			*exp_str;
 
+	str.flag = flag;
 	data->len = 0;
 	str.var_count = 0;
 	str.exit_code = data->exit_code;

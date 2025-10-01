@@ -1,4 +1,4 @@
-# readline.supp -> run with valgrind --suppressions=readline.supp
+# readline.supp -> run with valgrind --suppressions=readline.supp --leak-check=full
 {
    readline_malloc
    Memcheck:Leak

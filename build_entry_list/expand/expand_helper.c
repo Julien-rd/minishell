@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:06:34 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*expanded_str(char *buf, t_input *data, t_expanded_str *str)
 	{
 		toggle_quotes(buf, data, iter);
 		if (str->var_count * 2 > exh.env_pos_iter
-			&& str->env_pos[exh.env_pos_iter] == iter && data->sgl_quote == 0)
+			&& str->env_pos[exh.env_pos_iter] == iter && (data->sgl_quote == 0 || str->flag == HERE_DOC))
 			iter += ex_encounter(&exp_str[exh.str_iter], &exh, str, iter);
 		else
 			exp_str[exh.str_iter++] = buf[iter];
@@ -90,10 +90,11 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 	while (buf[iter])
 	{
 		exh.len = envlen(&buf[iter + 1]);
-		if (!quote_check(iter, buf, data) && buf[iter] == '$' && exh.len
+		if ((!quote_check(iter, buf, data) || str->flag == HERE_DOC) && buf[iter] == '$' && exh.len
 			&& str->var_count)
 		{
-			exh.env_return = get_env(&buf[iter + 1], str, &exh, data->envp.vars);
+			exh.env_return = get_env(&buf[iter + 1], str, &exh,
+					data->envp.vars);
 			if (check_return_get_env(iter, str, &exh, data) == -1)
 				return (-1);
 			iter += exh.len;
@@ -114,7 +115,7 @@ int	expand_init(t_entry *cur, t_input *data, t_expanded_str *str)
 	data->sgl_quote = 0;
 	while (cur->raw_entry[iter])
 	{
-		if (!quote_check(iter, cur->raw_entry, data)
+		if ((!quote_check(iter, cur->raw_entry, data) || str->flag == HERE_DOC)
 			&& cur->raw_entry[iter] == '$')
 		{
 			if (envlen(&cur->raw_entry[iter + 1]) > 0)
