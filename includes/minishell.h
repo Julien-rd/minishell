@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 18:54:01 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:25:49 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int					is_token(char c);
 
 /***************************************  BUILD_ENTRY_LIST  ***************************************/
 
-int	build_entry_list(char *buf, t_input *data);
+int					build_entry_list(char *buf, t_input *data);
 
-//BUILD_HELPERS
+// BUILD_HELPERS
 t_entry				*lstlast(t_entry *lst);
 void				lstadd(t_entry **lst, t_entry *new);
 t_entry				*newnode(char *raw_str);
@@ -102,6 +102,7 @@ int					get_env(char *buf, t_expanded_str *str,
 int					check_envs(char *buf, t_input *data, t_expanded_str *str);
 char				*expanded_str(char *buf, t_input *data,
 						t_expanded_str *str);
+int					split_expands(char *exp_str, t_entry *entry, t_input *data);
 
 /* parse_string */
 size_t				count_entries(char *buf, t_input *data);

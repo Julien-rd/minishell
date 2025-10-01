@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_central.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:19:31 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:31:03 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	exec_central(t_input *input)
 	int		exit_code;
 
 	exit_code = 0;
+	// return -1;
 	if (init_data(&data, input, input->envp->vars) == -1)
 		return (-1);
 	exit_code = execute_cmds(&data);

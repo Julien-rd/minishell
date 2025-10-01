@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:04:39 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:30:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	create_envp(t_input *data, char *envp[])
 		iter++;
 	data->envp->count = iter;
 	data->envp->malloc = iter * 2;
-	data->envp = malloc((data->envp->malloc + 1) * sizeof(char *));
+	data->envp->vars = malloc((data->envp->malloc + 1) * sizeof(char *));
 	if (!data->envp->vars)
 		return (perror("create_envp"), -1);
 	create_iter = 0;

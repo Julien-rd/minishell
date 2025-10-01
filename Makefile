@@ -4,7 +4,7 @@ INC_DIR = includes
 CFLAGS = -Ilibft_00 -MMD -g -I$(INC_DIR)
 OBJ_DIR = obj
 VPATH = build_entry_list exec exec/builtins core core/signals get_next_line build_entry_list/expand build_entry_list/here_doc
-SRC = split_expands.c syntax_check.c build_entry_list.c build_helpers.c export.c unset.c cd.c helper.c error_messages.c file_management.c internal_cmd_error.c \
+SRC = split_expands.c syntax_check.c build_entry_list.c build_helpers.c helper.c error_messages.c file_management.c internal_cmd_error.c \
 check_cmd.c main.c signal_handlers.c \
 expand.c expand_helper.c expand_helper2.c here_doc.c \
 execute_cmds.c find_path.c exec_central.c get_next_line.c \
