@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:06:05 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:19:31 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void find_start(t_cmd	*cmd, t_exec *data, size_t pipe_count)
 	
 	iter = 0;
 	(void) pipe_count;
-	l_iter = data->list;
+	l_iter = data->entries;
 	while(l_iter && iter < data->pipe_position[data->pipe_iter])
 	{
 		l_iter = l_iter->next;
