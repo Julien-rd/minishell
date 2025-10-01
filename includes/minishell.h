@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/30 18:14:41 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:43:59 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,5 +140,6 @@ void				builtin_handler(t_exec *data, t_cmd *cmd);
 int					safe_write(int fd, char *buf, size_t len);
 void				free2d(char ***str);
 long long			ft_atoll(const char *str);
+char				*remove_quotes(char *to_strip, size_t len);
 
 #endif

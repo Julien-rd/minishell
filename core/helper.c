@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 14:20:21 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:43:33 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,28 @@ long long	ft_atoll(const char *str)
 	else if (tmp_num > (unsigned long long)LLONG_MAX + 1)
 		return (0);
 	return (sign * (long long)tmp_num);
+}
+
+char	*remove_quotes(char *to_strip, size_t len)
+{
+	size_t	iter;
+	size_t	stripped_iter;
+	t_input	data;
+	char	*stripped;
+	
+	data.dbl_quote = 0;
+	data.sgl_quote = 0;
+	stripped = malloc((len + 1) * sizeof(char));
+	if (!stripped)
+		return (NULL);
+	iter = 0;
+	while (iter < len)
+	{
+		iter += toggle_quotes(to_strip, &data, iter);
+		if (!((to_strip[iter] == '\'' && data.sgl_quote) || (to_strip[iter] == '\"' && data.dbl_quote)))
+			stripped[stripped_iter++] = to_strip[iter];
+		iter++;
+	}
+	stripped[stripped_iter] = '\0';
+	return (stripped);
 }
