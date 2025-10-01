@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 20:16:39 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 20:53:10 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*expand(t_entry *cur, t_input *data, int flag)
 {
 	char			**env_arr;
-	t_expanded_str	str;
+	t_expand_str	str;
 	size_t			iter;
 	char			*exp_str;
 

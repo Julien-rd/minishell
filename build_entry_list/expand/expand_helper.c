@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 20:06:34 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 20:53:10 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	ex_encounter(char *str_new, t_expand_helper *exh,
-		t_expanded_str *str, size_t iter)
+		t_expand_str *str, size_t iter)
 {
 	if (str->env_pos[exh->env_pos_iter + 1] == 0)
 		exh->env_pos_iter += 2;
@@ -28,7 +28,7 @@ static int	ex_encounter(char *str_new, t_expand_helper *exh,
 	return (envlen(&exh->buf[iter + 1]));
 }
 
-static int	check_return_get_env(size_t iter, t_expanded_str *str,
+static int	check_return_get_env(size_t iter, t_expand_str *str,
 		t_expand_helper *exh, t_input *data)
 {
 	if (exh->env_return == 1)
@@ -48,7 +48,7 @@ static int	check_return_get_env(size_t iter, t_expanded_str *str,
 	return (0);
 }
 
-char	*expanded_str(char *buf, t_input *data, t_expanded_str *str)
+char	*expanded_str(char *buf, t_input *data, t_expand_str *str)
 {
 	size_t			iter;
 	t_expand_helper	exh;
@@ -77,7 +77,7 @@ char	*expanded_str(char *buf, t_input *data, t_expanded_str *str)
 	return (exp_str);
 }
 
-int	check_envs(char *buf, t_input *data, t_expanded_str *str)
+int	check_envs(char *buf, t_input *data, t_expand_str *str)
 {
 	size_t			iter;
 	t_expand_helper	exh;
@@ -106,7 +106,7 @@ int	check_envs(char *buf, t_input *data, t_expanded_str *str)
 	return (0);
 }
 
-int	expand_init(t_entry *cur, t_input *data, t_expanded_str *str)
+int	expand_init(t_entry *cur, t_input *data, t_expand_str *str)
 {
 	size_t	iter;
 

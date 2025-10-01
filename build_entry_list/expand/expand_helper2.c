@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_input_utils.c                               :+:      :+:    :+:   */
+/*   expand_helper2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 16:35:34 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 20:53:10 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	envcmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-int	get_env(char *buf, t_expanded_str *str, t_expand_helper *exh, char **envp)
+int	get_env(char *buf, t_expand_str *str, t_expand_helper *exh, char **envp)
 {
 	size_t	iter;
 

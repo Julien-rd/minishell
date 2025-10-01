@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_central.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:44:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 21:02:08 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static int	init_data(t_exec *data, t_input *input, char **envp)
 	data->exit = 0;
 	data->exit_code = input->exit_code;
 	data->heredoc = input->heredoc;
+	data->hdoc_iter = 0;
+	data->pipe_iter = 0;
 	if (init_pipe_pos(data) == -1)
 		return (free2d(&data->heredoc), free2d(&data->envp.vars), -1);
 	return (0);

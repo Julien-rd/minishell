@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 20:05:23 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 20:53:40 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,18 @@ typedef struct s_expand_helper
 	size_t			env_pos_iter;
 	size_t			len;
 	size_t			str_iter;
-	int env_return ;
+	int 			env_return;
 	char			*buf;
 }					t_expand_helper;
 
-typedef struct s_expanded_str
+typedef struct s_expand_str
 {
 	size_t			var_count;
 	char			**env_arr;
 	size_t			*env_pos;
 	int				exit_code;
 	int				flag;
-}					t_expanded_str;
+}					t_expand_str;
 
 typedef struct s_cmd
 {

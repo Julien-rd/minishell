@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/01 21:05:03 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	child_exit_handle(t_exec *data, t_cmd *cmd, int errcode)
 	// free(data->input_spec);
 	// free(data->pipe_position);
 	// free(cmd->cmd);
-	// if (data->heredoc)
-	// 	free2d(&data->heredoc);
+	if (data->heredoc)
+		free2d(&data->heredoc);
 	exit(errcode);
 }
 
@@ -148,13 +148,12 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 		return (unset(cmd->cmd, data));
 	return (0);
 }
-void find_start(t_cmd	*cmd, t_exec *data, size_t pipe_count)
+void find_start(t_cmd	*cmd, t_exec *data)
 {
 	t_entry	*l_iter;
 	size_t iter;
 	
 	iter = 0;
-	(void) pipe_count;
 	l_iter = data->entries;
 	while(l_iter && iter < data->pipe_position[data->pipe_iter])
 	{
@@ -170,11 +169,9 @@ int	execute_cmds(t_exec *data)
 	t_cmd	cmd;
 	t_entry	*iter;
 
-	data->hdoc_iter = 0;
-	data->pipe_iter = 0;
 	while (data->pipe_iter <= data->pipe_count)
 	{
-		find_start(&cmd, data, data->pipe_iter);
+		find_start(&cmd, data);
 		if (cmd_init(&cmd) == -1)
 			return (perror("cmd_init"), -1);
 		if (data->pipe_iter != data->pipe_count)
