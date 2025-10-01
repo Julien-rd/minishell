@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_string_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:46:22 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/30 12:14:21 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 12:28:55 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_token(char c)
-{
-	if (c == 32 || (c >= 9 && c <= 13) || c == '>' || c == '<' || c == '|')
-		return (0);
-	return (1);
-}
 
 int	is_closed(char *str)
 {

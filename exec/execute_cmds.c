@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 11:01:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/01 12:32:34 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	cmd_init(t_cmd *cmd)
 	cmd->cmd = malloc((cmd_tokens + 1) * sizeof(char *));
 	if (!cmd->cmd)
 		return (-1);
-	l_iter = cmd->line;;
+	l_iter = cmd->line;
 	cmd_iter = 0;
 	while (l_iter && l_iter->spec != PIPE)
 	{
@@ -43,8 +43,8 @@ int	cmd_init(t_cmd *cmd)
 			iter = -1;
 			while(l_iter->expanded && l_iter->expanded[++iter])
 				cmd->cmd[cmd_iter++] = l_iter->expanded[iter];
-			l_iter = l_iter->next;
 		}
+		l_iter = l_iter->next;
 	}
 	cmd->cmd[cmd_iter] = NULL;
 	iter = -1;
