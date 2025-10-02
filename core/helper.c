@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 12:02:35 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:17:05 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,4 +160,15 @@ void	free_list(t_entry *list)
 		free(list);
 		list = tmp;
 	}
+}
+
+void	child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode)
+{
+	free2d(&sh->envp.vars);
+	free_list(sh->entries);
+	// free(sh->pipe.position);
+	// free(cmd->cmd);
+	if (sh->heredoc)
+		free2d(&sh->heredoc);
+	exit(errcode);
 }

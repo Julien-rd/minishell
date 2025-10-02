@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_central.c                                     :+:      :+:    :+:   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 17:43:57 by eprottun         ###   ########.fr       */
+/*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
+/*   Updated: 2025/10/02 17:29:04 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_central(t_sh *sh)
+int	pipeline(t_sh *sh)
 {
-	int		exit_code;
-
-	sh->exit = 0; //necessary?
-	exit_code = 0;
-	// return -1;
-	exit_code = pipeline(sh);
-	free_list(sh->entries);
-	if(sh->heredoc)
-		free2d(&sh->heredoc);
-	if (exit_code == -1)
-		free2d(&sh->envp.vars);
-	return (exit_code);
+	t_pipeline	pl;
+	
+	if (setup_cmds(&pl, sh) == -1)
+		return (-1);
+	while (pl.iter <= pl.count)
+	{
+		pl.current = &pl.cmds[pl.iter];
+		own_cmd_exec(&pl, sh);
+		if (pipe_fork(&pl) == -1)
+			return (-1);
+		if (pl.current->pid == 0)
+			child_process(&pl, sh);
+		else
+			parent_process(&pl, sh);
+		pl.iter++;
+	}
+	return (kill_children(&pl, sh));
 }
