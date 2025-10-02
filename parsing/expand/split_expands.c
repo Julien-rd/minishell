@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:12:12 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:51:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	content_to_lst(t_list	**head, char *exp_str, size_t entry_len)
 	if (!content)
 		return (perror("content_to_lst"), -1);
 	node = ft_lstnew(content);
+	printf("node_addr%p\n", node);
 	if (!node)
 		return (perror("content_to_lst"), free(content), -1);
-	free(exp_str);
 	ft_lstadd_back(head, node);
 	return (0);
 }
@@ -94,7 +94,7 @@ int	split_expands(char *exp_str, t_entry *entry, t_input *data)
 			break;
 		entry_len = token_len(exp_str, data, iter);
 		if (content_to_lst(&head, exp_str, entry_len) == -1)
-			return (free(exp_str), -1);
+			return (-1);
 		iter += entry_len + (entry_len == 0);
 	}
 	entry->expanded = lst_to_expand(head);

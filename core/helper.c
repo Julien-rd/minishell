@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 11:01:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:53:06 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ void	free2d(char ***str)
 	if (*str)
 	{
 		while ((*str)[iter])
-		{
-			free((*str)[iter]);
 			iter++;
-		}
 		free(*str);
 	}
 	*str = NULL;
@@ -99,7 +96,7 @@ char	*remove_quotes(char *to_strip, size_t len)
 	size_t	stripped_iter;
 	t_input	data;
 	char	*stripped;
-	
+
 	stripped_iter = 0;
 	data.dbl_quote = 0;
 	data.sgl_quote = 0;
@@ -110,7 +107,8 @@ char	*remove_quotes(char *to_strip, size_t len)
 	while (iter < len)
 	{
 		iter += toggle_quotes(to_strip, &data, iter);
-		if (!((to_strip[iter] == '\'' && data.sgl_quote) || (to_strip[iter] == '\"' && data.dbl_quote)))
+		if (!((to_strip[iter] == '\'' && data.sgl_quote)
+					|| (to_strip[iter] == '\"' && data.dbl_quote)))
 			stripped[stripped_iter++] = to_strip[iter];
 		iter++;
 	}
@@ -128,14 +126,14 @@ size_t	skip_whitspaces(char *buf)
 	return (iter);
 }
 
-size_t empty_prompt(char	*buf)
+size_t	empty_prompt(char *buf)
 {
-	return(!ft_strlen(buf));
+	return (!ft_strlen(buf));
 }
 
-void cut_nl(char	*buf)
+void	cut_nl(char *buf)
 {
-	size_t len;
+	size_t	len;
 
 	len = ft_strlen(buf);
 	if (len == 0)
@@ -143,20 +141,24 @@ void cut_nl(char	*buf)
 	buf[len - 1] = '\0';
 }
 
-void free_list(t_entry *list)
+void	free_list(t_entry *list)
 {
-    t_entry *node;
-    t_entry *next;
+	t_entry *tmp;
 
-    node = list;
-    while(node)
-    {
-        if(node->raw_entry)
-            free(node->raw_entry);
-        if(node->expanded)
-            free2d(&node->expanded);
-        next = node->next;
-        free(node);
-        node = next;
-    }
+	while (list)
+	{
+		if (list->raw_entry)
+		{
+			free(list->raw_entry);
+			list->raw_entry = NULL;
+		}
+		if (list->expanded)
+		{
+			free2d(&list->expanded);
+			list->expanded = NULL;
+		}
+		tmp = list->next;
+		free(list);
+		list = tmp;
+	}
 }

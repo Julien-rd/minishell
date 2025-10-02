@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 10:52:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:49:50 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	parse_and_execute(char *buf, t_input *data, int flag)
 	if (parsing(buf, data) == -1)
 		return (-1);
 	if (syntax_check(data) == -1)
-		return (data->exit_code = 2, 0);
+		return (free_list(data->entries), data->exit_code = 2, 0);
 	data->exit_code = exec_central(data);
 	if (data->exit_code == -1 && g_current_signal == 0)
 		return (perror("execution error"), -1);
