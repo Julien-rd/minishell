@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 10:55:43 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ int	options_check(t_cmd *cmd)
 	return (0);
 }
 
-void	cmd_flag(t_exec *data, t_cmd *cmd)
+void	cmd_flag(t_sh *sh, t_cmd *cmd)
 {
 	cmd->cmd_flag = EXTERNAL;
-	data->internal_errcode = 0;
+	sh->internal_errcode = 0;
 	if (!ft_strncmp(cmd->cmd[0], "echo", 5))
 		cmd->cmd_flag = ECHO;
 	else if (!ft_strncmp(cmd->cmd[0], "cd", 3))

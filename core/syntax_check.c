@@ -6,25 +6,25 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:14:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 10:40:54 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	syntax_check(t_input *data)
+int	syntax_check(t_sh *sh)
 {
 	size_t	iter;
 	t_entry	*entry;
 
-	entry = data->entries;
+	entry = sh->entries;
 	iter = 0;
 	while (entry != NULL)
 	{
 		if (entry->spec == PIPE)
 		{
 			if (entry->next == NULL || entry->next->spec == PIPE
-				|| entry == data->entries)
+				|| entry == sh->entries)
 			{
 				write(1, "syntax error near unexpected token `|'\n", 40);
 				return (-1);

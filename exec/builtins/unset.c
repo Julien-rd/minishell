@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:58:58 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	var_check(char *param)
 	return (0);
 }
 
-int	unset(char **cmd, t_exec *data)
+int	unset(char **cmd, t_sh *sh)
 {
 	char	*entry;
 	int		envp_pos;
@@ -42,14 +42,14 @@ int	unset(char **cmd, t_exec *data)
 			iter++;
 			continue ;
 		}
-		envp_pos = ft_find_paths(data->envp.vars, cmd[iter]);
+		envp_pos = ft_find_paths(sh->envp.vars, cmd[iter]);
 		if (envp_pos != -1)
 		{
 			entry = ft_calloc(1, 1);
 			if (!entry)
 				return (perror("unset"), -1);
-			free(data->envp.vars[envp_pos]);
-			data->envp.vars[envp_pos] = entry;
+			free(sh->envp.vars[envp_pos]);
+			sh->envp.vars[envp_pos] = entry;
 		}
 		iter++;
 	}

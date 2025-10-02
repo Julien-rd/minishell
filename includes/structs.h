@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:14:17 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:35:40 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,36 +58,38 @@ typedef struct s_envp
 	size_t			malloc;
 }					t_envp;
 
-typedef struct s_input
-{
-	t_envp			envp;
-	char			**heredoc;
-	t_entry			*entries;
-	int				sgl_quote;
-	int				dbl_quote;
-	int				exit_code;
-	int				exit;
-}					t_input;
+// typedef struct s_input
+// {
+// 	t_envp			envp;
+// 	char			**heredoc;
+// 	t_entry			*entries;
+// 	int				exit_code;
+// 	int				exit;
+// }					t_sh;
 
-typedef struct s_exec
+typedef struct s_pipe
 {
-	t_envp			envp;
-
-	char			**heredoc;
+	int				*position;
+	size_t			iter;
+	size_t			count;
 	size_t			hdoc_iter;
-	t_entry			*entries;
-
-	int				*pipe_position;
-	size_t			pipe_iter;
-	size_t			pipe_count;
-
-	int				internal_errcode;
 	pid_t			pid;
 	pid_t			last_pid;
 	int				prev_fd;
-	int				fd[2];
+	int				fd[2];	
+}					t_pipe;
+
+typedef struct s_sh
+{
+	t_envp			envp;
+	t_entry			*entries;
+	t_pipe			pipe;
+	char			**heredoc;
+	int				internal_errcode;
 	int				exit;
 	int				exit_code;
-}					t_exec;
+	int				sgl_quote;
+	int				dbl_quote;
+}					t_sh;
 
 #endif

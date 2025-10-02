@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_expands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:12:12 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:52:08 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,32 +52,32 @@ int	content_to_lst(t_list	**head, char *exp_str, size_t entry_len)
 	node = ft_lstnew(content);
 	if (!node)
 		return (perror("content_to_lst"), free(content), -1);
-	free(exp_str);
+	// free(exp_str);
 	ft_lstadd_back(head, node);
 	return (0);
 }
 
-int	token_len(char *buf, t_input *data, size_t iter)
+int	token_len(char *buf, t_sh *sh, size_t iter)
 {
 	size_t	count;
 
 	count = 0;
-	data->dbl_quote = 0;
-	data->sgl_quote = 0;
+	sh->dbl_quote = 0;
+	sh->sgl_quote = 0;
 	count = operator_case(buf, iter);
 	if (count > 0)
 		return (count);
-	while (data->dbl_quote || data->sgl_quote || (buf[iter]
+	while (sh->dbl_quote || sh->sgl_quote || (buf[iter]
 			&& is_token(buf[iter])))
 	{
-		toggle_quotes(buf, data, iter);
+		toggle_quotes(buf, sh, iter);
 		count++;
 		iter++;
 	}
 	return (count);
 }
 
-int	split_expands(char *exp_str, t_entry *entry, t_input *data)
+int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
 {
 	t_list	*head;
 	size_t	iter;
@@ -92,7 +92,7 @@ int	split_expands(char *exp_str, t_entry *entry, t_input *data)
 		iter += skip_whitspaces(&exp_str[iter]);
 		if (!exp_str[iter])
 			break;
-		entry_len = token_len(exp_str, data, iter);
+		entry_len = token_len(exp_str, sh, iter);
 		if (content_to_lst(&head, exp_str, entry_len) == -1)
 			return (free(exp_str), -1);
 		iter += entry_len + (entry_len == 0);

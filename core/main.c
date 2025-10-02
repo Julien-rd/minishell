@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 10:51:09 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,47 @@
 
 volatile int	g_current_signal = 0;
 
-// void	entry_spec(t_input *data)
+// void	entry_spec(t_sh *sh)
 // {
 // 	size_t	iter;
 
 // 	iter = 0;
-// 	while (data->entries[iter])
+// 	while (sh->entries[iter])
 // 	{
-// 		if (data->input_spec[iter] == OPERATOR)
+// 		if (sh->input_spec[iter] == OPERATOR)
 // 		{
-// 			if (!ft_strcmp(data->entries[iter], "<<"))
+// 			if (!ft_strcmp(sh->entries[iter], "<<"))
 // 			{
-// 				data->input_spec[iter] = HERE_DOC_OP;
-// 				if (data->input_spec[iter + 1] == DEFAULT)
-// 					data->input_spec[iter + 1] = HERE_DOC;
+// 				sh->input_spec[iter] = HERE_DOC_OP;
+// 				if (sh->input_spec[iter + 1] == DEFAULT)
+// 					sh->input_spec[iter + 1] = HERE_DOC;
 // 			}
-// 			else if (!ft_strcmp(data->entries[iter], ">>"))
+// 			else if (!ft_strcmp(sh->entries[iter], ">>"))
 // 			{
-// 				data->input_spec[iter] = APPEND_OP;
-// 				if (data->input_spec[iter + 1] == DEFAULT)
-// 					data->input_spec[iter + 1] = APPEND_FILE;
+// 				sh->input_spec[iter] = APPEND_OP;
+// 				if (sh->input_spec[iter + 1] == DEFAULT)
+// 					sh->input_spec[iter + 1] = APPEND_FILE;
 // 			}
-// 			else if (!ft_strcmp(data->entries[iter], "<"))
+// 			else if (!ft_strcmp(sh->entries[iter], "<"))
 // 			{
-// 				data->input_spec[iter] = INFILE_OP;
-// 				if (data->input_spec[iter + 1] == DEFAULT)
-// 					data->input_spec[iter + 1] = INFILE;
+// 				sh->input_spec[iter] = INFILE_OP;
+// 				if (sh->input_spec[iter + 1] == DEFAULT)
+// 					sh->input_spec[iter + 1] = INFILE;
 // 			}
-// 			else if (!ft_strcmp(data->entries[iter], ">"))
+// 			else if (!ft_strcmp(sh->entries[iter], ">"))
 // 			{
-// 				data->input_spec[iter] = OUTFILE_OP;
-// 				if (data->input_spec[iter + 1] == DEFAULT)
-// 					data->input_spec[iter + 1] = OUTFILE;
+// 				sh->input_spec[iter] = OUTFILE_OP;
+// 				if (sh->input_spec[iter + 1] == DEFAULT)
+// 					sh->input_spec[iter + 1] = OUTFILE;
 // 			}
-// 			else if (!ft_strcmp(data->entries[iter], "|"))
-// 				data->input_spec[iter] = PIPE;
+// 			else if (!ft_strcmp(sh->entries[iter], "|"))
+// 				sh->input_spec[iter] = PIPE;
 // 		}
 // 		iter++;
 // 	}
 // }
 
-int	create_envp(t_input *data, char *envp[])
+int	create_envp(t_sh *sh, char *envp[])
 {
 	size_t	iter;
 	size_t	create_iter;
@@ -64,35 +64,35 @@ int	create_envp(t_input *data, char *envp[])
 	iter = 0;
 	while (envp[iter])
 		iter++;
-	data->envp.count = iter;
-	data->envp.malloc = iter * 2;
-	data->envp.vars = malloc((data->envp.malloc + 1) * sizeof(char *));
-	if (!data->envp.vars)
+	sh->envp.count = iter;
+	sh->envp.malloc = iter * 2;
+	sh->envp.vars = malloc((sh->envp.malloc + 1) * sizeof(char *));
+	if (!sh->envp.vars)
 		return (perror("create_envp"), -1);
 	create_iter = 0;
 	while (create_iter < iter)
 	{
-		data->envp.vars[create_iter] = ft_strdup(envp[create_iter]);
-		if (!data->envp.vars[create_iter])
-			return (perror("create_envp"), free2d(&data->envp.vars), -1);
+		sh->envp.vars[create_iter] = ft_strdup(envp[create_iter]);
+		if (!sh->envp.vars[create_iter])
+			return (perror("create_envp"), free2d(&sh->envp.vars), -1);
 		create_iter++;
 	}
-	data->envp.vars[create_iter] = NULL;
+	sh->envp.vars[create_iter] = NULL;
 	return (0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_input	data;
+	t_sh	sh;
 	char	*buf;
 	int		exit_code;
 
-	if (create_envp(&data, envp) == -1)
+	if (create_envp(&sh, envp) == -1)
 		return (1);
-	data.exit_code = 0;
-	data.exit = 0;
+	sh.exit_code = 0;
+	sh.exit = 0;
 	if (!isatty(STDIN_FILENO))
-		non_interactive(&data);
+		non_interactive(&sh);
 	while (1)
 	{
 		g_current_signal = 0;
@@ -106,14 +106,14 @@ int	main(int argc, char *argv[], char *envp[])
 			free(buf);
 			continue ;
 		}
-		exit_code = parse_and_execute(buf, &data, INTERACTIVE);
+		exit_code = parse_and_execute(buf, &sh, INTERACTIVE);
 		if (exit_code == -1 && g_current_signal == 0)
-			return (free(buf), free2d(&data.envp.vars), 1);
-		if (data.exit)
-			return (free(buf), safe_write(1, "exit\n", 5), free2d(&data.envp.vars),
+			return (free(buf), free2d(&sh.envp.vars), 1);
+		if (sh.exit)
+			return (free(buf), safe_write(1, "exit\n", 5), free2d(&sh.envp.vars),
 				exit_code);
 		free(buf);
 	}
 	rl_clear_history();
-	return (free2d(&data.envp.vars), safe_write(1, "exit\n", 5), 0);
+	return (free2d(&sh.envp.vars), safe_write(1, "exit\n", 5), 0);
 }

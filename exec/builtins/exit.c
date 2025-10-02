@@ -6,15 +6,15 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:01:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 21:29:21 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:36:13 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exit_cmd(t_exec *data, t_cmd *cmd)
+int	exit_cmd(t_sh *sh, t_cmd *cmd)
 {
-	if (!data->pipe_count)
-		data->exit = 1;
+	if (!sh->pipe.count)
+		sh->exit = 1;
 	return (0);
 }

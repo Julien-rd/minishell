@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:37:21 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	input_check(char *param)
 	return (0);
 }
 
-int	extend_envp(t_exec *data)
+int	extend_envp(t_sh *sh)
 {
 	char	**new_envp;
 	size_t	iter;
@@ -36,28 +36,28 @@ int	extend_envp(t_exec *data)
 
 	iter = 0;
 	new_iter = 0;
-	new_envp = malloc(sizeof(char *) * ((int)(data->envp.malloc * 1.5) + 1));
+	new_envp = malloc(sizeof(char *) * ((int)(sh->envp.malloc * 1.5) + 1));
 	if (!new_envp)
 		return (perror("extend_envp"), -1);
-	data->envp.malloc = (size_t)(data->envp.malloc * 1.5);
-	while (data->envp.vars[iter])
+	sh->envp.malloc = (size_t)(sh->envp.malloc * 1.5);
+	while (sh->envp.vars[iter])
 	{
-		if (!ft_strcmp(data->envp.vars[iter], ""))
+		if (!ft_strcmp(sh->envp.vars[iter], ""))
 		{
-			free(data->envp.vars[iter]);
-			data->envp.count--;
+			free(sh->envp.vars[iter]);
+			sh->envp.count--;
 		}
 		else
-			new_envp[new_iter++] = data->envp.vars[iter];
+			new_envp[new_iter++] = sh->envp.vars[iter];
 		iter++;
 	}
 	new_envp[new_iter] = NULL;
-	free(data->envp.vars);
-	data->envp.vars = new_envp;
+	free(sh->envp.vars);
+	sh->envp.vars = new_envp;
 	return (0);
 }
 
-int	insert_pos(t_exec *data, char *param)
+int	insert_pos(t_sh *sh, char *param)
 {
 	size_t	iter;
 	size_t	end_of_name;
@@ -66,23 +66,23 @@ int	insert_pos(t_exec *data, char *param)
 	while (param[end_of_name] != '=')
 		end_of_name++;
 	iter = 0;
-	while (data->envp.vars[iter])
+	while (sh->envp.vars[iter])
 	{
-		if (!ft_strncmp(data->envp.vars[iter], param, end_of_name + 1))
+		if (!ft_strncmp(sh->envp.vars[iter], param, end_of_name + 1))
 			return (iter);
 		iter++;
 	}
 	iter = 0;
-	while (data->envp.vars[iter])
+	while (sh->envp.vars[iter])
 	{
-		if (!ft_strcmp(data->envp.vars[iter], ""))
+		if (!ft_strcmp(sh->envp.vars[iter], ""))
 			return (iter);
 		iter++;
 	}
 	return (-1);
 }
 
-int	insert_env(t_exec *data, char *entry)
+int	insert_env(t_sh *sh, char *entry)
 {
 	char	*new;
 	size_t	position;
@@ -90,25 +90,25 @@ int	insert_env(t_exec *data, char *entry)
 	new = ft_strdup(entry);
 	if (!new)
 		return (perror("export"), -1);
-	position = insert_pos(data, entry);
+	position = insert_pos(sh, entry);
 	if (position == -1)
 	{
-		if (data->envp.count >= data->envp.malloc)
-			if (extend_envp(data) == -1)
+		if (sh->envp.count >= sh->envp.malloc)
+			if (extend_envp(sh) == -1)
 				return (perror("export"), free(new), -1);
-		data->envp.vars[data->envp.count] = new;
-		data->envp.count = data->envp.count + 1;
-		data->envp.vars[data->envp.count] = NULL;
+		sh->envp.vars[sh->envp.count] = new;
+		sh->envp.count = sh->envp.count + 1;
+		sh->envp.vars[sh->envp.count] = NULL;
 	}
 	else
 	{
-		free(data->envp.vars[position]);
-		data->envp.vars[position] = new;
+		free(sh->envp.vars[position]);
+		sh->envp.vars[position] = new;
 	}
 	return (0);
 }
 
-int	export(char **cmd, t_exec *data)
+int	export(char **cmd, t_sh *sh)
 {
 	size_t	iter;
 	int		return_value;
@@ -131,7 +131,7 @@ int	export(char **cmd, t_exec *data)
 			iter++;
 			continue ;
 		}
-		if (insert_env(data, cmd[iter]) == -1)
+		if (insert_env(sh, cmd[iter]) == -1)
 			return (-1);
 		iter++;
 	}

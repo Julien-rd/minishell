@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,26 @@ int	update_pwd_entry(char **dest, char *pwd_str, char *cwd_str)
 	return (0);
 }
 
-int envp_pwd(t_exec *data, char	*tmp_cwd)
+int envp_pwd(t_sh *sh, char	*tmp_cwd)
 {
 	int		position;
 	char	*cwd;
 	size_t	iter;
 
 	iter = 0;
-	while (data->envp.vars[iter])
+	while (sh->envp.vars[iter])
 	{
-		if (!ft_strncmp(data->envp.vars[iter], "OLDPWD=", 7))
+		if (!ft_strncmp(sh->envp.vars[iter], "OLDPWD=", 7))
 		{
-			if (update_pwd_entry(&data->envp.vars[iter], "OLDPWD=", tmp_cwd) == -1)
+			if (update_pwd_entry(&sh->envp.vars[iter], "OLDPWD=", tmp_cwd) == -1)
 				return (-1);
 		}
-		if (!ft_strncmp(data->envp.vars[iter], "PWD=", 4))
+		if (!ft_strncmp(sh->envp.vars[iter], "PWD=", 4))
 		{
 			cwd = getcwd(NULL, 0);
 			if (!cwd)
 				return (perror("cd"), -1);
-			if (update_pwd_entry(&data->envp.vars[iter], "PWD=", cwd) == -1)
+			if (update_pwd_entry(&sh->envp.vars[iter], "PWD=", cwd) == -1)
 				return (-1);
 			free(cwd);
 		}
@@ -52,7 +52,7 @@ int envp_pwd(t_exec *data, char	*tmp_cwd)
 	return (0);
 }
 
-int	cd(t_exec *data, t_cmd *cmd, size_t pipe_count)
+int	cd(t_sh *sh, t_cmd *cmd, size_t pipe_count)
 {
 	size_t	iter;
 	char	*tmp_cwd;
@@ -69,10 +69,10 @@ int	cd(t_exec *data, t_cmd *cmd, size_t pipe_count)
 		return (perror("cd"), -1);
 	if (!pipe_count && chdir(cmd->cmd[1]) == -1)
 	{
-		data->exit_code = errno;
+		sh->exit_code = errno;
 		return (-1);
 	}
-	if (envp_pwd(data, tmp_cwd) == -1)
+	if (envp_pwd(sh, tmp_cwd) == -1)
 		return (perror("cd"), -1);
 	free(tmp_cwd);
 	return (0);

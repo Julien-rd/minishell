@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:04:15 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	here_doc_caller(t_input *data)
+static int	here_doc_caller(t_sh *sh)
 {
 	t_entry	*cur;
 	
-	cur = data->entries;
-	data->heredoc = NULL;
+	cur = sh->entries;
+	sh->heredoc = NULL;
 	while (cur)
 	{
-		if (cur->spec == HERE_DOC && here_doc(data) == -1)
+		if (cur->spec == HERE_DOC && here_doc(sh) == -1)
 		{
 			if (g_current_signal == SIGINT)
-				data->exit_code = 130;
+				sh->exit_code = 130;
 			else
 			{
-				free2d(&data->envp.vars);
-				data->exit_code = 0;
+				free2d(&sh->envp.vars);
+				sh->exit_code = 0;
 			}
 			return (-1);
 		}
@@ -36,21 +36,21 @@ static int	here_doc_caller(t_input *data)
 	return (0);
 }
 
-static int	expand_raw_entry(t_input *data)
+static int	expand_raw_entry(t_sh *sh)
 {
 	t_entry	*cur;
 	char	*expanded_str;
 	
-	cur = data->entries;
+	cur = sh->entries;
 	while (cur)
 	{
 		if (!(cur->spec >= HERE_DOC_OP && cur->spec <= OUTFILE_OP)
 			&& cur->spec != PIPE && cur->spec != HERE_DOC)
 		{
-			expanded_str = expand(cur, data, DEFAULT);
+			expanded_str = expand(cur, sh, DEFAULT);
 			if (!expanded_str)
 				return (-1);
-			if (split_expands(expanded_str, cur, data) == -1)
+			if (split_expands(expanded_str, cur, sh) == -1)
 				return (-1);
 		}
 		cur = cur->next;
@@ -58,11 +58,11 @@ static int	expand_raw_entry(t_input *data)
 	return (0);
 }
 
-static void	entry_spec(t_input *data)
+static void	entry_spec(t_sh *sh)
 {
 	t_entry	*cur;
 
-	cur = data->entries;
+	cur = sh->entries;
 	while (cur)
 	{
 		if (!ft_strcmp(cur->raw_entry, "<<"))
@@ -87,21 +87,21 @@ static void	entry_spec(t_input *data)
 	}
 }
 
-static int	create_list(char *buf, t_input *data)
+static int	create_list(char *buf, t_sh *sh)
 {
 	size_t	iter;
 	size_t	entry_len;
 	t_entry	*entry;
 	char	*raw_str;
 
-	data->entries = NULL;
+	sh->entries = NULL;
 	iter = 0;
 	while (buf[iter])
 	{
 		iter += skip_whitspaces(&buf[iter]);
 		if (!buf[iter])
 			break;
-		entry_len = token_len(buf, data, iter);
+		entry_len = token_len(buf, sh, iter);
 		raw_str = malloc((entry_len + 1) * sizeof(char));
 		if (!raw_str)
 			return (perror("create_list"), -1);
@@ -109,20 +109,20 @@ static int	create_list(char *buf, t_input *data)
 		entry = newnode(raw_str);
 		if (!entry)
 			return (perror("create_list"), free(raw_str), -1);
-		lstadd(&data->entries, entry);
+		lstadd(&sh->entries, entry);
 		iter += entry_len;
 	}
 	return (0);
 }
 
-int	parsing(char *buf, t_input *data)
+int	parsing(char *buf, t_sh *sh)
 {
-	if (create_list(buf, data) == -1)
+	if (create_list(buf, sh) == -1)
 		return (-1);
-	entry_spec(data);
-	if (expand_raw_entry(data) == -1)
+	entry_spec(sh);
+	if (expand_raw_entry(sh) == -1)
 		return (-1);
-	if (here_doc_caller(data) == -1)
+	if (here_doc_caller(sh) == -1)
 		return (-1);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 11:01:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,17 @@ int	is_whitespace(char c)
 	return (0);
 }
 
-int	toggle_quotes(char *buf, t_input *data, size_t iter)
+int	toggle_quotes(char *buf, t_sh *sh, size_t iter)
 {
 	int	r_value;
 
 	r_value = 0;
-	if (buf[iter] == '\'' && !data->dbl_quote && (data->sgl_quote
+	if (buf[iter] == '\'' && !sh->dbl_quote && (sh->sgl_quote
 		|| (ft_strchr(&buf[iter + 1], '\''))) && ++r_value)
-		data->sgl_quote = !data->sgl_quote;
-	else if (buf[iter] == '\"' && !data->sgl_quote && (data->dbl_quote
+		sh->sgl_quote = !sh->sgl_quote;
+	else if (buf[iter] == '\"' && !sh->sgl_quote && (sh->dbl_quote
 			|| (ft_strchr(&buf[iter + 1], '\"'))) && ++r_value)
-		data->dbl_quote = !data->dbl_quote;
+		sh->dbl_quote = !sh->dbl_quote;
 	return (r_value);
 }
 
@@ -97,20 +97,20 @@ char	*remove_quotes(char *to_strip, size_t len)
 {
 	size_t	iter;
 	size_t	stripped_iter;
-	t_input	data;
+	t_sh	sh;
 	char	*stripped;
 	
 	stripped_iter = 0;
-	data.dbl_quote = 0;
-	data.sgl_quote = 0;
+	sh.dbl_quote = 0;
+	sh.sgl_quote = 0;
 	stripped = malloc((len + 1) * sizeof(char));
 	if (!stripped)
 		return (NULL);
 	iter = 0;
 	while (iter < len)
 	{
-		iter += toggle_quotes(to_strip, &data, iter);
-		if (!((to_strip[iter] == '\'' && data.sgl_quote) || (to_strip[iter] == '\"' && data.dbl_quote)))
+		iter += toggle_quotes(to_strip, &sh, iter);
+		if (!((to_strip[iter] == '\'' && sh.sgl_quote) || (to_strip[iter] == '\"' && sh.dbl_quote)))
 			stripped[stripped_iter++] = to_strip[iter];
 		iter++;
 	}

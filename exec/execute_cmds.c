@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:15:33 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:37:30 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,52 +51,52 @@ int	cmd_init(t_cmd *cmd)
 	return (0);
 }
 
-void	child_exit_handle(t_exec *data, t_cmd *cmd, int errcode)
+void	child_exit_handle(t_sh *sh, t_cmd *cmd, int errcode)
 {
-	free2d(&data->envp.vars);
-	free_list(data->entries);
-	free(data->pipe_position);
+	free2d(&sh->envp.vars);
+	free_list(sh->entries);
+	free(sh->pipe.position);
 	free(cmd->cmd);
-	if (data->heredoc)
-		free2d(&data->heredoc);
+	if (sh->heredoc)
+		free2d(&sh->heredoc);
 	exit(errcode);
 }
 
-void	child_process(t_exec *data, t_cmd *cmd)
+void	child_process(t_sh *sh, t_cmd *cmd)
 {
 	char	*path;
 	int		flag;
 
 	setup_child_signals();;
-	if (setup_redirect(data, cmd) == -1)
-		child_exit_handle(data, cmd, 1);
+	if (setup_redirect(sh, cmd) == -1)
+		child_exit_handle(sh, cmd, 1);
 	if (cmd->cmd[0] == NULL)
-		child_exit_handle(data, cmd, 0);
+		child_exit_handle(sh, cmd, 0);
 	if (cmd->cmd_flag != EXTERNAL)
-		builtin_handler(data, cmd);
-	path = ft_getpath(data->envp.vars, cmd->cmd[0]); // splitfail malloc
+		builtin_handler(sh, cmd);
+	path = ft_getpath(sh->envp.vars, cmd->cmd[0]); // splitfail malloc
 	if (path == NULL || cmd->cmd[0][0] == 0)
-		command_fail(path, data, cmd);
-	execve(path, cmd->cmd, data->envp.vars);
-	execve_fail(path, errno, data, cmd);
+		command_fail(path, sh, cmd);
+	execve(path, cmd->cmd, sh->envp.vars);
+	execve_fail(path, errno, sh, cmd);
 }
 
-void	parent_process(t_exec *data)
+void	parent_process(t_sh *sh)
 {
-	if (data->pipe_iter != 0)
+	if (sh->pipe.iter != 0)
 	{
-		if (close(data->prev_fd) == -1)
+		if (close(sh->pipe.prev_fd) == -1)
 			exit(1);
 	}
-	if (data->pipe_iter != data->pipe_count)
+	if (sh->pipe.iter != sh->pipe.count)
 	{
-		data->prev_fd = data->fd[0];
-		if (close(data->fd[1]) == -1)
+		sh->pipe.prev_fd = sh->pipe.fd[0];
+		if (close(sh->pipe.fd[1]) == -1)
 			exit(1);
 	}
 }
 
-int	kill_children(t_exec *data)
+int	kill_children(t_sh *sh)
 {
 	int		status;
 	int		return_value;
@@ -115,7 +115,7 @@ int	kill_children(t_exec *data)
 			else
 				break ;
 		}
-		if (pid == data->last_pid)
+		if (pid == sh->pipe.last_pid)
 		{
 			if (WIFEXITED(status))
 				return_value = WEXITSTATUS(status);
@@ -130,7 +130,7 @@ int	kill_children(t_exec *data)
 	return (return_value);
 }
 
-int	own_cmd_exec(t_exec *data, t_cmd *cmd)
+int	own_cmd_exec(t_sh *sh, t_cmd *cmd)
 {
 	int	flag;
 
@@ -138,23 +138,23 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 		return (0);
 	flag = options_check(cmd);
 	if (cmd->cmd_flag == CD && !flag)
-		return (cd(data, cmd, data->pipe_count));
+		return (cd(sh, cmd, sh->pipe.count));
 	if (cmd->cmd_flag == EXIT)
-		return (exit_cmd(data, cmd));
+		return (exit_cmd(sh, cmd));
 	if (cmd->cmd_flag == EXPORT && !flag)
-		return (export(cmd->cmd, data));
+		return (export(cmd->cmd, sh));
 	if (cmd->cmd_flag == UNSET && !flag)
-		return (unset(cmd->cmd, data));
+		return (unset(cmd->cmd, sh));
 	return (0);
 }
-void find_start(t_cmd	*cmd, t_exec *data)
+void find_start(t_cmd	*cmd, t_sh *sh)
 {
 	t_entry	*l_iter;
 	size_t iter;
 	
 	iter = 0;
-	l_iter = data->entries;
-	while(l_iter && iter < data->pipe_position[data->pipe_iter])
+	l_iter = sh->entries;
+	while(l_iter && iter < sh->pipe.position[sh->pipe.iter])
 	{
 		l_iter = l_iter->next;
 		iter++;
@@ -162,32 +162,32 @@ void find_start(t_cmd	*cmd, t_exec *data)
 	cmd->line = l_iter;
 }
 
-int	execute_cmds(t_exec *data)
+int	execute_cmds(t_sh *sh)
 {
 	t_cmd	cmd;
 	t_entry	*iter;
 
-	while (data->pipe_iter <= data->pipe_count)
+	while (sh->pipe.iter <= sh->pipe.count)
 	{
-		find_start(&cmd, data);
+		find_start(&cmd, sh);
 		if (cmd_init(&cmd) == -1)
 			return (perror("cmd_init"), -1);
-		cmd_flag(data, &cmd);
-		if (data->pipe_iter != data->pipe_count)
-			if (pipe(data->fd) == -1)
+		cmd_flag(sh, &cmd);
+		if (sh->pipe.iter != sh->pipe.count)
+			if (pipe(sh->pipe.fd) == -1)
 				return (perror("pipe"), free(cmd.cmd), -1);
-		data->internal_errcode = own_cmd_exec(data, &cmd);
-		data->pid = fork();
-		if (data->pid == -1)
+		sh->internal_errcode = own_cmd_exec(sh, &cmd);
+		sh->pipe.pid = fork();
+		if (sh->pipe.pid == -1)
 			return (perror("fork"), free(cmd.cmd), -1);
-		if (data->pipe_iter == data->pipe_count)
-			data->last_pid = data->pid;
-		if (data->pid == 0)
-			child_process(data, &cmd);
+		if (sh->pipe.iter == sh->pipe.count)
+			sh->pipe.last_pid = sh->pipe.pid;
+		if (sh->pipe.pid == 0)
+			child_process(sh, &cmd);
 		else
-			parent_process(data);
-		data->pipe_iter++;
+			parent_process(sh);
+		sh->pipe.iter++;
 		free(cmd.cmd);
 	}
-	return (kill_children(data));
+	return (kill_children(sh));
 }

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:15:51 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,92 +68,92 @@ long long			ft_atoll(const char *str);
 char				*remove_quotes(char *to_strip, size_t len);
 size_t				skip_whitspaces(char *buf);
 int					is_whitespace(char c);
-int					toggle_quotes(char *str, t_input *data, size_t iter);
+int					toggle_quotes(char *str, t_sh *sh, size_t iter);
 int					is_token(char c);
 void				cut_nl(char *buf);
 size_t				empty_prompt(char *buf);
 
 /*******************************************  PARSING  *******************************************/
 
-int					parsing(char *buf, t_input *data);
+int					parsing(char *buf, t_sh *sh);
 
 // BUILD_HELPERS
 t_entry				*lstlast(t_entry *lst);
 void				lstadd(t_entry **lst, t_entry *new);
 t_entry				*newnode(char *raw_str);
-int					parse_and_execute(char *buf, t_input *data, int flag);
+int					parse_and_execute(char *buf, t_sh *sh, int flag);
 
 // NONINTERACTIVE
-void				non_interactive(t_input *data);
+void				non_interactive(t_sh *sh);
 
 int					malloc_ops(char *buf, size_t *entry, size_t *iter,
-						t_input *data);
+						t_sh *sh);
 void				fill_ops(char *buf, size_t *entry, size_t *iter,
-						t_input *data);
-void				fill_string(t_input *data);
+						t_sh *sh);
+void				fill_string(t_sh *sh);
 
 /********************************************* EXPAND *********************************************/
-int					expand_init(t_entry *cur, t_input *data, t_expand_str *str);
-int					quote_check(size_t iter, char *buf, t_input *data);
+int					expand_init(t_entry *cur, t_sh *sh, t_expand_str *str);
+int					quote_check(size_t iter, char *buf, t_sh *sh);
 size_t				envlen(char *env);
-size_t				envsize(char *env, char **envp, t_input *data);
-char				*expand(t_entry *cur, t_input *data, int flag);
-int					quoteclosed(char *str, char quote, t_input *data);
+size_t				envsize(char *env, char **envp, t_sh *sh);
+char				*expand(t_entry *cur, t_sh *sh, int flag);
+int					quoteclosed(char *str, char quote, t_sh *sh);
 int					get_env(char *buf, t_expand_str *str, t_expand_helper *exh,
 						char **envp);
-int					check_envs(char *buf, t_input *data, t_expand_str *str);
-char				*expanded_str(char *buf, t_input *data, t_expand_str *str);
-int					split_expands(char *exp_str, t_entry *entry, t_input *data);
+int					check_envs(char *buf, t_sh *sh, t_expand_str *str);
+char				*expanded_str(char *buf, t_sh *sh, t_expand_str *str);
+int					split_expands(char *exp_str, t_entry *entry, t_sh *sh);
 
 /* parse_string */
-size_t				count_entries(char *buf, t_input *data);
-int					malloc_entries(char *buf, t_input *data);
-void				input_spec_init(t_input *data);
-void				fill_entries(char *buf, t_input *data);
-int					parse_string(char *buf, t_input *data);
-int					syntax_check(t_input *data);
+size_t				count_entries(char *buf, t_sh *sh);
+int					malloc_entries(char *buf, t_sh *sh);
+void				input_spec_init(t_sh *sh);
+void				fill_entries(char *buf, t_sh *sh);
+int					parse_string(char *buf, t_sh *sh);
+int					syntax_check(t_sh *sh);
 
 /* parse_string_helpers */
-int					token_len(char *buf, t_input *data, size_t iter);
+int					token_len(char *buf, t_sh *sh, size_t iter);
 int					is_closed(char *str);
 
 /* parse_string_ops */
 void				op_count(char *buf, size_t *iter, size_t *count);
 int					malloc_ops(char *buf, size_t *entry, size_t *iter,
-						t_input *data);
+						t_sh *sh);
 void				fill_ops(char *buf, size_t *entry, size_t *iter,
-						t_input *data);
+						t_sh *sh);
 
 int					ft_find_paths(char *envp[], char *env_name);
-int					here_doc(t_input *data);
+int					here_doc(t_sh *sh);
 char				*ft_getpath(char **envp, char *cmd);
-int					exec_central(t_input *input);
-int					execute_cmds(t_exec *data);
-int					setup_redirect(t_exec *data, t_cmd *cmd);
-int					check_cmd(t_exec *data, t_cmd *cmd);
-void				cmd_flag(t_exec *data, t_cmd *cmd);
+int					exec_central(t_sh *input);
+int					execute_cmds(t_sh *sh);
+int					setup_redirect(t_sh *sh, t_cmd *cmd);
+int					check_cmd(t_sh *sh, t_cmd *cmd);
+void				cmd_flag(t_sh *sh, t_cmd *cmd);
 int					options_check(t_cmd *cmd);
-void				internal_cmd_error(t_exec *data, t_cmd *cmd, int flag);
-void				child_exit_handle(t_exec *data, t_cmd *cmd, int errcode);
+void				internal_cmd_error(t_sh *sh, t_cmd *cmd, int flag);
+void				child_exit_handle(t_sh *sh, t_cmd *cmd, int errcode);
 
 /* own cmds */
-void				pwd(t_exec *data, t_cmd *cmd, int flag);
-int					exit_cmd(t_exec *data, t_cmd *cmd);
-int					cd(t_exec *data, t_cmd *cmd, size_t pipe_count);
-void				echo(t_exec *data, t_cmd *cmd, int nflag);
-void				env(char **envp, t_exec *data, t_cmd *cmd, int flag);
-int					insert_pos(t_exec *data, char *param);
-int					export(char **cmd, t_exec *data);
-int					unset(char **cmd, t_exec *data);
+void				pwd(t_sh *sh, t_cmd *cmd, int flag);
+int					exit_cmd(t_sh *sh, t_cmd *cmd);
+int					cd(t_sh *sh, t_cmd *cmd, size_t pipe_count);
+void				echo(t_sh *sh, t_cmd *cmd, int nflag);
+void				env(char **envp, t_sh *sh, t_cmd *cmd, int flag);
+int					insert_pos(t_sh *sh, char *param);
+int					export(char **cmd, t_sh *sh);
+int					unset(char **cmd, t_sh *sh);
 char				*ft_strjointhree(char const *s1, char const *s2,
 						char const *s3);
 // error messages
 
-void				invalid_option(t_exec *data, t_cmd *cmd);
-void				execve_fail(char *path, int error, t_exec *data,
+void				invalid_option(t_sh *sh, t_cmd *cmd);
+void				execve_fail(char *path, int error, t_sh *sh,
 						t_cmd *cmd);
-void				command_fail(char *path, t_exec *data, t_cmd *cmd);
-void				builtin_handler(t_exec *data, t_cmd *cmd);
+void				command_fail(char *path, t_sh *sh, t_cmd *cmd);
+void				builtin_handler(t_sh *sh, t_cmd *cmd);
 
 // helper
 
