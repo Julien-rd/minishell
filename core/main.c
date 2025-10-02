@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 19:43:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 10:51:09 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,11 @@ int	main(int argc, char *argv[], char *envp[])
 		if (buf == NULL)
 			break ;
 		setup_main_signals();
+		if (empty_prompt(buf))
+		{
+			free(buf);
+			continue ;
+		}
 		exit_code = parse_and_execute(buf, &data, INTERACTIVE);
 		if (exit_code == -1 && g_current_signal == 0)
 			return (free(buf), free2d(&data.envp.vars), 1);

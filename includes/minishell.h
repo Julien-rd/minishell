@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 21:35:42 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:59:04 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void				sigint_prompt(int num);
 void				sigint_heredoc(int num);
 void				sigint_main(int num);
 int					hdoc_signal_kill(char *buf, char *entry);
+void				free_list(t_entry *list);
 
 /******  Helpers  ******/
 int					safe_write(int fd, char *buf, size_t len);
@@ -69,6 +70,8 @@ size_t				skip_whitspaces(char *buf);
 int					is_whitespace(char c);
 int					toggle_quotes(char *str, t_input *data, size_t iter);
 int					is_token(char c);
+void				cut_nl(char *buf);
+size_t				empty_prompt(char *buf);
 
 /*******************************************  PARSING  *******************************************/
 
@@ -90,18 +93,16 @@ void				fill_ops(char *buf, size_t *entry, size_t *iter,
 void				fill_string(t_input *data);
 
 /********************************************* EXPAND *********************************************/
-int					expand_init(t_entry *cur, t_input *data,
-						t_expand_str *str);
+int					expand_init(t_entry *cur, t_input *data, t_expand_str *str);
 int					quote_check(size_t iter, char *buf, t_input *data);
 size_t				envlen(char *env);
 size_t				envsize(char *env, char **envp, t_input *data);
 char				*expand(t_entry *cur, t_input *data, int flag);
 int					quoteclosed(char *str, char quote, t_input *data);
-int					get_env(char *buf, t_expand_str *str,
-						t_expand_helper *exh, char **envp);
+int					get_env(char *buf, t_expand_str *str, t_expand_helper *exh,
+						char **envp);
 int					check_envs(char *buf, t_input *data, t_expand_str *str);
-char				*expanded_str(char *buf, t_input *data,
-						t_expand_str *str);
+char				*expanded_str(char *buf, t_input *data, t_expand_str *str);
 int					split_expands(char *exp_str, t_entry *entry, t_input *data);
 
 /* parse_string */

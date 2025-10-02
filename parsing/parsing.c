@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 21:34:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:04:15 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	here_doc_caller(t_input *data)
 	t_entry	*cur;
 	
 	cur = data->entries;
+	data->heredoc = NULL;
 	while (cur)
 	{
 		if (cur->spec == HERE_DOC && here_doc(data) == -1)

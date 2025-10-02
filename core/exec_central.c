@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_central.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 21:02:08 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:04:37 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,12 @@ int	exec_central(t_input *input)
 	exit_code = 0;
 	// return -1;
 	if (init_data(&data, input, input->envp.vars) == -1)
-		return (-1);
+		return (free_list(data.entries), -1);
 	exit_code = execute_cmds(&data);
+	free_list(data.entries);
 	free(data.pipe_position);
-	// free2d(&data.heredoc);
+	if(data.heredoc)
+		free2d(&data.heredoc);
 	input->envp.count = data.envp.count;
 	input->envp.malloc = data.envp.malloc;
 	input->exit = data.exit;

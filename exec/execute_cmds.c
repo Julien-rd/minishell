@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 21:29:39 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:00:02 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,10 @@ int	cmd_init(t_cmd *cmd)
 
 void	child_exit_handle(t_exec *data, t_cmd *cmd, int errcode)
 {
-	// free2d(&data->envp.vars);
-	// free2d(&data->entries);
-	// free(data->input_spec);
-	// free(data->pipe_position);
-	// free(cmd->cmd);
+	free2d(&data->envp.vars);
+	free_list(data->entries);
+	free(data->pipe_position);
+	free(cmd->cmd);
 	if (data->heredoc)
 		free2d(&data->heredoc);
 	exit(errcode);
