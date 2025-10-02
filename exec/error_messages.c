@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 19:36:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:56:33 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ void	builtin_handler(t_exec *data, t_cmd *cmd)
 	int	flag;
 
 	flag = options_check(cmd);
-	if (data->cmd_flag == ECHO)
+	if (cmd->cmd_flag == ECHO)
 		echo(data, cmd, flag);
-	else if (data->cmd_flag == PWD)
+	else if (cmd->cmd_flag == PWD)
 		pwd(data, cmd, flag);
-	else if (data->cmd_flag == ENV)
+	else if (cmd->cmd_flag == ENV)
 		env(data->envp.vars, data, cmd, flag);
 	else
 		internal_cmd_error(data, cmd, flag);

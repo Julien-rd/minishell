@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 21:29:39 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:55:58 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	child_process(t_exec *data, t_cmd *cmd)
 		child_exit_handle(data, cmd, 1);
 	if (cmd->cmd[0] == NULL)
 		child_exit_handle(data, cmd, 0);
-	if (data->cmd_flag != EXTERNAL)
+	if (cmd->cmd_flag != EXTERNAL)
 		builtin_handler(data, cmd);
 	path = ft_getpath(data->envp.vars, cmd->cmd[0]); // splitfail malloc
 	if (path == NULL || cmd->cmd[0][0] == 0)
@@ -138,13 +138,13 @@ int	own_cmd_exec(t_exec *data, t_cmd *cmd)
 	if (cmd->cmd[0] == NULL)
 		return (0);
 	flag = options_check(cmd);
-	if (data->cmd_flag == CD && !flag)
+	if (cmd->cmd_flag == CD && !flag)
 		return (cd(data, cmd, data->pipe_count));
-	if (data->cmd_flag == EXIT)
+	if (cmd->cmd_flag == EXIT)
 		return (exit_cmd(data, cmd));
-	if (data->cmd_flag == EXPORT && !flag)
+	if (cmd->cmd_flag == EXPORT && !flag)
 		return (export(cmd->cmd, data));
-	if (data->cmd_flag == UNSET && !flag)
+	if (cmd->cmd_flag == UNSET && !flag)
 		return (unset(cmd->cmd, data));
 	return (0);
 }
@@ -173,10 +173,10 @@ int	execute_cmds(t_exec *data)
 		find_start(&cmd, data);
 		if (cmd_init(&cmd) == -1)
 			return (perror("cmd_init"), -1);
+		cmd_flag(data, &cmd);
 		if (data->pipe_iter != data->pipe_count)
 			if (pipe(data->fd) == -1)
 				return (perror("pipe"), free(cmd.cmd), -1);
-		cmd_flag(data, &cmd);
 		data->internal_errcode = own_cmd_exec(data, &cmd);
 		data->pid = fork();
 		if (data->pid == -1)
