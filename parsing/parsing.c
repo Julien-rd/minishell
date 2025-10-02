@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:05:43 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int	expand_raw_entry(t_sh *sh)
 			if (!expanded_str)
 				return (-1);
 			if (split_expands(expanded_str, cur, sh) == -1)
-				return (-1);
+				return (free(expanded_str), -1);
+			free(expanded_str);
 		}
 		cur = cur->next;
 	}
@@ -118,11 +119,11 @@ static int	create_list(char *buf, t_sh *sh)
 int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
-		return (-1);
+		return (free_list(sh->entries), -1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
-		return (-1);
+		return (free_list(sh->entries), -1);
 	if (here_doc_caller(sh) == -1)
-		return (-1);
+		return (free_list(sh->entries), -1);
 	return (0);
 }
