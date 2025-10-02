@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:49:06 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:54:39 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int					exec_central(t_input *input);
 int					execute_cmds(t_exec *data);
 int					setup_redirect(t_exec *data, t_cmd *cmd);
 int					check_cmd(t_exec *data, t_cmd *cmd);
-int					cmd_flag(t_exec *data, t_cmd *cmd);
+void				cmd_flag(t_exec *data, t_cmd *cmd);
 int					options_check(t_cmd *cmd);
 void				internal_cmd_error(t_exec *data, t_cmd *cmd, int flag);
 void				child_exit_handle(t_exec *data, t_cmd *cmd, int errcode);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 10:40:19 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:14:17 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_expand_str
 typedef struct s_cmd
 {
 	char			**cmd;
+	int				cmd_flag;
 	t_entry			*line;
 }					t_cmd;
 
@@ -80,7 +81,6 @@ typedef struct s_exec
 	size_t			pipe_iter;
 	size_t			pipe_count;
 
-	int				cmd_flag;
 	int				internal_errcode;
 	pid_t			pid;
 	pid_t			last_pid;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   internal_cmd_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/29 10:32:37 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 10:57:18 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ void	internal_cmd_error(t_exec *data, t_cmd *cmd, int flag)
 	size_t		iter;
 
 	iter = 0;
-	if (flag == -1 && data->cmd_flag != EXIT)
+	if (flag == -1 && cmd->cmd_flag != EXIT)
 		invalid_option(data, cmd);
-	if (data->cmd_flag == CD)
+	if (cmd->cmd_flag == CD)
 		cd_error(data, cmd);
-	if (data->cmd_flag == EXPORT || data->cmd_flag == UNSET)
-		export_unset_error(data, cmd, data->cmd_flag);
-	if (data->cmd_flag == EXIT)
+	if (cmd->cmd_flag == EXPORT || cmd->cmd_flag == UNSET)
+		export_unset_error(data, cmd, cmd->cmd_flag);
+	if (cmd->cmd_flag == EXIT)
 		exit_error(data, cmd);
 	child_exit_handle(data, cmd, 0);
 }

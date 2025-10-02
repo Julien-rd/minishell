@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 10:33:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/02 11:15:14 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ void	builtin_handler(t_exec *data, t_cmd *cmd)
 	int	flag;
 
 	flag = options_check(cmd);
-	if (data->cmd_flag == ECHO)
+	if (cmd->cmd_flag == ECHO)
 		echo(data, cmd, flag);
-	else if (data->cmd_flag == PWD)
+	else if (cmd->cmd_flag == PWD)
 		pwd(data, cmd, flag);
-	else if (data->cmd_flag == ENV)
+	else if (cmd->cmd_flag == ENV)
 		env(data->envp.vars, data, cmd, flag);
 	else
 		internal_cmd_error(data, cmd, flag);

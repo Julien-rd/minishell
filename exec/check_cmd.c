@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 21:28:00 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:55:43 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,22 @@ int	options_check(t_cmd *cmd)
 	return (0);
 }
 
-int	cmd_flag(t_exec *data, t_cmd *cmd)
+void	cmd_flag(t_exec *data, t_cmd *cmd)
 {
-	data->cmd_flag = EXTERNAL;
+	cmd->cmd_flag = EXTERNAL;
 	data->internal_errcode = 0;
-	if (cmd->cmd[0] == NULL)
-		return (0);
 	if (!ft_strncmp(cmd->cmd[0], "echo", 5))
-		return (data->cmd_flag = ECHO, 0);
-	if (!ft_strncmp(cmd->cmd[0], "cd", 3))
-		return (data->cmd_flag = CD, 1);
-	if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
-		return (data->cmd_flag = PWD, 0);
-	if (!ft_strncmp(cmd->cmd[0], "export", 7))
-		return (data->cmd_flag = EXPORT, 1);
-	if (!ft_strncmp(cmd->cmd[0], "unset", 6))
-		return (data->cmd_flag = UNSET, 1);
-	if (!ft_strncmp(cmd->cmd[0], "env", 4))
-		return (data->cmd_flag = ENV, 0);
-	if (!ft_strncmp(cmd->cmd[0], "exit", 5))
-		return (data->cmd_flag = EXIT, 1);
-	return (0);
+		cmd->cmd_flag = ECHO;
+	else if (!ft_strncmp(cmd->cmd[0], "cd", 3))
+		cmd->cmd_flag = CD;
+	else if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
+		cmd->cmd_flag = PWD;
+	else if (!ft_strncmp(cmd->cmd[0], "export", 7))
+		cmd->cmd_flag = EXPORT;
+	else if (!ft_strncmp(cmd->cmd[0], "unset", 6))
+		cmd->cmd_flag = UNSET;
+	else if (!ft_strncmp(cmd->cmd[0], "env", 4))
+		cmd->cmd_flag = ENV;
+	else if (!ft_strncmp(cmd->cmd[0], "exit", 5))
+		cmd->cmd_flag = EXIT;
 }
