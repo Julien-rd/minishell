@@ -6,13 +6,13 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:51:57 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand(t_entry *cur, t_sh *sh, int flag)
+char	*expand(t_entry *current, t_sh *sh, int flag)
 {
 	char			**env_arr;
 	t_expand_str	str;
@@ -25,11 +25,11 @@ char	*expand(t_entry *cur, t_sh *sh, int flag)
 	str.exit_code = sh->exit_code;
 	str.env_arr = NULL;
 	str.env_pos = NULL;
-	if (expand_init(cur, sh, &str) == -1)
+	if (expand_init(current, sh, &str) == -1)
 		return (NULL);
-	cur->exp_count = str.var_count;
-	if (check_envs(cur->raw_entry, sh, &str) == -1)
+	current->exp_count = str.var_count;
+	if (check_envs(current->raw_entry, sh, &str) == -1)
 		return (free2d(&str.env_arr), free(str.env_pos), NULL);
-	exp_str = expanded_str(cur->raw_entry, sh, &str);
+	exp_str = expanded_str(current->raw_entry, sh, &str);
 	return (free2d(&str.env_arr), free(str.env_pos), exp_str);
 }

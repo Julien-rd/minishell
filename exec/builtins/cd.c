@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:46:55 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ int envp_pwd(t_sh *sh, char	*tmp_cwd)
 	return (0);
 }
 
-int	cd(t_sh *sh, t_cmd *cmd, size_t pipe_count)
+int	cd(t_sh *sh, char **argv, size_t pipe_count)
 {
 	size_t	iter;
 	char	*tmp_cwd;
 
 	iter = 0;
-	while (cmd->cmd[iter])
+	while (argv[iter])
 		iter++;
 	if (iter > 2)
 		return (-2);
@@ -67,7 +67,7 @@ int	cd(t_sh *sh, t_cmd *cmd, size_t pipe_count)
 	tmp_cwd = getcwd(NULL, 0);
 	if (!tmp_cwd)
 		return (perror("cd"), -1);
-	if (!pipe_count && chdir(cmd->cmd[1]) == -1)
+	if (!pipe_count && chdir(argv[1]) == -1)
 	{
 		sh->exit_code = errno;
 		return (-1);

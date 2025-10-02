@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:52:13 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,19 +106,19 @@ int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
 	return (0);
 }
 
-int	expand_init(t_entry *cur, t_sh *sh, t_expand_str *str)
+int	expand_init(t_entry *current, t_sh *sh, t_expand_str *str)
 {
 	size_t	iter;
 
 	iter = 0;
 	sh->dbl_quote = 0;
 	sh->sgl_quote = 0;
-	while (cur->raw_entry[iter])
+	while (current->raw_entry[iter])
 	{
-		if ((!quote_check(iter, cur->raw_entry, sh) || str->flag == HERE_DOC)
-			&& cur->raw_entry[iter] == '$')
+		if ((!quote_check(iter, current->raw_entry, sh) || str->flag == HERE_DOC)
+			&& current->raw_entry[iter] == '$')
 		{
-			if (envlen(&cur->raw_entry[iter + 1]) > 0)
+			if (envlen(&current->raw_entry[iter + 1]) > 0)
 				str->var_count++;
 		}
 		iter++;

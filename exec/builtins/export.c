@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:46:15 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,30 +108,30 @@ int	insert_env(t_sh *sh, char *entry)
 	return (0);
 }
 
-int	export(char **cmd, t_sh *sh)
+int	export(char **argv, t_sh *sh)
 {
 	size_t	iter;
 	int		return_value;
 
 	iter = 1;
 	return_value = 0;
-	while (cmd[iter])
+	while (argv[iter])
 	{
-		if (input_check(cmd[iter]) == -1)
+		if (input_check(argv[iter]) == -1)
 		{
 			write(1, "export: `", 10);
-			write(1, cmd[iter], ft_strlen(cmd[iter]));
+			write(1, argv[iter], ft_strlen(argv[iter]));
 			write(1, "': not a valid identifier\n", 26);
 			iter++;
 			return_value = 1;
 			continue ;
 		}
-		if (!ft_strchr(cmd[iter], '='))
+		if (!ft_strchr(argv[iter], '='))
 		{
 			iter++;
 			continue ;
 		}
-		if (insert_env(sh, cmd[iter]) == -1)
+		if (insert_env(sh, argv[iter]) == -1)
 			return (-1);
 		iter++;
 	}

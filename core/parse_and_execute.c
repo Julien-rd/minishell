@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 12:01:43 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:07:51 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	parse_and_execute(char *buf, t_sh *sh, int flag)
 	if (syntax_check(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = 2, 0);
 	sh->exit_code = exec_central(sh);
-	if (data->exit_code == -1 && g_current_signal == 0)
+	if (sh->exit_code == -1 && g_current_signal == 0)
 		return (perror("execution error"), -1);
 	if (sh->exit)
 		return (sh->exit_code);

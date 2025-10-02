@@ -6,13 +6,13 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 15:30:03 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(t_sh *sh, t_cmd *cmd, int flag)
+void	pwd(t_sh *sh, t_pipeline *pl, int flag)
 {
 	char	*current_path;
 
@@ -22,12 +22,12 @@ void	pwd(t_sh *sh, t_cmd *cmd, int flag)
 	if (!current_path)
 	{
 		perror("getcwd");
-		child_exit_handle(sh, cmd, 1);
+		child_exit_handle(sh, pl, 1);
 	}
 	if (safe_write(1, current_path, ft_strlen(current_path)) == -1)
-		return (free(current_path), child_exit_handle(sh, cmd, 1));
+		return (free(current_path), child_exit_handle(sh, pl, 1));
 	if (safe_write(1, "\n", 1) == -1)
-		return (free(current_path), child_exit_handle(sh, cmd, 1));
-	return (free(current_path), child_exit_handle(sh, cmd, 0));
+		return (free(current_path), child_exit_handle(sh, pl, 1));
+	return (free(current_path), child_exit_handle(sh, pl, 0));
 }
 

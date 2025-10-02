@@ -6,28 +6,28 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:36:28 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:00:12 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	pipe_init(t_sh *sh)
+int	pipe_init(t_pipeline *pl)
 {
-	if (sh->pipe.iter != 0)
+	if (pl->iter != 0)
 	{
-		if (dup2(sh->pipe.prev_fd, 0) == -1)
+		if (dup2(pl->prev_fd, 0) == -1)
 			return (perror("dup2"), -1);
-		if (close(sh->pipe.prev_fd) == -1)
+		if (close(pl->prev_fd) == -1)
 			return (perror("close"), -1);
 	}
-	if (sh->pipe.iter != sh->pipe.count)
+	if (pl->iter != pl->count)
 	{
-		if (dup2(sh->pipe.fd[1], 1) == -1)
+		if (dup2(pl->fd[1], 1) == -1)
 			return (perror("dup2"), -1);
-		if (close(sh->pipe.fd[0]) == -1)
+		if (close(pl->fd[0]) == -1)
 			return (perror("close"), -1);
-		if (close(sh->pipe.fd[1]) == -1)
+		if (close(pl->fd[1]) == -1)
 			return (perror("close"), -1);
 	}
 	return (0);
@@ -47,21 +47,21 @@ int	infile_init(char *file_name)
 	return (0);
 }
 
-int	heredoc_init(t_sh *sh)
+int	heredoc_init(t_pipeline *pl, t_sh *sh)
 {
 	int	fd_heredoc[2];
 
 	if (pipe(fd_heredoc) == -1)
 		return (perror("pipe"), -1);
-	write(fd_heredoc[1], sh->heredoc[sh->pipe.hdoc_iter],
-		ft_strlen(sh->heredoc[sh->pipe.hdoc_iter]));
+	write(fd_heredoc[1], sh->heredoc[pl->hdoc_iter],
+		ft_strlen(sh->heredoc[pl->hdoc_iter]));
 	if (close(fd_heredoc[1]) == -1)
 		return (perror("close"), -1);
 	if (dup2(fd_heredoc[0], 0) == -1)
 		return (perror("dup2"), -1);
 	if (close(fd_heredoc[0]) == -1)
 		return (perror("close"), -1);
-	sh->pipe.hdoc_iter++;
+	pl->hdoc_iter++;
 	return (0);
 }
 
@@ -94,30 +94,30 @@ static int	ambiguous(t_entry *iter)
 	return (0);
 }
 
-int	setup_redirect(t_sh *sh, t_cmd *cmd)
+int	setup_redirect(t_sh *sh, t_pipeline *pl)
 {
-	t_entry	*iter;
+	t_entry	*node;
 
-	iter = cmd->line;
-	if (pipe_init(sh) == -1)
+	node = pl->cmds[pl->iter].line;
+	if (pipe_init(pl) == -1)
 		return (-1);
-	while (iter && iter->spec != PIPE)
+	while (node && node->spec != PIPE)
 	{
-		if (ambiguous(iter))
+		if (ambiguous(node))
 			return (-1);
-		if (iter->spec == INFILE)
-			if (infile_init(iter->expanded[0]) == -1)
+		if (node->spec == INFILE)
+			if (infile_init(node->expanded[0]) == -1)
 				return (-1);
-		if (iter->spec == HERE_DOC)
-			if (heredoc_init(sh) == -1)
+		if (node->spec == HERE_DOC)
+			if (heredoc_init(pl, sh) == -1)
 				return (-1);
-		if (iter->spec == OUTFILE)
-			if (outfile_init(iter->expanded[0], OUTFILE) == -1)
+		if (node->spec == OUTFILE)
+			if (outfile_init(node->expanded[0], OUTFILE) == -1)
 				return (-1);
-		if (iter->spec == APPEND_FILE)
-			if (outfile_init(iter->expanded[0], APPEND_FILE) == -1)
+		if (node->spec == APPEND_FILE)
+			if (outfile_init(node->expanded[0], APPEND_FILE) == -1)
 				return (-1);
-		iter = iter->next;
+		node = node->next;
 	}
 	return (0);
 }

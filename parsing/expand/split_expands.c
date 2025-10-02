@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 12:01:31 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:08:42 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	content_to_lst(t_list	**head, char *exp_str, size_t entry_len)
 	if (!content)
 		return (perror("content_to_lst"), -1);
 	node = ft_lstnew(content);
-	printf("node_addr%p\n", node);
 	if (!node)
 		return (perror("content_to_lst"), free(content), -1);
 	ft_lstadd_back(head, node);

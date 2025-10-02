@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 12:03:18 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:56:38 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ void				fill_ops(char *buf, size_t *entry, size_t *iter,
 void				fill_string(t_sh *sh);
 
 /********************************************* EXPAND *********************************************/
-int					expand_init(t_entry *cur, t_sh *sh, t_expand_str *str);
+int					expand_init(t_entry *current, t_sh *sh, t_expand_str *str);
 int					quote_check(size_t iter, char *buf, t_sh *sh);
 size_t				envlen(char *env);
 size_t				envsize(char *env, char **envp, t_sh *sh);
-char				*expand(t_entry *cur, t_sh *sh, int flag);
+char				*expand(t_entry *current, t_sh *sh, int flag);
 int					quoteclosed(char *str, char quote, t_sh *sh);
 int					get_env(char *buf, t_expand_str *str, t_expand_helper *exh,
 						char **envp);
@@ -128,32 +128,31 @@ int					ft_find_paths(char *envp[], char *env_name);
 int					here_doc(t_sh *sh);
 char				*ft_getpath(char **envp, char *cmd);
 int					exec_central(t_sh *input);
-int					execute_cmds(t_sh *sh);
-int					setup_redirect(t_sh *sh, t_cmd *cmd);
-int					check_cmd(t_sh *sh, t_cmd *cmd);
-void				cmd_flag(t_sh *sh, t_cmd *cmd);
-int					options_check(t_cmd *cmd);
-void				internal_cmd_error(t_sh *sh, t_cmd *cmd, int flag);
-void				child_exit_handle(t_sh *sh, t_cmd *cmd, int errcode);
+int					pipeline(t_sh *sh);
+int					setup_redirect(t_sh *sh, t_pipeline *pl);
+// int					check_cmd(t_sh *sh, t_cmd*cmd);
+void				cmd_flag(t_sh *sh, t_cmd*current);
+int					options_check(t_cmd*cmd);
+void				internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag);
+void				child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode);
 
 /* own cmds */
-void				pwd(t_sh *sh, t_cmd *cmd, int flag);
-int					exit_cmd(t_sh *sh, t_cmd *cmd);
-int					cd(t_sh *sh, t_cmd *cmd, size_t pipe_count);
-void				echo(t_sh *sh, t_cmd *cmd, int nflag);
-void				env(char **envp, t_sh *sh, t_cmd *cmd, int flag);
+void				pwd(t_sh *sh, t_pipeline *pl, int flag);
+int					exit_cmd(t_sh *sh, size_t pipe_count);
+int					cd(t_sh *sh, char **argv, size_t pipe_count);
+void				echo(t_pipeline *pl, t_sh *sh, int nflag);
+void				env(t_pipeline *pl, t_sh *sh, int flag);
 int					insert_pos(t_sh *sh, char *param);
-int					export(char **cmd, t_sh *sh);
+int					export(char **argv, t_sh *sh);
 int					unset(char **cmd, t_sh *sh);
 char				*ft_strjointhree(char const *s1, char const *s2,
 						char const *s3);
 // error messages
 
-void				invalid_option(t_sh *sh, t_cmd *cmd);
-void				execve_fail(char *path, int error, t_sh *sh,
-						t_cmd *cmd);
-void				command_fail(char *path, t_sh *sh, t_cmd *cmd);
-void				builtin_handler(t_sh *sh, t_cmd *cmd);
+void				invalid_option(t_pipeline *pl, t_sh *sh);
+void				execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh);
+void				command_fail(char *path, t_pipeline *pl, t_sh *sh);
+void				builtin_handler(t_pipeline *pl, t_sh *sh);
 
 // helper
 
