@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 20:53:10 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:39:10 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*expand(t_entry *cur, t_input *data, int flag)
 	char			*exp_str;
 
 	str.flag = flag;
-	data->len = 0;
+	str.len = 0;
 	str.var_count = 0;
 	str.exit_code = data->exit_code;
 	str.env_arr = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 18:54:17 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:01:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,37 @@ size_t	skip_whitspaces(char *buf)
 	while ((buf[iter] >= 9 && buf[iter] <= 13) || buf[iter] == 32)
 		iter++;
 	return (iter);
+}
+
+size_t empty_prompt(char	*buf)
+{
+	return(!ft_strlen(buf));
+}
+
+void cut_nl(char	*buf)
+{
+	size_t len;
+
+	len = ft_strlen(buf);
+	if (len == 0)
+		return ;
+	buf[len - 1] = '\0';
+}
+
+void free_list(t_entry *list)
+{
+    t_entry *node;
+    t_entry *next;
+
+    node = list;
+    while(node)
+    {
+        if(node->raw_entry)
+            free(node->raw_entry);
+        if(node->expanded)
+            free2d(&node->expanded);
+        next = node->next;
+        free(node);
+        node = next;
+    }
 }

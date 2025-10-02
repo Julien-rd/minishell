@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 20:53:10 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:39:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	check_return_get_env(size_t iter, t_expand_str *str,
 {
 	if (exh->env_return == 1)
 	{
-		data->len += ft_strlen(str->env_arr[exh->env_iter]);
+		str->len += ft_strlen(str->env_arr[exh->env_iter]);
 		exh->env_iter++;
 		str->env_pos[exh->env_pos_iter++] = iter;
 		str->env_pos[exh->env_pos_iter++] = iter + exh->len;
@@ -61,7 +61,7 @@ char	*expanded_str(char *buf, t_input *data, t_expand_str *str)
 	data->dbl_quote = 0;
 	data->sgl_quote = 0;
 	exh.buf = buf;
-	exp_str = ft_calloc(sizeof(char), data->len + 1);
+	exp_str = ft_calloc(sizeof(char), str->len + 1);
 	while (exp_str && buf[iter])
 	{
 		toggle_quotes(buf, data, iter);
@@ -100,7 +100,7 @@ int	check_envs(char *buf, t_input *data, t_expand_str *str)
 			iter += exh.len;
 		}
 		else
-			data->len++;
+			str->len++;
 		iter++;
 	}
 	return (0);

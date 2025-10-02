@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:02:11 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:14:17 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_expand_helper
 	size_t			env_pos_iter;
 	size_t			len;
 	size_t			str_iter;
-	int 			env_return;
+	int env_return ;
 	char			*buf;
 }					t_expand_helper;
 
@@ -41,6 +41,7 @@ typedef struct s_expand_str
 	size_t			*env_pos;
 	int				exit_code;
 	int				flag;
+	int				len;
 }					t_expand_str;
 
 typedef struct s_cmd
@@ -64,7 +65,6 @@ typedef struct s_input
 	t_entry			*entries;
 	int				sgl_quote;
 	int				dbl_quote;
-	size_t			len;
 	int				exit_code;
 	int				exit;
 }					t_input;
