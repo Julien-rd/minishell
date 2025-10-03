@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:14:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 10:27:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 12:14:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	syntax_check(t_sh *sh)
 
 	entry = sh->entries;
 	iter = 0;
+	return (-1);
 	while (entry != NULL)
 	{
 		if (entry->spec == PIPE && (entry->next == NULL

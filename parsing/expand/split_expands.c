@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 09:55:52 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 12:39:11 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	operator_case(char *buf, size_t iter)
 {
-	if (!ft_strncmp(&buf[iter], ">>", 2)
-		|| !ft_strncmp(&buf[iter], "<<", 2))
+	if (!ft_strncmp(&buf[iter], ">>", 2) || !ft_strncmp(&buf[iter], "<<", 2))
 		return (2);
 	if (buf[iter] == '>' || buf[iter] == '<' || buf[iter] == '|')
 		return (1);
@@ -26,6 +25,7 @@ char	**lst_to_expand(t_list *head)
 {
 	char	**expanded;
 	size_t	iter;
+	t_list	*tmp_node;
 
 	iter = 0;
 	expanded = malloc((ft_lstsize(head) + 1) * sizeof(char *));
@@ -33,15 +33,17 @@ char	**lst_to_expand(t_list *head)
 		return (perror("lst_to_expand"), NULL);
 	while (head)
 	{
+		tmp_node = head->next;
 		expanded[iter] = head->content;
 		iter++;
-		head = head->next;
+		free(head);
+		head = tmp_node;
 	}
 	expanded[iter] = NULL;
 	return (expanded);
 }
 
-int	content_to_lst(t_list	**head, char *exp_str, size_t entry_len)
+int	content_to_lst(t_list **head, char *exp_str, size_t entry_len)
 {
 	t_list	*node;
 	char	*content;
@@ -66,8 +68,7 @@ int	token_len(char *buf, t_sh *sh, size_t iter)
 	count = operator_case(buf, iter);
 	if (count > 0)
 		return (count);
-	while (sh->dbl_quote || sh->sgl_quote || (buf[iter]
-			&& is_token(buf[iter])))
+	while (sh->dbl_quote || sh->sgl_quote || (buf[iter] && is_token(buf[iter])))
 	{
 		toggle_quotes(buf, sh, iter);
 		count++;
@@ -93,11 +94,11 @@ int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
 			break ;
 		entry_len = token_len(exp_str, sh, iter);
 		if (content_to_lst(&head, exp_str, entry_len) == -1)
-			return (-1);
+			return (ft_lstclear(&head, free), -1);
 		iter += entry_len + (entry_len == 0);
 	}
 	entry->expanded = lst_to_expand(head);
 	if (!entry->expanded)
-		return (-1);
+		return (ft_lstclear(&head, free), -1);
 	return (0);
 }

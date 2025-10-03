@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 10:13:57 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 12:29:17 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	free2d(char ***str)
 	if (*str)
 	{
 		while ((*str)[iter])
+		{
+			free((*str)[iter]);
 			iter++;
+		}
 		free(*str);
 	}
 	*str = NULL;
@@ -147,6 +150,7 @@ void	free_list(t_entry *list)
 
 	while (list)
 	{
+		write(1, "hey\n", 4);
 		if (list->raw_entry)
 		{
 			free(list->raw_entry);
