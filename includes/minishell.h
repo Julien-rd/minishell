@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 10:57:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 15:41:52 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void				free2d(char ***str);
 long long			ft_atoll(const char *str);
 char				*remove_quotes(char *to_strip, size_t len);
 size_t				skip_whitspaces(char *buf);
-int					is_whitespace(char c);
 int					toggle_quotes(char *str, t_sh *sh, size_t iter);
 int					is_token(char c);
 void				cut_nl(char *buf);
@@ -116,6 +115,10 @@ int					get_env(char *buf, t_expand_str *str, t_expand_helper *exh,
 int					check_envs(char *buf, t_sh *sh, t_expand_str *str);
 char				*expanded_str(char *buf, t_sh *sh, t_expand_str *str);
 int					split_expands(char *exp_str, t_entry *entry, t_sh *sh);
+int					ex_encounter(char *str_new, t_expand_helper *exh,
+						t_expand_str *str, size_t iter);
+int					check_return_get_env(size_t iter, t_expand_str *str,
+						t_expand_helper *exh, t_sh *sh);
 
 /* parse_string */
 size_t				count_entries(char *buf, t_sh *sh);

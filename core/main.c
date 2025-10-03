@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 12:56:32 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 15:50:12 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,22 @@ int	create_envp(t_sh *sh, char *envp[])
 	return (0);
 }
 
+void check_exit_status(char *buf, int exit_code, t_sh *sh)
+{
+	if ((exit_code == -1 && g_current_signal == 0) || sh->exit)
+	{
+		if (sh->envp.vars)
+			free2d(&sh->envp.vars);
+		if (sh->exit || buf == NULL)
+		{
+			if (safe_write(1, "exit\n", 5) == -1)
+				exit(1);
+			exit(exit_code);
+		}
+		free(buf);
+		exit(1);
+	}
+}
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_sh	sh;
@@ -94,24 +110,15 @@ int	main(int argc, char *argv[], char *envp[])
 		non_interactive(&sh);
 	while (1)
 	{
-		g_current_signal = 0;
 		setup_interactive_signals();
 		buf = readline("minishell>> ");
 		if (buf == NULL)
 			break ;
 		setup_main_signals();
 		if (empty_prompt(buf))
-		{
-			free(buf);
 			continue ;
-		}
 		exit_code = parse_and_execute(buf, &sh, INTERACTIVE);
-		if (exit_code == -1 && g_current_signal == 0)
-			return (free(buf), free2d(&sh.envp.vars), 1);
-		if (sh.exit)
-			return (free(buf), safe_write(1, "exit\n", 5),
-				free2d(&sh.envp.vars), exit_code);
-		free(buf);
+		check_exit_status(buf, exit_code, &sh);
 	}
 	rl_clear_history();
 	return (free2d(&sh.envp.vars), safe_write(1, "exit\n", 5), sh.exit_code);

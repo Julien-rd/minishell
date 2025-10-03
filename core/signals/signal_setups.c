@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handling.c                                  :+:      :+:    :+:   */
+/*   signal_setups.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:26:43 by jromann           #+#    #+#             */
-/*   Updated: 2025/09/28 10:48:13 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 15:25:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	setup_interactive_signals(void)
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 
+	g_current_signal = 0;
 	sa_int.sa_handler = sigint_prompt;
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;

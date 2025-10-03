@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   non_interactive_helpers.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/01 19:01:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 15:37:21 by jromann          ###   ########.fr       */
+/*   Created: 2025/10/03 14:43:40 by jromann           #+#    #+#             */
+/*   Updated: 2025/10/03 15:03:02 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exit_cmd(t_pipeline *pl, t_sh *sh)
+void	cut_nl(char *buf)
 {
-	long long	exit_code;
+	size_t	len;
 
-	exit_code = -1;
-	if (!pl->count)
-	{
-		if (!pl->current->argv[1])
-		{
-			sh->exit = 1;
-			return (0);
-		}
-		exit_code = ft_atoll(pl->current->argv[1]);
-		if (!(((pl->current->argv[1][0] == '0' && pl->current->argv[1][1] == '\0')
-			|| exit_code != 0) && pl->current->argv[2] != NULL))
-			sh->exit = 1;
-	}
-	return (0);
+	len = ft_strlen(buf);
+	if (len == 0)
+		return ;
+	buf[len - 1] = '\0';
 }
