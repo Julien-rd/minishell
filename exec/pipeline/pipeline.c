@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 13:07:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 15:59:58 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ int	pipeline(t_sh *sh)
 		pl.current = &pl.cmds[pl.iter];
 		own_cmd_exec(&pl, sh);
 		if (pipe_fork(&pl) == -1)
-			return (free(pl.position), -1);
+			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
 		if (pl.current->pid == 0)
 			child_process(&pl, sh);
 		else
-			parent_process(&pl, sh);
+			if (parent_process(&pl, sh) == -1)
+				return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
 		pl.iter++;
 	}
-	return (free(pl.position), kill_children(&pl, sh));
+	return (free_cmds(&pl, pl.count + 1), free(pl.position), kill_children(&pl, sh));
 }

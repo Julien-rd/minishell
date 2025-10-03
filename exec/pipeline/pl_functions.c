@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   pl_functions.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 13:11:18 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 15:37:59 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_cmds(t_pipeline *pl, size_t arr_len)
+{
+	size_t	iter;
+	iter = 0;
+	while (iter < arr_len)
+	{
+		free(pl->cmds[iter].argv); //not free2d da nur sachen aus entries
+		iter++;
+	}
+	free(pl->cmds);
+}
 
 int	setup_cmds(t_pipeline *pl, t_sh *sh)
 {
@@ -21,16 +33,16 @@ int	setup_cmds(t_pipeline *pl, t_sh *sh)
 	pl->hdoc_iter = 0;
 	pl->current = NULL;
 	pl->count = count_pipes(sh);
-	if (init_pipe_pos(pl, sh) == -1)
+	if (init_pipe_pos(pl, sh) == -1) // ab hier pl.position initiated
 		return (-1);
-	pl->cmds = malloc((pl->count + 1) * sizeof(t_cmd));
+	pl->cmds = malloc((pl->count + 1) * sizeof(t_cmd));  //t_cmd init
 	if(!pl->cmds)
-		return(free(pl->position), -1);
+		return(perror("setup_cmds"), free(pl->position), -1);
 	while (cmd_iter <= pl->count)
 	{
 		find_start(pl, sh, cmd_iter);
 		if (cmd_init(&pl->cmds[cmd_iter]) == -1)
-			return (perror("cmd_init"), -1);
+			return (free(pl->position), free_cmds(pl, cmd_iter), -1);
 		cmd_flag(sh, &pl->cmds[cmd_iter]);
 		cmd_iter++;
 	}
@@ -78,20 +90,20 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 	execve_fail(path, errno, pl, sh);
 }
 
-void	parent_process(t_pipeline *pl, t_sh *sh)
+int	parent_process(t_pipeline *pl, t_sh *sh)
 {
-	free(pl->current);
 	if (pl->iter != 0)
 	{
 		if (close(pl->prev_fd) == -1)
-			exit(1);
+			return (perror("close"), -1);
 	}
 	if (pl->iter != pl->count)
 	{
 		pl->prev_fd = pl->fd[0];
 		if (close(pl->fd[1]) == -1)
-			exit(1);
+			return (perror("close"), -1);
 	}
+	return (0);
 }
 
 int	kill_children(t_pipeline *pl, t_sh *sh)

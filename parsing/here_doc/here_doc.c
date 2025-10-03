@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 15:49:01 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ static int	hdoc_entry(t_entry *iter, t_sh *sh, size_t hdoc_iter)
 	if (ft_strncmp(delimiter, iter->raw_entry, ft_strlen(delimiter) + 1) == 0)
 		expand_flag = 1;
 	if (hdoc_mode(sh, expand_flag, delimiter, hdoc_iter) == -1)
-		return (setup_main_signals(), -1);
-	return (setup_main_signals(), 0);
+		return (setup_main_signals(), free(delimiter), -1);
+	return (setup_main_signals(), free(delimiter), 0);
 }
 
 size_t	operator_count(t_sh *sh)

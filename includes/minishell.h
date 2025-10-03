@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 15:41:52 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 16:26:05 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void				env(t_pipeline *pl, t_sh *sh, int flag);
 int					export(char **argv, t_sh *sh);
 int					unset(char **cmd, t_sh *sh);
 
+void	free_cmds(t_pipeline *pl, size_t arr_len);
+
 /********************************************* EXPAND *********************************************/
 int					expand_init(t_entry *current, t_sh *sh, t_expand_str *str);
 int					quote_check(size_t iter, char *buf, t_sh *sh);
@@ -173,7 +175,7 @@ int					pipe_fork(t_pipeline *pl);
 int					setup_cmds(t_pipeline *pl, t_sh *sh);
 void				own_cmd_exec(t_pipeline *pl, t_sh *sh);
 void				child_process(t_pipeline *pl, t_sh *sh);
-void				parent_process(t_pipeline *pl, t_sh *sh);
+int					parent_process(t_pipeline *pl, t_sh *sh);
 int					kill_children(t_pipeline *pl, t_sh *sh);
 
 #endif

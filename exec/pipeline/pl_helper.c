@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:08:27 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 12:49:33 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 15:36:41 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int init_pipe_pos(t_pipeline *pl, t_sh *sh)
 	iter = 0;
 	pl->position = malloc(sizeof(int) * (pl->count + 1));
 	if (!pl->position)
-		return (-1);
+		return (perror("init_pipe_pos"), -1);
 	pl->position[iter++] = 0;
 	while (node != NULL)
 	{
@@ -70,7 +70,7 @@ int cmd_tokens(t_cmd *current)
 {
 	t_entry *node;
 	size_t cmd_tokens;
-	size_t iter;
+	int iter;
 
 	node = current->line;
 	cmd_tokens = 0;
@@ -91,11 +91,11 @@ int cmd_init(t_cmd *current)
 {
 	t_entry *node;
 	size_t cmd_iter;
-	size_t iter;
+	int iter;
 
 	current->argv = malloc((cmd_tokens(current) + 1) * sizeof(char *));
 	if (!current->argv)
-		return (-1);
+		return (perror("cmd_init"), -1);
 	node = current->line;
 	cmd_iter = 0;
 	while (node && node->spec != PIPE)
