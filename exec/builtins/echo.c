@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:00:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 16:47:28 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:31:22 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	echo(t_pipeline *pl, t_sh *sh, int nflag)
 	iter += nflag;
 	while (pl->current->argv[iter])
 	{
-		if (safe_write(1, pl->current->argv[iter], ft_strlen(pl->current->argv[iter])) == -1)
+		if (safe_write(1, pl->current->argv[iter],
+				ft_strlen(pl->current->argv[iter])) == -1)
 			child_exit_handle(sh, pl, 1);
 		if (pl->current->argv[iter + 1])
 		{

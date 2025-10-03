@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   internal_cmd_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 16:56:38 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:34:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	exit_error(t_pipeline *pl, t_sh *sh)
 	{
 		if (safe_write(2, "exit: ", 6) == -1)
 			child_exit_handle(sh, pl, 1);
-		if (safe_write(2, pl->current->argv[1], ft_strlen(pl->current->argv[1])) == -1)
+		if (safe_write(2, pl->current->argv[1],
+				ft_strlen(pl->current->argv[1])) == -1)
 			child_exit_handle(sh, pl, 1);
 		if (safe_write(2, ": numeric argument required\n", 28) == -1)
 			child_exit_handle(sh, pl, 1);
@@ -55,7 +56,7 @@ void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
 	child_exit_handle(sh, pl, 0);
 }
 
-void	cd_error(t_cmd*cur, t_pipeline *pl, t_sh *sh)
+void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 {
 	if (sh->internal_errcode == -2)
 	{

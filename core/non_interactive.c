@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   non_interactive.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:14:06 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	non_interactive(t_sh *sh)
 	while (1)
 	{
 		buf = get_next_line(STDIN_FILENO);
-		if(!buf)
+		if (!buf)
 			break ;
 		cut_nl(buf);
 		if (empty_prompt(buf))

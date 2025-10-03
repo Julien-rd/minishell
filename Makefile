@@ -9,7 +9,7 @@ check_cmd.c main.c signal_handlers.c \
 expand.c expand_helper.c expand_helper2.c here_doc.c \
 pipeline.c find_path.c exec_central.c get_next_line.c \
 get_next_line_utils.c non_interactive.c signal_setups.c parse_and_execute.c \
-cd.c echo.c env.c exit.c export.c pwd.c unset.c pl_functions.c pl_helper.c
+cd.c echo.c env.c exit.c export.c pwd.c unset.c pl_functions.c pl_helper.c syntax_error.c
 
 
 OBJ = $(SRC:%.c=obj/%.o)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 17:31:02 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:14:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ int	main(int argc, char *argv[], char *envp[])
 		if (exit_code == -1 && g_current_signal == 0)
 			return (free(buf), free2d(&sh.envp.vars), 1);
 		if (sh.exit)
-			return (free(buf), safe_write(1, "exit\n", 5), free2d(&sh.envp.vars),
-				exit_code);
+			return (free(buf), safe_write(1, "exit\n", 5),
+				free2d(&sh.envp.vars), exit_code);
 		free(buf);
 	}
 	rl_clear_history();

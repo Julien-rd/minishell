@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 16:48:15 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:29:55 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	prepare_arg(char *argv[3], t_pipeline *pl, t_sh *sh)
 	argv[2] = NULL;
 }
 
-static void	execute_if_cmd_not_found(char *path, t_pipeline *pl, t_sh *sh, int *error)
+static void	execute_if_cmd_not_found(char *path, t_pipeline *pl, t_sh *sh,
+		int *error)
 {
 	int		fd;
 	char	*argv[3];
@@ -46,7 +47,7 @@ static void	execute_if_cmd_not_found(char *path, t_pipeline *pl, t_sh *sh, int *
 	fd = open(pl->current->argv[0], O_RDONLY);
 	if (fd != -1)
 	{
-		if(dup2(fd, STDIN_FILENO) == -1)
+		if (dup2(fd, STDIN_FILENO) == -1)
 			return (perror("dup2"), close(fd), child_exit_handle(sh, pl, 1));
 		close(fd);
 		prepare_arg(argv, pl, sh);
@@ -66,7 +67,7 @@ void	execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh)
 	if (errno == ENOEXEC)
 		execute_if_cmd_not_found(path, pl, sh, &error);
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
-			error = EISDIR;
+		error = EISDIR;
 	errno = error;
 	perror(path);
 	if (errno == EACCES || errno == ENOEXEC || errno == EISDIR)
@@ -80,7 +81,8 @@ void	command_fail(char *path, t_pipeline *pl, t_sh *sh)
 {
 	if (errno == EACCES)
 	{
-		if (safe_write(2, pl->current->argv[0], ft_strlen(pl->current->argv[0])) == -1)
+		if (safe_write(2, pl->current->argv[0],
+				ft_strlen(pl->current->argv[0])) == -1)
 			child_exit_handle(sh, pl, 1);
 		if (write(2, ": Permission denied\n", 20) == -1)
 			child_exit_handle(sh, pl, 1);
@@ -88,12 +90,13 @@ void	command_fail(char *path, t_pipeline *pl, t_sh *sh)
 	}
 	else if (errno == ENOENT || pl->current->argv[0][0] == 0)
 	{
-		if(pl->current->argv[0][0] == 0)
+		if (pl->current->argv[0][0] == 0)
 		{
 			if (safe_write(2, "''", 2) == -1)
 				child_exit_handle(sh, pl, 1);
 		}
-		else if (safe_write(2, pl->current->argv[0], ft_strlen(pl->current->argv[0])) == -1)
+		else if (safe_write(2, pl->current->argv[0],
+				ft_strlen(pl->current->argv[0])) == -1)
 			child_exit_handle(sh, pl, 1);
 		if (safe_write(2, ": command not found\n", 20) == -1)
 			child_exit_handle(sh, pl, 1);

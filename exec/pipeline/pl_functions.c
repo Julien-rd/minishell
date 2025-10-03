@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pl_functions.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 17:54:41 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:57:21 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	own_cmd_exec(t_pipeline *pl, t_sh *sh)
 	if (pl->current->cmd_flag == CD && !flag)
 		sh->internal_errcode = cd(sh, pl->current->argv, pl->count);
 	if (pl->current->cmd_flag == EXIT)
-		sh->internal_errcode = exit_cmd(sh, pl->count);
+		sh->internal_errcode = exit_cmd(pl, sh);
 	if (pl->current->cmd_flag == EXPORT && !flag)
 		sh->internal_errcode = export(pl->current->argv, sh);
 	if (pl->current->cmd_flag == UNSET && !flag)

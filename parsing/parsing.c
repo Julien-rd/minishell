@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 12:05:43 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:58:19 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	here_doc_caller(t_sh *sh)
 {
 	t_entry	*cur;
-	
+
 	cur = sh->entries;
 	sh->heredoc = NULL;
 	while (cur)
@@ -40,7 +40,7 @@ static int	expand_raw_entry(t_sh *sh)
 {
 	t_entry	*cur;
 	char	*expanded_str;
-	
+
 	cur = sh->entries;
 	while (cur)
 	{
@@ -67,23 +67,23 @@ static void	entry_spec(t_sh *sh)
 	while (cur)
 	{
 		if (!ft_strcmp(cur->raw_entry, "<<"))
-            cur->spec = HERE_DOC_OP;
-        else if (!ft_strcmp(cur->raw_entry, ">>"))
-            cur->spec = APPEND_OP;
-        else if (!ft_strcmp(cur->raw_entry, "<"))
-            cur->spec = INFILE_OP;
-        else if (!ft_strcmp(cur->raw_entry, ">"))
-            cur->spec = OUTFILE_OP;
-        else if (!ft_strcmp(cur->raw_entry, "|"))
-            cur->spec = PIPE;
-        if (cur->next && cur->spec == HERE_DOC_OP)
-            cur->next->spec = HERE_DOC;
-        else if (cur->next && cur->spec == APPEND_OP)
-            cur->next->spec = APPEND_FILE;
-        else if (cur->next && cur->spec == INFILE_OP)
-            cur->next->spec = INFILE;
-        else if (cur->next && cur->spec == OUTFILE_OP)
-            cur->next->spec = OUTFILE;
+			cur->spec = HERE_DOC_OP;
+		else if (!ft_strcmp(cur->raw_entry, ">>"))
+			cur->spec = APPEND_OP;
+		else if (!ft_strcmp(cur->raw_entry, "<"))
+			cur->spec = INFILE_OP;
+		else if (!ft_strcmp(cur->raw_entry, ">"))
+			cur->spec = OUTFILE_OP;
+		else if (!ft_strcmp(cur->raw_entry, "|"))
+			cur->spec = PIPE;
+		if (cur->next && cur->spec == HERE_DOC_OP)
+			cur->next->spec = HERE_DOC;
+		else if (cur->next && cur->spec == APPEND_OP)
+			cur->next->spec = APPEND_FILE;
+		else if (cur->next && cur->spec == INFILE_OP)
+			cur->next->spec = INFILE;
+		else if (cur->next && cur->spec == OUTFILE_OP)
+			cur->next->spec = OUTFILE;
 		cur = cur->next;
 	}
 }
@@ -101,7 +101,7 @@ static int	create_list(char *buf, t_sh *sh)
 	{
 		iter += skip_whitspaces(&buf[iter]);
 		if (!buf[iter])
-			break;
+			break ;
 		entry_len = token_len(buf, sh, iter);
 		raw_str = malloc((entry_len + 1) * sizeof(char));
 		if (!raw_str)

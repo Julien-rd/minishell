@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_management.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 17:00:12 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:34:00 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,11 @@ int	outfile_init(char *file_name, int flag)
 		return (perror(file_name), -1);
 	return (0);
 }
+
 static int	ambiguous(t_entry *iter)
 {
-	if (!(iter->spec == INFILE || iter->spec == OUTFILE || iter->spec == APPEND_FILE))
+	if (!(iter->spec == INFILE || iter->spec == OUTFILE
+			|| iter->spec == APPEND_FILE))
 		return (0);
 	if (iter->expanded == NULL || (iter->expanded[0] && iter->expanded[1]))
 	{

@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/01 19:01:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 11:08:49 by jromann          ###   ########.fr       */
+/*   Created: 2025/10/03 10:14:47 by jromann           #+#    #+#             */
+/*   Updated: 2025/10/03 10:29:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exit_cmd(t_pipeline *pl, t_sh *sh)
+int	syntax_error(t_entry *entry)
 {
-	long long	exit_code;
-
-	exit_code = ft_atoll(pl->current->argv[1]);
-	if (!pl->count && !(pl->current->argv[1][0] == '0'
-		&& pl->current->argv[1][1] == '\0') && exit_code == 0)
-		sh->exit = 1;
-	return (0);
+	if (entry->next == NULL)
+		safe_write(1, "syntax error near unexpected token `newline'\n", 45);
+	else
+	{
+		if (safe_write(1, "syntax error near unexpected token `", 36) == -1)
+			return (-1);
+		if (safe_write(1, entry->next->raw_entry,
+				ft_strlen(entry->next->raw_entry)) == -1)
+			return (-1);
+		safe_write(1, "'\n", 2);
+	}
+	return (-1);
 }

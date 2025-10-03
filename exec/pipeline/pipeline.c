@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 17:29:04 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:30:47 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	pipeline(t_sh *sh)
 {
 	t_pipeline	pl;
-	
+
 	if (setup_cmds(&pl, sh) == -1)
 		return (-1);
 	while (pl.iter <= pl.count)

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 16:52:13 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:11:55 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ex_encounter(char *str_new, t_expand_helper *exh,
-		t_expand_str *str, size_t iter)
+static int	ex_encounter(char *str_new, t_expand_helper *exh, t_expand_str *str,
+		size_t iter)
 {
 	if (str->env_pos[exh->env_pos_iter + 1] == 0)
 		exh->env_pos_iter += 2;
@@ -66,11 +66,12 @@ char	*expanded_str(char *buf, t_sh *sh, t_expand_str *str)
 	{
 		toggle_quotes(buf, sh, iter);
 		if (str->var_count * 2 > exh.env_pos_iter
-			&& str->env_pos[exh.env_pos_iter] == iter && (sh->sgl_quote == 0 || str->flag == HERE_DOC))
+			&& str->env_pos[exh.env_pos_iter] == iter && (sh->sgl_quote == 0
+				|| str->flag == HERE_DOC))
 			iter += ex_encounter(&exp_str[exh.str_iter], &exh, str, iter);
 		else
 			exp_str[exh.str_iter++] = buf[iter];
-		toggle_quotes(buf, sh, iter);
+		// toggle_quotes(buf, sh, iter); -> Maybe no need
 		if (buf[iter])
 			iter++;
 	}
@@ -90,8 +91,8 @@ int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
 	while (buf[iter])
 	{
 		exh.len = envlen(&buf[iter + 1]);
-		if ((!quote_check(iter, buf, sh) || str->flag == HERE_DOC) && buf[iter] == '$' && exh.len
-			&& str->var_count)
+		if ((!quote_check(iter, buf, sh) || str->flag == HERE_DOC)
+			&& buf[iter] == '$' && exh.len && str->var_count)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh,
 					sh->envp.vars);
@@ -115,8 +116,8 @@ int	expand_init(t_entry *current, t_sh *sh, t_expand_str *str)
 	sh->sgl_quote = 0;
 	while (current->raw_entry[iter])
 	{
-		if ((!quote_check(iter, current->raw_entry, sh) || str->flag == HERE_DOC)
-			&& current->raw_entry[iter] == '$')
+		if ((!quote_check(iter, current->raw_entry, sh)
+				|| str->flag == HERE_DOC) && current->raw_entry[iter] == '$')
 		{
 			if (envlen(&current->raw_entry[iter + 1]) > 0)
 				str->var_count++;

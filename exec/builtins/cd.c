@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 14:46:55 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:32:42 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	update_pwd_entry(char **dest, char *pwd_str, char *cwd_str)
 {
 	char	*new_entry;
-	
+
 	new_entry = ft_strjoin(pwd_str, cwd_str);
 	if (!new_entry)
 		return (perror("update_pwd_entry"), -1);
@@ -24,7 +24,7 @@ int	update_pwd_entry(char **dest, char *pwd_str, char *cwd_str)
 	return (0);
 }
 
-int envp_pwd(t_sh *sh, char	*tmp_cwd)
+int	envp_pwd(t_sh *sh, char *tmp_cwd)
 {
 	int		position;
 	char	*cwd;
@@ -35,7 +35,8 @@ int envp_pwd(t_sh *sh, char	*tmp_cwd)
 	{
 		if (!ft_strncmp(sh->envp.vars[iter], "OLDPWD=", 7))
 		{
-			if (update_pwd_entry(&sh->envp.vars[iter], "OLDPWD=", tmp_cwd) == -1)
+			if (update_pwd_entry(&sh->envp.vars[iter], "OLDPWD=", tmp_cwd)
+				== -1)
 				return (-1);
 		}
 		if (!ft_strncmp(sh->envp.vars[iter], "PWD=", 4))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pl_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:08:27 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 17:46:58 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:33:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ int	init_pipe_pos(t_pipeline *pl, t_sh *sh)
 	return (0);
 }
 
-void find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter)
+void	find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter)
 {
 	t_entry	*node;
-	size_t iter;
-	
+	size_t	iter;
+
 	iter = 0;
 	node = sh->entries;
-	while(node && iter < pl->position[cmd_iter])
+	while (node && iter < pl->position[cmd_iter])
 	{
 		node = node->next;
 		iter++;
@@ -80,7 +80,7 @@ int	cmd_init(t_cmd *current)
 		if (node->spec == DEFAULT)
 		{
 			iter = -1;
-			while(node->expanded && node->expanded[++iter])
+			while (node->expanded && node->expanded[++iter])
 				cmd_tokens++;
 		}
 		node = node->next;
@@ -95,7 +95,7 @@ int	cmd_init(t_cmd *current)
 		if (node->spec == DEFAULT)
 		{
 			iter = -1;
-			while(node->expanded && node->expanded[++iter])
+			while (node->expanded && node->expanded[++iter])
 				current->argv[cmd_iter++] = node->expanded[iter];
 		}
 		node = node->next;
@@ -108,8 +108,8 @@ int	cmd_init(t_cmd *current)
 int	pipe_fork(t_pipeline *pl)
 {
 	if (pl->iter != pl->count)
-			if (pipe(pl->fd) == -1)
-				return (perror("pipe"), -1);
+		if (pipe(pl->fd) == -1)
+			return (perror("pipe"), -1);
 	pl->current->pid = fork();
 	if (pl->current->pid == -1)
 		return (perror("fork"), -1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 17:46:47 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:57:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,22 +90,19 @@ void				non_interactive(t_sh *sh);
 
 int					malloc_ops(char *buf, size_t *entry, size_t *iter,
 						t_sh *sh);
-void				fill_ops(char *buf, size_t *entry, size_t *iter,
-						t_sh *sh);
+void				fill_ops(char *buf, size_t *entry, size_t *iter, t_sh *sh);
 void				fill_string(t_sh *sh);
 
 /*******************************************  EXECUTION  *******************************************/
 
 /******  Builtins  ******/
 void				pwd(t_sh *sh, t_pipeline *pl, int flag);
-int					exit_cmd(t_sh *sh, size_t pipe_count);
+int					exit_cmd(t_pipeline *pl, t_sh *sh);
 int					cd(t_sh *sh, char **argv, size_t pipe_count);
 void				echo(t_pipeline *pl, t_sh *sh, int nflag);
 void				env(t_pipeline *pl, t_sh *sh, int flag);
 int					export(char **argv, t_sh *sh);
 int					unset(char **cmd, t_sh *sh);
-
-
 
 /********************************************* EXPAND *********************************************/
 int					expand_init(t_entry *current, t_sh *sh, t_expand_str *str);
@@ -136,8 +133,7 @@ int					is_closed(char *str);
 void				op_count(char *buf, size_t *iter, size_t *count);
 int					malloc_ops(char *buf, size_t *entry, size_t *iter,
 						t_sh *sh);
-void				fill_ops(char *buf, size_t *entry, size_t *iter,
-						t_sh *sh);
+void				fill_ops(char *buf, size_t *entry, size_t *iter, t_sh *sh);
 
 int					ft_find_paths(char *envp[], char *env_name);
 int					here_doc(t_sh *sh);
@@ -146,8 +142,8 @@ int					exec_central(t_sh *input);
 int					pipeline(t_sh *sh);
 int					setup_redirect(t_sh *sh, t_pipeline *pl);
 // int					check_cmd(t_sh *sh, t_cmd*cmd);
-void				cmd_flag(t_sh *sh, t_cmd*current);
-int					options_check(t_cmd*cmd);
+void				cmd_flag(t_sh *sh, t_cmd *current);
+int					options_check(t_cmd *cmd);
 void				internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag);
 
 /* own cmds */
@@ -157,22 +153,24 @@ int					insert_pos(t_sh *sh, char *param);
 // error messages
 
 void				invalid_option(t_pipeline *pl, t_sh *sh);
-void				execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh);
+void				execve_fail(char *path, int error, t_pipeline *pl,
+						t_sh *sh);
 void				command_fail(char *path, t_pipeline *pl, t_sh *sh);
 void				builtin_handler(t_pipeline *pl, t_sh *sh);
+int					syntax_error(t_entry *entry);
 
 // helper
 
-int	count_pipes(t_sh *sh);
-int	init_pipe_pos(t_pipeline *pl, t_sh *sh);
-void find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter);
-int	cmd_init(t_cmd *current);
-int	pipe_fork(t_pipeline *pl);
+int					count_pipes(t_sh *sh);
+int					init_pipe_pos(t_pipeline *pl, t_sh *sh);
+void				find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter);
+int					cmd_init(t_cmd *current);
+int					pipe_fork(t_pipeline *pl);
 
-int	setup_cmds(t_pipeline *pl, t_sh *sh);
-void	own_cmd_exec(t_pipeline *pl, t_sh *sh);
-void	child_process(t_pipeline *pl, t_sh *sh);
-void	parent_process(t_pipeline *pl, t_sh *sh);
-int	kill_children(t_pipeline *pl, t_sh *sh);
+int					setup_cmds(t_pipeline *pl, t_sh *sh);
+void				own_cmd_exec(t_pipeline *pl, t_sh *sh);
+void				child_process(t_pipeline *pl, t_sh *sh);
+void				parent_process(t_pipeline *pl, t_sh *sh);
+int					kill_children(t_pipeline *pl, t_sh *sh);
 
 #endif

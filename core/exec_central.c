@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_central.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 17:43:57 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:29:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 int	exec_central(t_sh *sh)
 {
-	int		exit_code;
+	int	exit_code;
 
-	sh->exit = 0; //necessary?
+	sh->exit = 0; // necessary?
 	exit_code = 0;
-	// return -1;
 	exit_code = pipeline(sh);
 	free_list(sh->entries);
-	if(sh->heredoc)
+	if (sh->heredoc)
 		free2d(&sh->heredoc);
 	if (exit_code == -1)
 		free2d(&sh->envp.vars);

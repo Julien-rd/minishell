@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 17:17:28 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/01 17:20:25 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 09:56:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	lstadd(t_entry **lst, t_entry *new)
 		*lst = new;
 		return ;
 	}
-	
 	last = lstlast(*lst);
 	last->next = new;
 }

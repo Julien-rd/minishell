@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_expands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 12:08:42 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 09:55:52 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
 	{
 		iter += skip_whitspaces(&exp_str[iter]);
 		if (!exp_str[iter])
-			break;
+			break ;
 		entry_len = token_len(exp_str, sh, iter);
 		if (content_to_lst(&head, exp_str, entry_len) == -1)
 			return (-1);
