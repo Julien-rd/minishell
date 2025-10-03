@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pl_functions.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 13:11:18 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 14:59:40 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,20 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 	execve_fail(path, errno, pl, sh);
 }
 
-void	parent_process(t_pipeline *pl, t_sh *sh)
+int	parent_process(t_pipeline *pl, t_sh *sh)
 {
-	free(pl->current);
 	if (pl->iter != 0)
 	{
 		if (close(pl->prev_fd) == -1)
-			exit(1);
+			return (perror("close"), -1);
 	}
 	if (pl->iter != pl->count)
 	{
 		pl->prev_fd = pl->fd[0];
 		if (close(pl->fd[1]) == -1)
-			exit(1);
+			return (perror("close"), -1);
 	}
+	return (0);
 }
 
 int	kill_children(t_pipeline *pl, t_sh *sh)

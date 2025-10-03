@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 10:57:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 14:59:04 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ int					pipe_fork(t_pipeline *pl);
 int					setup_cmds(t_pipeline *pl, t_sh *sh);
 void				own_cmd_exec(t_pipeline *pl, t_sh *sh);
 void				child_process(t_pipeline *pl, t_sh *sh);
-void				parent_process(t_pipeline *pl, t_sh *sh);
+int					parent_process(t_pipeline *pl, t_sh *sh);
 int					kill_children(t_pipeline *pl, t_sh *sh);
 
 #endif
