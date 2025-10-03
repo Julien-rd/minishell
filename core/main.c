@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 10:14:01 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 11:55:37 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,5 @@ int	main(int argc, char *argv[], char *envp[])
 		free(buf);
 	}
 	rl_clear_history();
-	return (free2d(&sh.envp.vars), safe_write(1, "exit\n", 5), 0);
+	return (free2d(&sh.envp.vars), safe_write(1, "exit\n", 5), sh.exit_code);
 }
