@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 14:25:33 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 16:07:56 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,12 @@ void	free_list(t_entry *list)
 
 void	child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode)
 {
+	close(0);
+	close(1);
 	free2d(&sh->envp.vars);
 	free_list(sh->entries);
 	free(pl->position);
-	free(pl->current);
+	free_cmds(pl, pl->count + 1);
 	if (sh->heredoc)
 		free2d(&sh->heredoc);
 	exit(errcode);

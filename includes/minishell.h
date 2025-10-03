@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 14:59:04 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 15:39:45 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void				echo(t_pipeline *pl, t_sh *sh, int nflag);
 void				env(t_pipeline *pl, t_sh *sh, int flag);
 int					export(char **argv, t_sh *sh);
 int					unset(char **cmd, t_sh *sh);
+
+void	free_cmds(t_pipeline *pl, size_t arr_len);
 
 /********************************************* EXPAND *********************************************/
 int					expand_init(t_entry *current, t_sh *sh, t_expand_str *str);

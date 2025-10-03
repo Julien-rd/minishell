@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_management.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 10:34:00 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 16:22:21 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,33 @@ int	pipe_init(t_pipeline *pl)
 	if (pl->iter != 0)
 	{
 		if (dup2(pl->prev_fd, 0) == -1)
-			return (perror("dup2"), -1);
+		{
+			perror("dup2");
+			close(pl->prev_fd);
+			if (pl->iter != pl->count)
+			{
+				close(pl->fd[0]);
+				close(pl->fd[1]);
+			}
+			return (-1);
+		}
 		if (close(pl->prev_fd) == -1)
-			return (perror("close"), -1);
+		{
+			perror("close");
+			if (pl->iter != pl->count)
+			{
+				close(pl->fd[0]);
+				close(pl->fd[1]);
+			}
+			return (-1);
+		}
 	}
 	if (pl->iter != pl->count)
 	{
 		if (dup2(pl->fd[1], 1) == -1)
-			return (perror("dup2"), -1);
+			return (perror("dup2"), close(pl->fd[0]), close(pl->fd[1]), -1);
 		if (close(pl->fd[0]) == -1)
-			return (perror("close"), -1);
+			return (perror("close"), close(pl->fd[1]), -1);
 		if (close(pl->fd[1]) == -1)
 			return (perror("close"), -1);
 	}
@@ -53,12 +70,13 @@ int	heredoc_init(t_pipeline *pl, t_sh *sh)
 
 	if (pipe(fd_heredoc) == -1)
 		return (perror("pipe"), -1);
-	write(fd_heredoc[1], sh->heredoc[pl->hdoc_iter],
-		ft_strlen(sh->heredoc[pl->hdoc_iter]));
+	if (safe_write(fd_heredoc[1], sh->heredoc[pl->hdoc_iter],
+		ft_strlen(sh->heredoc[pl->hdoc_iter])) == -1)
+		return (close(fd_heredoc[0]), close(fd_heredoc[1]), -1);
 	if (close(fd_heredoc[1]) == -1)
-		return (perror("close"), -1);
+		return (perror("close"), close(fd_heredoc[0]), -1);
 	if (dup2(fd_heredoc[0], 0) == -1)
-		return (perror("dup2"), -1);
+		return (perror("dup2"), close(fd_heredoc[0]), -1);
 	if (close(fd_heredoc[0]) == -1)
 		return (perror("close"), -1);
 	pl->hdoc_iter++;
