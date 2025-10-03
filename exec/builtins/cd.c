@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 10:32:42 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 17:28:20 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	envp_pwd(t_sh *sh, char *tmp_cwd)
 			if (!cwd)
 				return (perror("cd"), -1);
 			if (update_pwd_entry(&sh->envp.vars[iter], "PWD=", cwd) == -1)
-				return (-1);
+				return (free(cwd), -1);
 			free(cwd);
 		}
 		iter++;
@@ -71,10 +71,10 @@ int	cd(t_sh *sh, char **argv, size_t pipe_count)
 	if (!pipe_count && chdir(argv[1]) == -1)
 	{
 		sh->exit_code = errno;
-		return (-1);
+		return (free(tmp_cwd), -1);
 	}
 	if (envp_pwd(sh, tmp_cwd) == -1)
-		return (perror("cd"), -1);
+		return (free(tmp_cwd), perror("cd"), -1);
 	free(tmp_cwd);
 	return (0);
 }

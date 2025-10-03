@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 16:56:38 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/03 17:13:07 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	options_check(t_cmd*cur)
+int	options_check(t_cmd *cur)
 {
 	size_t	iter;
 	size_t	n_iter;
@@ -31,8 +31,8 @@ int	options_check(t_cmd*cur)
 				break ;
 			iter++;
 		}
-		if (ft_strncmp(cur->argv[iter], "-e", 3) && ft_strncmp(cur->argv[iter],
-				"-E", 3))
+		if (!(ft_strncmp(cur->argv[iter], "-e", 3) && ft_strncmp(cur->argv[iter],
+				"-E", 3)))
 			return (-1);
 		return (iter - 1);
 	}
