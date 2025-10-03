@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 15:41:45 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 16:29:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode)
 	free2d(&sh->envp.vars);
 	free_list(sh->entries);
 	free(pl->position);
-	free(pl->current);
+	free_cmds(pl, pl->count + 1);
 	if (sh->heredoc)
 		free2d(&sh->heredoc);
 	exit(errcode);
