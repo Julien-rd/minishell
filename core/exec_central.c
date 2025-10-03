@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 10:29:31 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 13:01:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	exec_central(t_sh *sh)
 {
 	int	exit_code;
 
-	sh->exit = 0; // necessary?
+	sh->exit = 0;
 	exit_code = 0;
 	exit_code = pipeline(sh);
 	free_list(sh->entries);

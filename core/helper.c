@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 12:29:17 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 13:09:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ void	free_list(t_entry *list)
 
 	while (list)
 	{
-		write(1, "hey\n", 4);
 		if (list->raw_entry)
 		{
 			free(list->raw_entry);
@@ -171,8 +170,8 @@ void	child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode)
 {
 	free2d(&sh->envp.vars);
 	free_list(sh->entries);
-	// free(sh->pipe.position);
-	// free(cmd->cmd);
+	free(pl->position);
+	free(pl->current);
 	if (sh->heredoc)
 		free2d(&sh->heredoc);
 	exit(errcode);

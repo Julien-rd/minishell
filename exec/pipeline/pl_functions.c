@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 10:57:21 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/03 13:11:18 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	setup_cmds(t_pipeline *pl, t_sh *sh)
 	if (init_pipe_pos(pl, sh) == -1)
 		return (-1);
 	pl->cmds = malloc((pl->count + 1) * sizeof(t_cmd));
+	if(!pl->cmds)
+		return(free(pl->position), -1);
 	while (cmd_iter <= pl->count)
 	{
 		find_start(pl, sh, cmd_iter);
@@ -78,6 +80,7 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 
 void	parent_process(t_pipeline *pl, t_sh *sh)
 {
+	free(pl->current);
 	if (pl->iter != 0)
 	{
 		if (close(pl->prev_fd) == -1)
