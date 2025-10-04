@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 15:01:12 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:21:48 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh,
 					sh->envp.vars);
-			if (check_return_get_env(iter, str, &exh, sh) == -1)
+			if (check_return_get_env(iter, str, &exh) == -1)
 				return (-1);
 			iter += exh.len;
 		}
@@ -101,9 +101,7 @@ int	expand_init(t_entry *current, t_sh *sh, t_expand_str *str)
 
 char	*expand(t_entry *current, t_sh *sh, int flag)
 {
-	char			**env_arr;
 	t_expand_str	str;
-	size_t			iter;
 	char			*exp_str;
 
 	str.flag = flag;

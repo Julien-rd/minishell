@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 15:02:21 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:21:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int	ex_encounter(char *str_new, t_expand_helper *exh, t_expand_str *str,
 	return (envlen(&exh->buf[iter + 1]));
 }
 
-int	check_return_get_env(size_t iter, t_expand_str *str, t_expand_helper *exh,
-		t_sh *sh)
+int	check_return_get_env(size_t iter, t_expand_str *str, t_expand_helper *exh)
 {
 	if (exh->env_return == 1)
 	{
@@ -66,7 +65,7 @@ char	*remove_quotes(char *to_strip, size_t len)
 	{
 		iter += toggle_quotes(to_strip, &sh, iter);
 		if (!(to_strip[iter] == '\'' && sh.sgl_quote)
-			&& !(to_strip[iter] == '\"' && sh.dbl_quote))
+				&& !(to_strip[iter] == '\"' && sh.dbl_quote))
 			stripped[stripped_iter++] = to_strip[iter];
 		toggle_quotes(to_strip, &sh, iter);
 		iter++;

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 19:07:42 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:22:33 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	insert_pos(t_sh *sh, char *param)
 int	insert_env(t_sh *sh, char *entry)
 {
 	char	*new;
-	size_t	position;
+	int		position;
 
 	new = ft_strdup(entry);
 	if (!new)

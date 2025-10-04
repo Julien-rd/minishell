@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 14:05:13 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:22:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	own_cmd_exec(t_pipeline *pl, t_sh *sh)
 void	child_process(t_pipeline *pl, t_sh *sh)
 {
 	char	*path;
-	int		flag;
 
 	setup_child_signals();
 	if (setup_redirect(sh, pl) == -1)
@@ -78,7 +77,7 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 	execve_fail(path, errno, pl, sh);
 }
 
-int	parent_process(t_pipeline *pl, t_sh *sh)
+int	parent_process(t_pipeline *pl)
 {
 	if (pl->iter != 0)
 	{

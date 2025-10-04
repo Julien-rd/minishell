@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 13:59:32 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:18:27 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,6 @@ static void	execute_if_cmd_not_found(char *path, t_pipeline *pl, t_sh *sh,
 void	execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh)
 {
 	struct stat	st;
-	int			fd;
-	int			child_exit_code;
-	char		*argv[3];
 
 	if (errno == ENOEXEC)
 		execute_if_cmd_not_found(path, pl, sh, &error);

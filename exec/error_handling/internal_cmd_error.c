@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 13:18:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:19:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 
 void	internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag)
 {
-	long long	exit_code;
 	size_t		iter;
 
 	iter = 0;

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 14:07:29 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:19:53 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter)
 
 	iter = 0;
 	node = sh->entries;
-	while (node && iter < pl->position[cmd_iter])
+	while (node && iter < (size_t)pl->position[cmd_iter])
 	{
 		node = node->next;
 		iter++;

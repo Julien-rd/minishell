@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 13:00:35 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:22:08 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	parse_and_execute(char *buf, t_sh *sh, int flag)
 {
-	size_t	len;
-	size_t	iter;
-
 	if (parsing(buf, sh) == -1)
 		return (-1);
 	if (syntax_check(sh) == -1)

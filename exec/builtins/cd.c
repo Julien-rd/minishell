@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 12:44:22 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:22:15 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	update_pwd_entry(char **dest, char *pwd_str, char *cwd_str)
 
 int	envp_pwd(t_sh *sh, char *tmp_cwd)
 {
-	int		position;
 	char	*cwd;
 	size_t	iter;
 

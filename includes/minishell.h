@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 13:55:32 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:22:58 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,7 @@ int								ex_encounter(char *str_new,
 									t_expand_helper *exh, t_expand_str *str,
 									size_t iter);
 int								check_return_get_env(size_t iter,
-									t_expand_str *str, t_expand_helper *exh,
-									t_sh *sh);
+									t_expand_str *str, t_expand_helper *exh);
 
 /* parse_string */
 size_t							count_entries(char *buf, t_sh *sh);
@@ -158,6 +157,7 @@ int								here_doc(t_sh *sh);
 char							*ft_getpath(char **envp, char *cmd);
 int								exec_central(t_sh *input);
 int								pipeline(t_sh *sh);
+int								pipe_init(t_pipeline *pl);
 int								setup_redirect(t_sh *sh, t_pipeline *pl);
 // int					check_cmd(t_sh *sh, t_cmd*cmd);
 void							cmd_flag(t_sh *sh, t_cmd *current);
@@ -191,7 +191,7 @@ int								pipe_fork(t_pipeline *pl);
 int								setup_cmds(t_pipeline *pl, t_sh *sh);
 void							own_cmd_exec(t_pipeline *pl, t_sh *sh);
 void							child_process(t_pipeline *pl, t_sh *sh);
-int								parent_process(t_pipeline *pl, t_sh *sh);
+int								parent_process(t_pipeline *pl);
 int								kill_children(t_pipeline *pl, t_sh *sh);
 
 #endif

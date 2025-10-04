@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 13:57:58 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:23:05 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	pipeline(t_sh *sh)
 			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
 		if (pl.current->pid == 0)
 			child_process(&pl, sh);
-		else if (parent_process(&pl, sh) == -1)
+		else if (parent_process(&pl) == -1)
 			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
 		pl.iter++;
 	}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/01 16:28:08 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:21:02 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	sigint_prompt(int num)
 {
+	(void)num;
 	g_current_signal = SIGINT;
 	if (safe_write(1, "\n", 1) == -1)
 		return ;
@@ -24,6 +25,7 @@ void	sigint_prompt(int num)
 
 void	sigint_main(int num)
 {
+	(void)num;
 	g_current_signal = SIGINT;
 	if (safe_write(1, "\n", 1) == -1)
 		return ;
@@ -31,6 +33,7 @@ void	sigint_main(int num)
 
 void	sigint_heredoc(int num)
 {
+	(void)num;
 	g_current_signal = SIGINT;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	rl_replace_line("", 0);

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 13:48:48 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 19:21:55 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	non_interactive(t_sh *sh)
 {
 	char	*buf;
 	int		exit_code;
-	size_t	len;
 
 	setup_noninteractive_signals();
 	while (1)
