@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 12:58:14 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 13:41:59 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,34 +52,29 @@ void	invalid_option(t_pipeline *pl, t_sh *sh)
 	child_exit_handle(sh, pl, NULL, 2);
 }
 
-static void	prepare_arg(char *argv[3], t_pipeline *pl, t_sh *sh)
-{
-	char	minishell[10];
-
-	ft_strlcpy(minishell, "minishell", 10);
-	argv[0] = minishell;
-	argv[1] = ft_strdup(pl->current->argv[0]);
-	if (!argv[1])
-	{
-		perror("malloc");
-		child_exit_handle(sh, pl, NULL, 1);
-	}
-	argv[2] = NULL;
-}
-
 static void	execute_if_cmd_not_found(char *path, t_pipeline *pl, t_sh *sh,
 		int *error)
 {
 	int		fd;
 	char	*argv[3];
+	char minishell[10];
 
 	fd = open(pl->current->argv[0], O_RDONLY);
 	if (fd != -1)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
-			return (perror("dup2"), close(fd), child_exit_handle(sh, pl, path, 1));
+			return (perror("dup2"), close(fd), child_exit_handle(sh, pl, path,
+					1));
 		close(fd);
-		prepare_arg(argv, pl, sh);
+		ft_strlcpy(minishell, "minishell", 10);
+		argv[0] = minishell;
+		argv[1] = ft_strdup(pl->current->argv[0]);
+		if (!argv[1])
+		{
+			perror("malloc");
+			child_exit_handle(sh, pl, NULL, 1);
+		}
+		argv[2] = NULL;
 		execve("./minishell", argv, sh->envp.vars);
 		return (perror("execve"), child_exit_handle(sh, pl, path, 1));
 	}

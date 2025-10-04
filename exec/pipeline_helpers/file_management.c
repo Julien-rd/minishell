@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_management.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 16:22:21 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/04 13:24:37 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,16 @@ int	pipe_init(t_pipeline *pl)
 	{
 		if (dup2(pl->prev_fd, 0) == -1)
 		{
-			perror("dup2");
-			close(pl->prev_fd);
 			if (pl->iter != pl->count)
-			{
-				close(pl->fd[0]);
-				close(pl->fd[1]);
-			}
-			return (-1);
+				return (perror("dup2"), close(pl->prev_fd), close(pl->fd[0]),
+					close(pl->fd[1]), -1);
+			return (perror("dup2"), close(pl->prev_fd), -1);
 		}
 		if (close(pl->prev_fd) == -1)
 		{
-			perror("close");
 			if (pl->iter != pl->count)
-			{
-				close(pl->fd[0]);
-				close(pl->fd[1]);
-			}
-			return (-1);
+				return (perror("dup2"), close(pl->fd[0]), close(pl->fd[1]), -1);
+			return (perror("close"), -1);
 		}
 	}
 	if (pl->iter != pl->count)
@@ -71,7 +63,7 @@ int	heredoc_init(t_pipeline *pl, t_sh *sh)
 	if (pipe(fd_heredoc) == -1)
 		return (perror("pipe"), -1);
 	if (safe_write(fd_heredoc[1], sh->heredoc[pl->hdoc_iter],
-		ft_strlen(sh->heredoc[pl->hdoc_iter])) == -1)
+			ft_strlen(sh->heredoc[pl->hdoc_iter])) == -1)
 		return (close(fd_heredoc[0]), close(fd_heredoc[1]), -1);
 	if (close(fd_heredoc[1]) == -1)
 		return (perror("close"), close(fd_heredoc[0]), -1);

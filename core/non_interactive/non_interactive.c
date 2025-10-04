@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 15:12:55 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 13:48:48 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ void	non_interactive(t_sh *sh)
 			break ;
 		cut_nl(buf);
 		if (empty_prompt(buf))
-		{
-			free(buf);
 			continue ;
-		}
 		exit_code = parse_and_execute(buf, sh, NONINTERACTIVE);
 		if (exit_code || sh->exit)
 			return (free(buf), free2d(&sh->envp.vars), get_next_line(-1),
