@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 10:34:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 12:58:24 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,27 @@ void	exit_error(t_pipeline *pl, t_sh *sh)
 
 	iter = 0;
 	if (!pl->current->argv[1])
-		child_exit_handle(sh, pl, sh->exit_code);
+		child_exit_handle(sh, pl, NULL, sh->exit_code);
 	if (pl->current->argv[1][0] == '0' && pl->current->argv[1][1] == '\0')
-		child_exit_handle(sh, pl, 0);
+		child_exit_handle(sh, pl, NULL, 0);
 	exit_code = ft_atoll(pl->current->argv[1]);
 	if (exit_code == 0)
 	{
 		if (safe_write(2, "exit: ", 6) == -1)
-			child_exit_handle(sh, pl, 1);
+			child_exit_handle(sh, pl, NULL, 1);
 		if (safe_write(2, pl->current->argv[1],
 				ft_strlen(pl->current->argv[1])) == -1)
-			child_exit_handle(sh, pl, 1);
+			child_exit_handle(sh, pl, NULL, 1);
 		if (safe_write(2, ": numeric argument required\n", 28) == -1)
-			child_exit_handle(sh, pl, 1);
-		child_exit_handle(sh, pl, 2);
+			child_exit_handle(sh, pl, NULL, 1);
+		child_exit_handle(sh, pl, NULL, 2);
 	}
 	if (pl->current->argv[2])
 	{
 		safe_write(2, "exit: too many arguments\n", 25);
-		child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, NULL, 1);
 	}
-	child_exit_handle(sh, pl, exit_code);
+	child_exit_handle(sh, pl, NULL, exit_code);
 }
 
 void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
@@ -47,13 +47,13 @@ void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
 	if (cmd_flag == EXPORT && sh->internal_errcode == -1)
 	{
 		write(2, "export: malloc failed\n", 22);
-		child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, NULL, 1);
 	}
 	if (cmd_flag == EXPORT && sh->internal_errcode == 1)
-		child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, NULL, 1);
 	else if (cmd_flag == UNSET && sh->internal_errcode == 1)
 		write(2, "unset: malloc failed\n", 21);
-	child_exit_handle(sh, pl, 0);
+	child_exit_handle(sh, pl, NULL, 0);
 }
 
 void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
@@ -61,7 +61,7 @@ void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 	if (sh->internal_errcode == -2)
 	{
 		write(2, "cd: too many arguments\n", 23);
-		child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, NULL, 1);
 	}
 	else if (!pl->count)
 	{
@@ -70,16 +70,16 @@ void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 			write(2, "cd: ", 4);
 			errno = sh->exit_code;
 			perror(cur->argv[1]);
-			child_exit_handle(sh, pl, 1);
+			child_exit_handle(sh, pl, NULL, 1);
 		}
 	}
 	else if (chdir(cur->argv[1]) == -1)
 	{
 		write(2, "cd: ", 4);
 		perror(cur->argv[1]);
-		child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, NULL, 1);
 	}
-	child_exit_handle(sh, pl, 0);
+	child_exit_handle(sh, pl, NULL, 0);
 }
 
 void	internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag)
@@ -96,5 +96,5 @@ void	internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag)
 		export_unset_error(pl, sh, pl->current->cmd_flag);
 	if (pl->current->cmd_flag == EXIT)
 		exit_error(pl, sh);
-	child_exit_handle(sh, pl, 0);
+	child_exit_handle(sh, pl, NULL, 0);
 }

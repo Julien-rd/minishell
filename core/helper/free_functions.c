@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 16:29:31 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 12:54:04 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	free_list(t_entry *list)
 	}
 }
 
-void	child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode)
+void	child_exit_handle(t_sh *sh, t_pipeline *pl, char *path, int errcode)
 {
+	if (path)
+		free(path);
 	free2d(&sh->envp.vars);
 	free_list(sh->entries);
 	free(pl->position);
@@ -61,4 +63,3 @@ void	child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode)
 		free2d(&sh->heredoc);
 	exit(errcode);
 }
-

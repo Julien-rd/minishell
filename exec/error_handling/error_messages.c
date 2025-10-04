@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 17:25:08 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 12:58:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	invalid_option(t_pipeline *pl, t_sh *sh)
 	if (pl->current->argv[1][1])
 		write(2, &pl->current->argv[1][1], 1);
 	write(2, ": invalid option\n", 17);
-	child_exit_handle(sh, pl, 2);
+	child_exit_handle(sh, pl, NULL, 2);
 }
 
 static void	prepare_arg(char *argv[3], t_pipeline *pl, t_sh *sh)
@@ -62,7 +62,7 @@ static void	prepare_arg(char *argv[3], t_pipeline *pl, t_sh *sh)
 	if (!argv[1])
 	{
 		perror("malloc");
-		child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, NULL, 1);
 	}
 	argv[2] = NULL;
 }
@@ -77,11 +77,11 @@ static void	execute_if_cmd_not_found(char *path, t_pipeline *pl, t_sh *sh,
 	if (fd != -1)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
-			return (perror("dup2"), close(fd), child_exit_handle(sh, pl, 1));
+			return (perror("dup2"), close(fd), child_exit_handle(sh, pl, path, 1));
 		close(fd);
 		prepare_arg(argv, pl, sh);
 		execve("./minishell", argv, sh->envp.vars);
-		return (perror("execve"), child_exit_handle(sh, pl, 1));
+		return (perror("execve"), child_exit_handle(sh, pl, path, 1));
 	}
 	*error = errno;
 }
@@ -100,10 +100,10 @@ void	execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh)
 	errno = error;
 	perror(path);
 	if (errno == EACCES || errno == ENOEXEC || errno == EISDIR)
-		child_exit_handle(sh, pl, 126);
+		child_exit_handle(sh, pl, path, 126);
 	if (errno == ENOENT)
-		child_exit_handle(sh, pl, 127);
-	child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, path, 127);
+	child_exit_handle(sh, pl, path, 1);
 }
 
 void	command_fail(char *path, t_pipeline *pl, t_sh *sh)
@@ -112,27 +112,27 @@ void	command_fail(char *path, t_pipeline *pl, t_sh *sh)
 	{
 		if (safe_write(2, pl->current->argv[0],
 				ft_strlen(pl->current->argv[0])) == -1)
-			child_exit_handle(sh, pl, 1);
+			child_exit_handle(sh, pl, path, 1);
 		if (write(2, ": Permission denied\n", 20) == -1)
-			child_exit_handle(sh, pl, 1);
-		child_exit_handle(sh, pl, 126);
+			child_exit_handle(sh, pl, path, 1);
+		child_exit_handle(sh, pl, path, 126);
 	}
 	else if (errno == ENOENT || pl->current->argv[0][0] == 0)
 	{
 		if (pl->current->argv[0][0] == 0)
 		{
 			if (safe_write(2, "''", 2) == -1)
-				child_exit_handle(sh, pl, 1);
+				child_exit_handle(sh, pl, path, 1);
 		}
 		else if (safe_write(2, pl->current->argv[0],
 				ft_strlen(pl->current->argv[0])) == -1)
-			child_exit_handle(sh, pl, 1);
+			child_exit_handle(sh, pl, path, 1);
 		if (safe_write(2, ": command not found\n", 20) == -1)
-			child_exit_handle(sh, pl, 1);
-		child_exit_handle(sh, pl, 127);
+			child_exit_handle(sh, pl, path, 1);
+		child_exit_handle(sh, pl, path, 127);
 	}
 	perror(pl->current->argv[0]);
-	child_exit_handle(sh, pl, 1);
+	child_exit_handle(sh, pl, path, 1);
 }
 
 void	builtin_handler(t_pipeline *pl, t_sh *sh)

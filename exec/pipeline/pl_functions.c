@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 17:10:45 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 12:56:19 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 void	free_cmds(t_pipeline *pl, size_t arr_len)
 {
 	size_t	iter;
+
 	iter = 0;
 	while (iter < arr_len)
 	{
-		free(pl->cmds[iter].argv); //not free2d da nur sachen aus entries
+		free(pl->cmds[iter].argv); // not free2d da nur sachen aus entries
 		iter++;
 	}
 	free(pl->cmds);
@@ -35,9 +36,9 @@ int	setup_cmds(t_pipeline *pl, t_sh *sh)
 	pl->count = count_pipes(sh);
 	if (init_pipe_pos(pl, sh) == -1) // ab hier pl.position initiated
 		return (-1);
-	pl->cmds = malloc((pl->count + 1) * sizeof(t_cmd));  //t_cmd init
-	if(!pl->cmds)
-		return(perror("setup_cmds"), free(pl->position), -1);
+	pl->cmds = malloc((pl->count + 1) * sizeof(t_cmd)); // t_cmd init
+	if (!pl->cmds)
+		return (perror("setup_cmds"), free(pl->position), -1);
 	while (cmd_iter <= pl->count)
 	{
 		find_start(pl, sh, cmd_iter);
@@ -61,11 +62,11 @@ void	own_cmd_exec(t_pipeline *pl, t_sh *sh)
 	flag = options_check(pl->current);
 	if (pl->current->cmd_flag == CD && !flag)
 		sh->internal_errcode = cd(sh, pl->current->argv, pl->count);
-	if (pl->current->cmd_flag == EXIT)
+	else if (pl->current->cmd_flag == EXIT)
 		sh->internal_errcode = exit_cmd(pl, sh);
-	if (pl->current->cmd_flag == EXPORT && !flag)
+	else if (pl->current->cmd_flag == EXPORT && !flag)
 		sh->internal_errcode = export(pl->current->argv, sh);
-	if (pl->current->cmd_flag == UNSET && !flag)
+	else if (pl->current->cmd_flag == UNSET && !flag)
 		sh->internal_errcode = unset(pl->current->argv, sh);
 	else
 		sh->internal_errcode = 0;
@@ -78,9 +79,9 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 
 	setup_child_signals();
 	if (setup_redirect(sh, pl) == -1)
-		child_exit_handle(sh, pl, 1);
+		child_exit_handle(sh, pl, NULL, 1);
 	if (pl->current->argv[0] == NULL)
-		child_exit_handle(sh, pl, 0);
+		child_exit_handle(sh, pl, NULL, 0);
 	if (pl->current->cmd_flag != EXTERNAL)
 		builtin_handler(pl, sh);
 	path = ft_getpath(sh->envp.vars, pl->current->argv[0]);

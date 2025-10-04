@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 17:25:03 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 12:50:11 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	ft_find_paths(char *envp[], char *env_name)
 	iter = 0;
 	while (envp[iter])
 	{
-		printf("%s\n", envp[iter]);
 		if (ft_strncmp(envp[iter], env_name, ft_strlen(env_name)) == 0)
 			if (envp[iter][ft_strlen(env_name)] == '=')
 				return (iter);

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 16:26:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 12:54:22 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int					is_token(char c);
 void				cut_nl(char *buf);
 size_t				empty_prompt(char *buf);
 void				free_list(t_entry *list);
-void				child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode);
+void				child_exit_handle(t_sh *sh, t_pipeline *pl, char *path,
+						int errcode);
 
 /********************************************  PARSING  ********************************************/
 
@@ -103,7 +104,7 @@ void				env(t_pipeline *pl, t_sh *sh, int flag);
 int					export(char **argv, t_sh *sh);
 int					unset(char **cmd, t_sh *sh);
 
-void	free_cmds(t_pipeline *pl, size_t arr_len);
+void				free_cmds(t_pipeline *pl, size_t arr_len);
 
 /********************************************* EXPAND *********************************************/
 int					expand_init(t_entry *current, t_sh *sh, t_expand_str *str);
