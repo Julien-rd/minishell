@@ -6,24 +6,15 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 12:58:24 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 13:18:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exit_error(t_pipeline *pl, t_sh *sh)
+static void	exit_error_msg(t_pipeline *pl, t_sh *sh, int flag)
 {
-	long long	exit_code;
-	size_t		iter;
-
-	iter = 0;
-	if (!pl->current->argv[1])
-		child_exit_handle(sh, pl, NULL, sh->exit_code);
-	if (pl->current->argv[1][0] == '0' && pl->current->argv[1][1] == '\0')
-		child_exit_handle(sh, pl, NULL, 0);
-	exit_code = ft_atoll(pl->current->argv[1]);
-	if (exit_code == 0)
+	if (flag == NUMERIC_ARG)
 	{
 		if (safe_write(2, "exit: ", 6) == -1)
 			child_exit_handle(sh, pl, NULL, 1);
@@ -34,11 +25,32 @@ void	exit_error(t_pipeline *pl, t_sh *sh)
 			child_exit_handle(sh, pl, NULL, 1);
 		child_exit_handle(sh, pl, NULL, 2);
 	}
-	if (pl->current->argv[2])
+	else if (flag == TOO_MANY_ARGS)
 	{
 		safe_write(2, "exit: too many arguments\n", 25);
 		child_exit_handle(sh, pl, NULL, 1);
 	}
+}
+
+void	exit_error(t_pipeline *pl, t_sh *sh)
+{
+	long long	exit_code;
+	size_t		iter;
+
+	iter = 0;
+	if (!pl->current->argv[1])
+		child_exit_handle(sh, pl, NULL, sh->exit_code);
+	if (pl->current->argv[1][0] == '0' && pl->current->argv[1][1] == '\0')
+	{
+		if (pl->current->argv[2])
+			exit_error_msg(pl, sh, TOO_MANY_ARGS);
+		child_exit_handle(sh, pl, NULL, 0);
+	}
+	exit_code = ft_atoll(pl->current->argv[1]);
+	if (exit_code == 0)
+		exit_error_msg(pl, sh, NUMERIC_ARG);
+	if (pl->current->argv[2])
+		exit_error_msg(pl, sh, TOO_MANY_ARGS);
 	child_exit_handle(sh, pl, NULL, exit_code);
 }
 

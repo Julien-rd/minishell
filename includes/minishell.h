@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 12:54:22 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 13:19:19 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@
 # define A_INFILE 26
 # define A_OUTFILE 27
 # define NULL_DEFAULT 28
+#define NUMERIC_ARG 29
+#define TOO_MANY_ARGS 30
 
 extern volatile int	g_current_signal;
 
