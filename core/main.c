@@ -6,53 +6,13 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 16:43:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 13:51:59 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile int	g_current_signal = 0;
-
-// void	entry_spec(t_sh *sh)
-// {
-// 	size_t	iter;
-
-// 	iter = 0;
-// 	while (sh->entries[iter])
-// 	{
-// 		if (sh->input_spec[iter] == OPERATOR)
-// 		{
-// 			if (!ft_strcmp(sh->entries[iter], "<<"))
-// 			{
-// 				sh->input_spec[iter] = HERE_DOC_OP;
-// 				if (sh->input_spec[iter + 1] == DEFAULT)
-// 					sh->input_spec[iter + 1] = HERE_DOC;
-// 			}
-// 			else if (!ft_strcmp(sh->entries[iter], ">>"))
-// 			{
-// 				sh->input_spec[iter] = APPEND_OP;
-// 				if (sh->input_spec[iter + 1] == DEFAULT)
-// 					sh->input_spec[iter + 1] = APPEND_FILE;
-// 			}
-// 			else if (!ft_strcmp(sh->entries[iter], "<"))
-// 			{
-// 				sh->input_spec[iter] = INFILE_OP;
-// 				if (sh->input_spec[iter + 1] == DEFAULT)
-// 					sh->input_spec[iter + 1] = INFILE;
-// 			}
-// 			else if (!ft_strcmp(sh->entries[iter], ">"))
-// 			{
-// 				sh->input_spec[iter] = OUTFILE_OP;
-// 				if (sh->input_spec[iter + 1] == DEFAULT)
-// 					sh->input_spec[iter + 1] = OUTFILE;
-// 			}
-// 			else if (!ft_strcmp(sh->entries[iter], "|"))
-// 				sh->input_spec[iter] = PIPE;
-// 		}
-// 		iter++;
-// 	}
-// }
+volatile sig_atomic_t	g_current_signal = 0;
 
 int	create_envp(t_sh *sh, char *envp[])
 {
@@ -81,7 +41,7 @@ int	create_envp(t_sh *sh, char *envp[])
 	return (0);
 }
 
-void check_exit_status(char *buf, int exit_code, t_sh *sh)
+void	check_exit_status(char *buf, int exit_code, t_sh *sh)
 {
 	if ((exit_code == -1 && g_current_signal == 0) || sh->exit)
 	{
@@ -97,6 +57,7 @@ void check_exit_status(char *buf, int exit_code, t_sh *sh)
 		exit(1);
 	}
 }
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_sh	sh;

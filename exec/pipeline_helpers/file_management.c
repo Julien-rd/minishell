@@ -6,41 +6,11 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 13:24:37 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 14:08:33 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	pipe_init(t_pipeline *pl)
-{
-	if (pl->iter != 0)
-	{
-		if (dup2(pl->prev_fd, 0) == -1)
-		{
-			if (pl->iter != pl->count)
-				return (perror("dup2"), close(pl->prev_fd), close(pl->fd[0]),
-					close(pl->fd[1]), -1);
-			return (perror("dup2"), close(pl->prev_fd), -1);
-		}
-		if (close(pl->prev_fd) == -1)
-		{
-			if (pl->iter != pl->count)
-				return (perror("dup2"), close(pl->fd[0]), close(pl->fd[1]), -1);
-			return (perror("close"), -1);
-		}
-	}
-	if (pl->iter != pl->count)
-	{
-		if (dup2(pl->fd[1], 1) == -1)
-			return (perror("dup2"), close(pl->fd[0]), close(pl->fd[1]), -1);
-		if (close(pl->fd[0]) == -1)
-			return (perror("close"), close(pl->fd[1]), -1);
-		if (close(pl->fd[1]) == -1)
-			return (perror("close"), -1);
-	}
-	return (0);
-}
 
 int	infile_init(char *file_name)
 {

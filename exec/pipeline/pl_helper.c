@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pl_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:08:27 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 15:36:41 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/04 14:07:23 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int count_pipes(t_sh *sh)
+int	count_pipes(t_sh *sh)
 {
-	t_entry *node;
-	size_t pipe_count;
+	t_entry	*node;
+	size_t	pipe_count;
 
 	node = sh->entries;
 	pipe_count = 0;
@@ -28,11 +28,11 @@ int count_pipes(t_sh *sh)
 	return (pipe_count);
 }
 
-int init_pipe_pos(t_pipeline *pl, t_sh *sh)
+int	init_pipe_pos(t_pipeline *pl, t_sh *sh)
 {
-	t_entry *node;
-	size_t counter;
-	size_t iter;
+	t_entry	*node;
+	size_t	counter;
+	size_t	iter;
 
 	node = sh->entries;
 	counter = 0;
@@ -51,26 +51,11 @@ int init_pipe_pos(t_pipeline *pl, t_sh *sh)
 	return (0);
 }
 
-void find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter)
+int	cmd_tokens(t_cmd *current)
 {
-	t_entry *node;
-	size_t iter;
-
-	iter = 0;
-	node = sh->entries;
-	while (node && iter < pl->position[cmd_iter])
-	{
-		node = node->next;
-		iter++;
-	}
-	pl->cmds[cmd_iter].line = node;
-}
-
-int cmd_tokens(t_cmd *current)
-{
-	t_entry *node;
-	size_t cmd_tokens;
-	int iter;
+	t_entry	*node;
+	size_t	cmd_tokens;
+	int		iter;
 
 	node = current->line;
 	cmd_tokens = 0;
@@ -87,11 +72,11 @@ int cmd_tokens(t_cmd *current)
 	return (cmd_tokens);
 }
 
-int cmd_init(t_cmd *current)
+int	cmd_init(t_cmd *current)
 {
-	t_entry *node;
-	size_t cmd_iter;
-	int iter;
+	t_entry	*node;
+	size_t	cmd_iter;
+	int		iter;
 
 	current->argv = malloc((cmd_tokens(current) + 1) * sizeof(char *));
 	if (!current->argv)
@@ -112,7 +97,7 @@ int cmd_init(t_cmd *current)
 	return (0);
 }
 
-int pipe_fork(t_pipeline *pl)
+int	pipe_fork(t_pipeline *pl)
 {
 	if (pl->iter != pl->count)
 		if (pipe(pl->fd) == -1)

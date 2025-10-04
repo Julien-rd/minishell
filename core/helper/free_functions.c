@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 12:54:04 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 14:05:20 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,17 @@ void	child_exit_handle(t_sh *sh, t_pipeline *pl, char *path, int errcode)
 	if (sh->heredoc)
 		free2d(&sh->heredoc);
 	exit(errcode);
+}
+
+void	free_cmds(t_pipeline *pl, size_t arr_len)
+{
+	size_t	iter;
+
+	iter = 0;
+	while (iter < arr_len)
+	{
+		free(pl->cmds[iter].argv);
+		iter++;
+	}
+	free(pl->cmds);
 }

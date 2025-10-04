@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 14:46:15 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/04 14:17:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,19 +119,15 @@ int	export(char **argv, t_sh *sh)
 	{
 		if (input_check(argv[iter]) == -1)
 		{
-			write(1, "export: `", 10);
-			write(1, argv[iter], ft_strlen(argv[iter]));
-			write(1, "': not a valid identifier\n", 26);
-			iter++;
+			if (safe_write(1, "export: `", 10) == -1)
+				return (1);
+			if (safe_write(1, argv[iter], ft_strlen(argv[iter])) == -1)
+				return (1);
+			if (safe_write(1, "': not a valid identifier\n", 26) == -1)
+				return (1);
 			return_value = 1;
-			continue ;
 		}
-		if (!ft_strchr(argv[iter], '='))
-		{
-			iter++;
-			continue ;
-		}
-		if (insert_env(sh, argv[iter]) == -1)
+		else if (insert_env(sh, argv[iter]) == -1)
 			return (-1);
 		iter++;
 	}

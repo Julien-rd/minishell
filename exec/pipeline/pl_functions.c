@@ -6,24 +6,11 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 12:56:19 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 14:05:13 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_cmds(t_pipeline *pl, size_t arr_len)
-{
-	size_t	iter;
-
-	iter = 0;
-	while (iter < arr_len)
-	{
-		free(pl->cmds[iter].argv); // not free2d da nur sachen aus entries
-		iter++;
-	}
-	free(pl->cmds);
-}
 
 int	setup_cmds(t_pipeline *pl, t_sh *sh)
 {
@@ -34,9 +21,9 @@ int	setup_cmds(t_pipeline *pl, t_sh *sh)
 	pl->hdoc_iter = 0;
 	pl->current = NULL;
 	pl->count = count_pipes(sh);
-	if (init_pipe_pos(pl, sh) == -1) // ab hier pl.position initiated
+	if (init_pipe_pos(pl, sh) == -1)
 		return (-1);
-	pl->cmds = malloc((pl->count + 1) * sizeof(t_cmd)); // t_cmd init
+	pl->cmds = malloc((pl->count + 1) * sizeof(t_cmd));
 	if (!pl->cmds)
 		return (perror("setup_cmds"), free(pl->position), -1);
 	while (cmd_iter <= pl->count)
@@ -110,18 +97,15 @@ int	parent_process(t_pipeline *pl, t_sh *sh)
 int	kill_children(t_pipeline *pl, t_sh *sh)
 {
 	int		status;
-	int		return_value;
 	pid_t	pid;
 
-	return_value = -1;
+	sh->exit_code = -1;
 	while (1)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == -1)
 		{
-			if (errno == ECHILD)
-				break ;
-			else if (errno == EINTR)
+			if (errno == EINTR)
 				continue ;
 			else
 				break ;
@@ -129,14 +113,12 @@ int	kill_children(t_pipeline *pl, t_sh *sh)
 		if (pid == pl->last_pid)
 		{
 			if (WIFEXITED(status))
-				return_value = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				return_value = 128 + WTERMSIG(status);
-			else if (WIFSTOPPED(status))
-				return_value = 128 + WSTOPSIG(status);
+				sh->exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status) || WIFSTOPPED(status))
+				sh->exit_code = 128 + WTERMSIG(status);
 		}
 	}
 	if (errno != ECHILD)
 		return (perror("waitpid"), -1);
-	return (return_value);
+	return (sh->exit_code);
 }

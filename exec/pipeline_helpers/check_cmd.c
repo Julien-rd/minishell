@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 17:13:07 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 14:07:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	options_check(t_cmd *cur)
 				break ;
 			iter++;
 		}
-		if (!(ft_strncmp(cur->argv[iter], "-e", 3) && ft_strncmp(cur->argv[iter],
-				"-E", 3)))
+		if (!(ft_strncmp(cur->argv[iter], "-e", 3)
+				&& ft_strncmp(cur->argv[iter], "-E", 3)))
 			return (-1);
 		return (iter - 1);
 	}
@@ -41,7 +41,7 @@ int	options_check(t_cmd *cur)
 	return (0);
 }
 
-void	cmd_flag(t_sh *sh, t_cmd*current)
+void	cmd_flag(t_sh *sh, t_cmd *current)
 {
 	current->cmd_flag = EXTERNAL;
 	sh->internal_errcode = 0;
@@ -61,4 +61,19 @@ void	cmd_flag(t_sh *sh, t_cmd*current)
 		current->cmd_flag = ENV;
 	else if (!ft_strncmp(current->argv[0], "exit", 5))
 		current->cmd_flag = EXIT;
+}
+
+void	find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter)
+{
+	t_entry	*node;
+	size_t	iter;
+
+	iter = 0;
+	node = sh->entries;
+	while (node && iter < pl->position[cmd_iter])
+	{
+		node = node->next;
+		iter++;
+	}
+	pl->cmds[cmd_iter].line = node;
 }

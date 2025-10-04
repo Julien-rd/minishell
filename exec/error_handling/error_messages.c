@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 13:41:59 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/04 13:59:32 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	execute_if_cmd_not_found(char *path, t_pipeline *pl, t_sh *sh,
 {
 	int		fd;
 	char	*argv[3];
-	char minishell[10];
+	char	minishell[10];
 
 	fd = open(pl->current->argv[0], O_RDONLY);
 	if (fd != -1)
@@ -128,19 +128,4 @@ void	command_fail(char *path, t_pipeline *pl, t_sh *sh)
 	}
 	perror(pl->current->argv[0]);
 	child_exit_handle(sh, pl, path, 1);
-}
-
-void	builtin_handler(t_pipeline *pl, t_sh *sh)
-{
-	int	flag;
-
-	flag = options_check(pl->current);
-	if (pl->current->cmd_flag == ECHO)
-		echo(pl, sh, flag);
-	else if (pl->current->cmd_flag == PWD)
-		pwd(sh, pl, flag);
-	else if (pl->current->cmd_flag == ENV)
-		env(pl, sh, flag);
-	else
-		internal_cmd_error(pl, sh, flag);
 }
