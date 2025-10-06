@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 20:15:44 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 12:56:52 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 15:43:09 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	pwd(t_sh *sh, t_pipeline *pl, int flag)
 	char	*current_path;
 
 	if (flag == -1)
-		return ;
+		return (invalid_option(pl, sh));
 	current_path = getcwd(NULL, 0);
 	if (!current_path)
 	{

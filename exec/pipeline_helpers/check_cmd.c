@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 19:19:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 15:44:50 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ int	options_check(t_cmd *cur)
 				break ;
 			iter++;
 		}
-		if (!(ft_strncmp(cur->argv[iter], "-e", 3)
-				&& ft_strncmp(cur->argv[iter], "-E", 3)))
-			return (-1);
 		return (iter - 1);
 	}
 	if (cur->argv[1] != NULL && cur->argv[1][0] == '-' && cur->argv[1][1])

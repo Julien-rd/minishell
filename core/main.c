@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 10:04:15 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 16:28:10 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@ int	create_envp(t_sh *sh, char *envp[])
 	size_t	iter;
 	size_t	create_iter;
 
-	if (!envp)
-		return (write(1, "create_envp: envp not found\n", 29), -1);
 	iter = 0;
 	while (envp[iter])
 		iter++;
 	sh->envp.count = iter;
-	sh->envp.malloc = iter * 2;
+	sh->envp.malloc = (iter + (iter == 0)) * 2;
 	sh->envp.vars = malloc((sh->envp.malloc + 1) * sizeof(char *));
 	if (!sh->envp.vars)
 		return (perror("create_envp"), -1);

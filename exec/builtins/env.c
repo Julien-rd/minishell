@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:01:35 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 12:57:06 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 15:48:16 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	env(t_pipeline *pl, t_sh *sh, int flag)
 	size_t	iter;
 
 	iter = 0;
-	if (!sh->envp.vars)
-		child_exit_handle(sh, pl, NULL, 1);
 	if (flag == -1)
 		invalid_option(pl, sh);
 	while (sh->envp.vars[iter])

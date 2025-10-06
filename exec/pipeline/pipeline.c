@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 19:23:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 17:28:34 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	pipeline(t_sh *sh)
 	while (pl.iter <= pl.count)
 	{
 		pl.current = &pl.cmds[pl.iter];
-		own_cmd_exec(&pl, sh);
+		if (own_cmd_exec(&pl, sh) == -1)
+			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
 		if (pipe_fork(&pl) == -1)
 			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
 		if (pl.current->pid == 0)

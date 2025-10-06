@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 19:18:27 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 15:37:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ long long	ft_atoll(const char *str)
 void	invalid_option(t_pipeline *pl, t_sh *sh)
 {
 	write(2, pl->current->argv[0], ft_strlen(pl->current->argv[0]));
-	write(2, " ", 1);
+	write(2, ": ", 2);
 	write(2, &pl->current->argv[1][0], 1);
 	if (pl->current->argv[1][1])
 		write(2, &pl->current->argv[1][1], 1);
@@ -105,7 +105,7 @@ void	command_fail(char *path, t_pipeline *pl, t_sh *sh)
 		if (safe_write(2, pl->current->argv[0],
 				ft_strlen(pl->current->argv[0])) == -1)
 			child_exit_handle(sh, pl, path, 1);
-		if (write(2, ": Permission denied\n", 20) == -1)
+		if (safe_write(2, ": Permission denied\n", 20) == -1)
 			child_exit_handle(sh, pl, path, 1);
 		child_exit_handle(sh, pl, path, 126);
 	}

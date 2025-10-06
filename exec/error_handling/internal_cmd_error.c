@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   internal_cmd_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 19:19:31 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 17:28:25 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,29 @@ void	exit_error(t_pipeline *pl, t_sh *sh)
 
 void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
 {
-	if (cmd_flag == EXPORT && sh->internal_errcode == -1)
+	size_t	iter;
+	size_t	return_value;
+
+	return_value = 0;
+	if (cmd_flag == EXPORT)
 	{
-		write(2, "export: malloc failed\n", 22);
-		child_exit_handle(sh, pl, NULL, 1);
+		iter = 1;
+		while (pl->current->argv[iter])
+		{
+			if (input_check(pl->current->argv[iter]) == -1)
+			{
+				return_value = 1;
+				if (safe_write(2, "export: `", 10) == -1)
+					child_exit_handle(sh, pl, NULL, 1);
+				if (safe_write(2, pl->current->argv[iter], ft_strlen(pl->current->argv[iter])) == -1)
+					child_exit_handle(sh, pl, NULL, 1);
+				if (safe_write(2, "': not a valid identifier\n", 26) == -1)
+					child_exit_handle(sh, pl, NULL, 1);
+			}
+			iter++;
+		}
+		child_exit_handle(sh, pl, NULL, return_value);
 	}
-	if (cmd_flag == EXPORT && sh->internal_errcode == 1)
-		child_exit_handle(sh, pl, NULL, 1);
-	else if (cmd_flag == UNSET && sh->internal_errcode == 1)
-		write(2, "unset: malloc failed\n", 21);
 	child_exit_handle(sh, pl, NULL, 0);
 }
 

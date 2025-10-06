@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pl_functions.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 19:22:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 18:00:29 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	setup_cmds(t_pipeline *pl, t_sh *sh)
 	return (0);
 }
 
-void	own_cmd_exec(t_pipeline *pl, t_sh *sh)
+int	own_cmd_exec(t_pipeline *pl, t_sh *sh)
 {
 	int	flag;
 
 	if (pl->current->argv[0] == NULL)
 	{
 		sh->internal_errcode = 0;
-		return ;
+		return (sh->internal_errcode);
 	}
 	flag = options_check(pl->current);
 	if (pl->current->cmd_flag == CD && !flag)
@@ -52,11 +52,12 @@ void	own_cmd_exec(t_pipeline *pl, t_sh *sh)
 	else if (pl->current->cmd_flag == EXIT)
 		sh->internal_errcode = exit_cmd(pl, sh);
 	else if (pl->current->cmd_flag == EXPORT && !flag)
-		sh->internal_errcode = export(pl->current->argv, sh);
+		sh->internal_errcode = export(pl->current->argv, pl, sh);
 	else if (pl->current->cmd_flag == UNSET && !flag)
-		sh->internal_errcode = unset(pl->current->argv, sh);
+		sh->internal_errcode = unset(pl->current->argv, pl, sh);
 	else
 		sh->internal_errcode = 0;
+	return (sh->internal_errcode);
 }
 
 void	child_process(t_pipeline *pl, t_sh *sh)

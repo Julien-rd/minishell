@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 09:17:06 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 18:00:19 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ int								exit_cmd(t_pipeline *pl, t_sh *sh);
 int								cd(t_sh *sh, char **argv, size_t pipe_count);
 void							echo(t_pipeline *pl, t_sh *sh, int nflag);
 void							env(t_pipeline *pl, t_sh *sh, int flag);
-int								export(char **argv, t_sh *sh);
-int								unset(char **cmd, t_sh *sh);
+int								export(char **argv, t_pipeline *pl, t_sh *sh);
+int								unset(char **cmd, t_pipeline *pl, t_sh *sh);
 
 void							free_cmds(t_pipeline *pl, size_t arr_len);
 
@@ -177,6 +177,7 @@ void							command_fail(char *path, t_pipeline *pl,
 									t_sh *sh);
 void							builtin_handler(t_pipeline *pl, t_sh *sh);
 int								syntax_error(t_entry *entry);
+int	input_check(char *param);
 
 // helper
 
@@ -188,7 +189,7 @@ int								cmd_init(t_cmd *current);
 int								pipe_fork(t_pipeline *pl);
 
 int								setup_cmds(t_pipeline *pl, t_sh *sh);
-void							own_cmd_exec(t_pipeline *pl, t_sh *sh);
+int								own_cmd_exec(t_pipeline *pl, t_sh *sh);
 void							child_process(t_pipeline *pl, t_sh *sh);
 int								parent_process(t_pipeline *pl);
 int								kill_children(t_pipeline *pl, t_sh *sh);

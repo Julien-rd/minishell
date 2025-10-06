@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:58:58 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/02 11:29:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/06 18:00:54 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,28 @@ int	var_check(char *param)
 	return (0);
 }
 
-int	unset(char **cmd, t_sh *sh)
+int	unset(char **cmd, t_pipeline *pl, t_sh *sh)
 {
 	char	*entry;
 	int		envp_pos;
 	size_t	iter;
 
 	iter = 1;
+	if (pl->count)
+		return (0);
 	while (cmd[iter])
 	{
-		if (var_check(cmd[iter]) == -1)
+		if (var_check(cmd[iter]) != -1)
 		{
-			iter++;
-			continue ;
-		}
-		envp_pos = ft_find_paths(sh->envp.vars, cmd[iter]);
-		if (envp_pos != -1)
-		{
-			entry = ft_calloc(1, 1);
-			if (!entry)
-				return (perror("unset"), -1);
-			free(sh->envp.vars[envp_pos]);
-			sh->envp.vars[envp_pos] = entry;
+			envp_pos = ft_find_paths(sh->envp.vars, cmd[iter]);
+			if (envp_pos != -1)
+			{
+				entry = ft_calloc(1, 1);
+				if (!entry)
+					return (perror("unset"), -1);
+				free(sh->envp.vars[envp_pos]);
+				sh->envp.vars[envp_pos] = entry;
+			}
 		}
 		iter++;
 	}

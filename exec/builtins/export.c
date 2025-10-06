@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 19:22:33 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 17:09:00 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ int	insert_env(t_sh *sh, char *entry)
 
 	new = ft_strdup(entry);
 	if (!new)
-		return (perror("export"), -1);
+		return (perror("insert_env"), -1);
 	position = insert_pos(sh, entry);
 	if (position == -1)
 	{
 		if (sh->envp.count >= sh->envp.malloc)
 			if (extend_envp(sh) == -1)
-				return (perror("export"), free(new), -1);
+				return (perror("insert_env"), free(new), -1);
 		sh->envp.vars[sh->envp.count] = new;
 		sh->envp.count = sh->envp.count + 1;
 		sh->envp.vars[sh->envp.count] = NULL;
@@ -108,28 +108,18 @@ int	insert_env(t_sh *sh, char *entry)
 	return (0);
 }
 
-int	export(char **argv, t_sh *sh)
+int	export(char **argv, t_pipeline *pl, t_sh *sh)
 {
 	size_t	iter;
-	int		return_value;
 
 	iter = 1;
-	return_value = 0;
+	if (pl->count)
+		return (0);
 	while (argv[iter])
 	{
-		if (input_check(argv[iter]) == -1)
-		{
-			if (safe_write(1, "export: `", 10) == -1)
-				return (1);
-			if (safe_write(1, argv[iter], ft_strlen(argv[iter])) == -1)
-				return (1);
-			if (safe_write(1, "': not a valid identifier\n", 26) == -1)
-				return (1);
-			return_value = 1;
-		}
-		else if (insert_env(sh, argv[iter]) == -1)
+		if (input_check(argv[iter]) != -1 && ft_strchr(argv[iter], '=') && insert_env(sh, argv[iter]) == -1)
 			return (-1);
 		iter++;
 	}
-	return (return_value);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/06 10:03:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 19:07:02 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ char	*remove_quotes(char *to_strip, size_t len)
 	iter = 0;
 	while (iter < len)
 	{
-		iter += toggle_quotes(to_strip, &sh, iter);
+		while (toggle_quotes(to_strip, &sh, iter))
+			iter++;
 		if (!(to_strip[iter] == '\'' && sh.sgl_quote)
 			&& !(to_strip[iter] == '\"' && sh.dbl_quote))
 			stripped[stripped_iter++] = to_strip[iter];
-		toggle_quotes(to_strip, &sh, iter);
 		iter++;
 	}
 	stripped[stripped_iter] = '\0';

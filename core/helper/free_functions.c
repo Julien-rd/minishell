@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 14:05:20 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 19:25:02 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	free_list(t_entry *list)
 void	child_exit_handle(t_sh *sh, t_pipeline *pl, char *path, int errcode)
 {
 	if (path)
-		free(path);
+		;
 	free2d(&sh->envp.vars);
 	free_list(sh->entries);
 	free(pl->position);
