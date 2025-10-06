@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 13:53:54 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 09:14:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ size_t	skip_whitspaces(char *buf)
 	return (iter);
 }
 
-size_t	empty_prompt(char *buf)
+bool	empty_prompt(char *buf)
 {
 	if (ft_strlen(buf) == 0)
-		return (free(buf), 1);
-	return (0);
+		return (free(buf), true);
+	return (false);
 }

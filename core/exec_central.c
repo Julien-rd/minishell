@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 14:04:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 10:04:32 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,5 @@ int	exec_central(t_sh *sh)
 	free_list(sh->entries);
 	if (sh->heredoc)
 		free2d(&sh->heredoc);
-	if (exit_code == -1)
-		free2d(&sh->envp.vars);
 	return (exit_code);
 }

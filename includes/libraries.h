@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:47:36 by eprottun          #+#    #+#             */
-/*   Updated: 2025/09/27 18:34:44 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 09:13:44 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 #endif

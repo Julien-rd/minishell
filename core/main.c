@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 19:20:33 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 10:04:15 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	check_exit_status(char *buf, int exit_code, t_sh *sh)
 			free2d(&sh->envp.vars);
 		if (sh->exit || buf == NULL)
 		{
+			if (buf)
+				free(buf);
 			if (safe_write(1, "exit\n", 5) == -1)
 				exit(1);
 			exit(exit_code);

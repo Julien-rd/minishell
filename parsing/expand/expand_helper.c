@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 19:21:29 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 10:03:46 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*remove_quotes(char *to_strip, size_t len)
 	{
 		iter += toggle_quotes(to_strip, &sh, iter);
 		if (!(to_strip[iter] == '\'' && sh.sgl_quote)
-				&& !(to_strip[iter] == '\"' && sh.dbl_quote))
+			&& !(to_strip[iter] == '\"' && sh.dbl_quote))
 			stripped[stripped_iter++] = to_strip[iter];
 		toggle_quotes(to_strip, &sh, iter);
 		iter++;

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/04 19:22:58 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/06 09:17:06 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ size_t							skip_whitspaces(char *buf);
 int								toggle_quotes(char *str, t_sh *sh, size_t iter);
 int								is_token(char c);
 void							cut_nl(char *buf);
-size_t							empty_prompt(char *buf);
+bool							empty_prompt(char *buf);
 void							free_list(t_entry *list);
 void							child_exit_handle(t_sh *sh, t_pipeline *pl,
 									char *path, int errcode);
@@ -115,7 +115,6 @@ int								expand_init(t_entry *current, t_sh *sh,
 									t_expand_str *str);
 int								quote_check(size_t iter, char *buf, t_sh *sh);
 size_t							envlen(char *env);
-size_t							envsize(char *env, char **envp, t_sh *sh);
 char							*expand(t_entry *current, t_sh *sh, int flag);
 int								quoteclosed(char *str, char quote, t_sh *sh);
 int								get_env(char *buf, t_expand_str *str,
