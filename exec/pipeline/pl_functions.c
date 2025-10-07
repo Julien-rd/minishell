@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 18:00:29 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:31:25 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,18 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 
 	setup_child_signals();
 	if (setup_redirect(sh, pl) == -1)
-		child_exit_handle(sh, pl, NULL, 1);
+		child_exit_handle(sh, pl, 1);
 	if (pl->current->argv[0] == NULL)
-		child_exit_handle(sh, pl, NULL, 0);
+		child_exit_handle(sh, pl, 0);
 	if (pl->current->cmd_flag != EXTERNAL)
 		builtin_handler(pl, sh);
 	path = ft_getpath(sh->envp.vars, pl->current->argv[0]);
 	if (path == NULL || pl->current->argv[0][0] == 0)
-		command_fail(path, pl, sh);
+	{
+		if (path && !ft_strchr(pl->current->argv[0], '/'))
+			free(path);
+		command_fail(pl, sh);
+	}
 	execve(path, pl->current->argv, sh->envp.vars);
 	execve_fail(path, errno, pl, sh);
 }

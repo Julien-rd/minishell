@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 18:00:19 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:37:42 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void							cut_nl(char *buf);
 bool							empty_prompt(char *buf);
 void							free_list(t_entry *list);
 void							child_exit_handle(t_sh *sh, t_pipeline *pl,
-									char *path, int errcode);
+									int errcode);
 
 /********************  PARSING  ********************/
 
@@ -173,11 +173,11 @@ int								insert_pos(t_sh *sh, char *param);
 void							invalid_option(t_pipeline *pl, t_sh *sh);
 void							execve_fail(char *path, int error,
 									t_pipeline *pl, t_sh *sh);
-void							command_fail(char *path, t_pipeline *pl,
+void							command_fail(t_pipeline *pl,
 									t_sh *sh);
 void							builtin_handler(t_pipeline *pl, t_sh *sh);
 int								syntax_error(t_entry *entry);
-int	input_check(char *param);
+int								input_check(char *param);
 
 // helper
 
