@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 09:48:56 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 16:28:10 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/08 14:46:50 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ int	main(int argc, char *argv[], char *envp[])
 	char	*buf;
 	int		exit_code;
 
-	(void) argc;
 	(void) argv;
+	if (argc != 1)
+		return (1);
 	if (create_envp(&sh, envp) == -1)
 		return (1);
 	sh.exit_code = 0;
