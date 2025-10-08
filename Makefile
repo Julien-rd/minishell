@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 INC_DIR = includes
-CFLAGS = -Wall -Wextra -Werror -Ilibft_00 -MMD -g -I$(INC_DIR)
+CFLAGS = -Wall -Wextra -Werror -Ilibft -MMD -g -I$(INC_DIR)
 OBJ_DIR = obj
 VPATH = parsing parsing/expand exec exec/builtins exec/pipeline core core/signals core/non_interactive/get_next_line parsing/expand parsing/here_doc core/non_interactive \
 exec/error_handling exec/pipeline_helpers core/helper
@@ -15,7 +15,7 @@ cd.c echo.c env.c exit.c export.c pwd.c unset.c pl_functions.c pl_helper.c non_i
 
 OBJ = $(SRC:%.c=obj/%.o)
 DEP = $(SRC:%.c=obj/%.d)
-LIBFT_DIR = libft_00
+LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 .SILENT:
