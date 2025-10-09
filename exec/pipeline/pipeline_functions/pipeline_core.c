@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pl_functions.c                                     :+:      :+:    :+:   */
+/*   pl_core.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 12:13:22 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:09:18 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	setup_cmds(t_pipeline *pl, t_sh *sh)
+int	pl_setup(t_pipeline *pl, t_sh *sh)
 {
 	size_t	cmd_iter;
 

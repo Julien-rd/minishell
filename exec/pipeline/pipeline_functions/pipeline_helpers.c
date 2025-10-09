@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_cmd.c                                        :+:      :+:    :+:   */
+/*   pipeline_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 08:36:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/06 15:44:50 by eprottun         ###   ########.fr       */
+/*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
+/*   Updated: 2025/10/09 15:12:08 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,39 +38,36 @@ int	options_check(t_cmd *cur)
 	return (0);
 }
 
-void	cmd_flag(t_sh *sh, t_cmd *current)
-{
-	current->cmd_flag = EXTERNAL;
-	sh->internal_errcode = 0;
-	if (current->argv[0] == NULL)
-		return ;
-	else if (!ft_strncmp(current->argv[0], "echo", 5))
-		current->cmd_flag = ECHO;
-	else if (!ft_strncmp(current->argv[0], "cd", 3))
-		current->cmd_flag = CD;
-	else if (!ft_strncmp(current->argv[0], "pwd", 4))
-		current->cmd_flag = PWD;
-	else if (!ft_strncmp(current->argv[0], "export", 7))
-		current->cmd_flag = EXPORT;
-	else if (!ft_strncmp(current->argv[0], "unset", 6))
-		current->cmd_flag = UNSET;
-	else if (!ft_strncmp(current->argv[0], "env", 4))
-		current->cmd_flag = ENV;
-	else if (!ft_strncmp(current->argv[0], "exit", 5))
-		current->cmd_flag = EXIT;
-}
-
-void	find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter)
+int	cmd_tokens(t_cmd *current)
 {
 	t_entry	*node;
-	size_t	iter;
+	size_t	cmd_tokens;
+	int		iter;
 
-	iter = 0;
-	node = sh->entries;
-	while (node && iter < (size_t)pl->position[cmd_iter])
+	node = current->line;
+	cmd_tokens = 0;
+	while (node && node->spec != PIPE)
 	{
+		if (node->spec == DEFAULT)
+		{
+			iter = -1;
+			while (node->expanded && node->expanded[++iter])
+				cmd_tokens++;
+		}
 		node = node->next;
-		iter++;
 	}
-	pl->cmds[cmd_iter].line = node;
+	return (cmd_tokens);
+}
+
+int	pipe_fork(t_pipeline *pl)
+{
+	if (pl->iter != pl->count)
+		if (pipe(pl->fd) == -1)
+			return (perror("pipe"), -1);
+	pl->current->pid = fork();
+	if (pl->current->pid == -1)
+		return (perror("fork"), -1);
+	if (pl->iter == pl->count)
+		pl->last_pid = pl->current->pid;
+	return (0);
 }

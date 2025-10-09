@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 15:05:21 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:22:53 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	pipeline(t_sh *sh)
 {
 	t_pipeline	pl;
 
-	if (setup_cmds(&pl, sh) == -1)
+	if (pl_setup(&pl, sh) == -1)
 		return (-1);
 	while (pl.iter <= pl.count)
 	{

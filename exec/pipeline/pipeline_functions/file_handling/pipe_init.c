@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 14:08:37 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/04 14:13:39 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:12:03 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,3 +44,4 @@ int	pipe_init(t_pipeline *pl)
 	}
 	return (setup_pipe_output(pl));
 }
+
