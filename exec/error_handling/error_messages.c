@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/06 15:37:27 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:20:49 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ void	execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh)
 		error = EISDIR;
 	errno = error;
 	perror(path);
+	if(!ft_strchr(path, '/'))
+		free(path);
 	if (errno == EACCES || errno == ENOEXEC || errno == EISDIR)
 		child_exit_handle(sh, pl, path, 126);
 	if (errno == ENOENT)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pl_functions.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 18:00:29 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:22:15 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,11 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 		builtin_handler(pl, sh);
 	path = ft_getpath(sh->envp.vars, pl->current->argv[0]);
 	if (path == NULL || pl->current->argv[0][0] == 0)
+	{
+		if (pl->current->argv[0][0] == 0 && !ft_strchr(path, '/'))
+			free(path);
 		command_fail(path, pl, sh);
+	}
 	execve(path, pl->current->argv, sh->envp.vars);
 	execve_fail(path, errno, pl, sh);
 }
