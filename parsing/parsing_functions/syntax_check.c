@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:14:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 16:41:23 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:26:19 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int	syntax_check(t_sh *sh)
 			return (syntax_error(entry, sh));
 		entry = entry->next;
 	}
-	return 0;
+	return (0);
 }

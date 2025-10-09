@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   interactive_loop.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:22:37 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 16:36:48 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:27:21 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void interactive_loop(t_sh	*sh)
+void	interactive_loop(t_sh *sh)
 {
 	char	*buf;
-	
+
 	while (1)
 	{
 		setup_interactive_signals();
@@ -30,5 +30,5 @@ void interactive_loop(t_sh	*sh)
 		check_exit_status(buf, sh);
 	}
 	rl_clear_history();
-    check_exit_status(buf, sh);
+	check_exit_status(buf, sh);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 17:23:30 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:26:23 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,10 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 			return (setup_main_signals(sh), free(buf.raw_entry), 0);
 		if (expand_hdoc_entry(&buf, sh, expand_flag) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
-		tmp_str = ft_strjointhree(sh->heredoc[hdoc_iter], buf.raw_entry,
-				"\n");
+		tmp_str = ft_strjointhree(sh->heredoc[hdoc_iter], buf.raw_entry, "\n");
 		if (!tmp_str)
-			return (perror("malloc"), setup_main_signals(sh), free(buf.raw_entry),
-				-1);
+			return (perror("malloc"), setup_main_signals(sh),
+				free(buf.raw_entry), -1);
 		free(sh->heredoc[hdoc_iter]);
 		sh->heredoc[hdoc_iter] = tmp_str;
 		free(buf.raw_entry);

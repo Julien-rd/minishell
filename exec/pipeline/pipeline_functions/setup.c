@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup_cmds.c                                       :+:      :+:    :+:   */
+/*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:08:27 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 15:01:20 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:26:35 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,3 @@ void	cmd_flag(t_sh *sh, t_cmd *current)
 	else if (!ft_strncmp(current->argv[0], "exit", 5))
 		current->cmd_flag = EXIT;
 }
-
