@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 16:19:29 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:28:13 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 # define NULL_DEFAULT 28
 # define NUMERIC_ARG 29
 # define TOO_MANY_ARGS 30
+# define FAILURE 31
+# define SUCCESS 32
 
 extern volatile sig_atomic_t	g_current_signal;
 
@@ -143,7 +145,7 @@ int								parsing(char *buf, t_sh *sh);
 t_entry							*lstlast(t_entry *lst);
 void							lstadd(t_entry **lst, t_entry *new);
 t_entry							*newnode(char *raw_str);
-int								parse_and_execute(char *buf, t_sh *sh);
+void							parse_and_execute(char *buf, t_sh *sh);
 
 // NONINTERACTIVE
 void							non_interactive(t_sh *sh);
@@ -219,7 +221,7 @@ void							execve_fail(char *path, int error,
 									t_pipeline *pl, t_sh *sh);
 void							command_fail(t_pipeline *pl, t_sh *sh);
 void							builtin_handler(t_pipeline *pl, t_sh *sh);
-int								syntax_error(t_entry *entry);
+int								syntax_error(t_entry *entry, t_sh *sh);
 int								input_check(char *param);
 
 // helper

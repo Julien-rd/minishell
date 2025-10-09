@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/07 17:24:50 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:08:34 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,14 @@ void	free2d(char ***str)
 	size_t	iter;
 
 	iter = 0;
-	if (*str)
+	if (!(*str))
+		return ;
+	while ((*str)[iter])
 	{
-		while ((*str)[iter])
-		{
-			free((*str)[iter]);
-			iter++;
-		}
-		free(*str);
+		free((*str)[iter]);
+		iter++;
 	}
-	*str = NULL;
+	free(*str);
 }
 
 void	free_list(t_entry *list)

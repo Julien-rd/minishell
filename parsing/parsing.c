@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 18:56:25 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:05:06 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	here_doc_caller(t_sh *sh)
 			else
 			{
 				free2d(&sh->envp.vars);
-				sh->exit_code = 0;
+				sh->exit_code = -1;
 			}
 			return (-1);
 		}
@@ -119,10 +119,10 @@ static int	create_list(char *buf, t_sh *sh)
 int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
-		return (free_list(sh->entries), -1);
+		return (free_list(sh->entries), sh->exit_code = -1, -1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
-		return (free_list(sh->entries), -1);
+		return (free_list(sh->entries), sh->exit_code = -1, -1);
 	if (here_doc_caller(sh) == -1)
 		return (free_list(sh->entries), -1);
 	return (0);
