@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 12:54:34 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:15:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@
 # define NULL_DEFAULT 28
 # define NUMERIC_ARG 29
 # define TOO_MANY_ARGS 30
+# define FAILURE 31
+# define SUCCESS 32
 
 extern volatile sig_atomic_t	g_current_signal;
 
@@ -53,7 +55,7 @@ extern volatile sig_atomic_t	g_current_signal;
 
 /******  Signals  ******/
 void							setup_heredoc_signals(void);
-void							setup_main_signals(void);
+void							setup_main_signals(t_sh *sh);
 void							setup_child_signals(void);
 void							setup_interactive_signals(void);
 void							setup_noninteractive_signals(void);
@@ -76,8 +78,7 @@ bool							empty_prompt(char *buf);
 void							free_list(t_entry *list);
 void							child_exit_handle(t_sh *sh, t_pipeline *pl,
 									int errcode);
-void							check_exit_status(char *buf, int exit_code,
-									t_sh *sh);
+void							check_exit_status(char *buf, t_sh *sh);
 int								init_shell(t_sh *sh, int argc, char **argv,
 									char **envp);
 void							interactive_loop(t_sh *sh);
@@ -90,7 +91,7 @@ int								parsing(char *buf, t_sh *sh);
 t_entry							*lstlast(t_entry *lst);
 void							lstadd(t_entry **lst, t_entry *new);
 t_entry							*newnode(char *raw_str);
-int								parse_and_execute(char *buf, t_sh *sh);
+void							parse_and_execute(char *buf, t_sh *sh);
 
 // NONINTERACTIVE
 void							non_interactive(t_sh *sh);
@@ -113,6 +114,7 @@ int								export(char **argv, t_pipeline *pl, t_sh *sh);
 int								unset(char **cmd, t_pipeline *pl, t_sh *sh);
 
 void							free_cmds(t_pipeline *pl, size_t arr_len);
+int								pl_cleanup(t_pipeline *pl, t_sh *sh, int flag);
 
 /******************** EXPAND ********************/
 int								expand_init(t_entry *current, t_sh *sh,
@@ -179,7 +181,7 @@ void							execve_fail(char *path, int error,
 									t_pipeline *pl, t_sh *sh);
 void							command_fail(t_pipeline *pl, t_sh *sh);
 void							builtin_handler(t_pipeline *pl, t_sh *sh);
-int								syntax_error(t_entry *entry);
+int								syntax_error(t_entry *entry, t_sh *sh);
 int								input_check(char *param);
 
 // helper

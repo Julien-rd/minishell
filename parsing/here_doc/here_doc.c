@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/03 15:49:01 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:10:43 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 			return (hdoc_signal_kill(buf.raw_entry, delimiter));
 		if (ft_strcmp(&buf.raw_entry[skip_whitspaces(buf.raw_entry)],
 				delimiter) == 0)
-			return (setup_main_signals(), free(buf.raw_entry), 0);
+			return (setup_main_signals(sh), free(buf.raw_entry), 0);
 		if (expand_hdoc_entry(&buf, sh, expand_flag) == -1)
-			return (setup_main_signals(), free(buf.raw_entry), -1);
+			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		tmp_str = ft_strjointhree(sh->heredoc[hdoc_iter], buf.raw_entry,
 				"\n");
 		if (!tmp_str)
-			return (perror("malloc"), setup_main_signals(), free(buf.raw_entry),
+			return (perror("malloc"), setup_main_signals(sh), free(buf.raw_entry),
 				-1);
 		free(sh->heredoc[hdoc_iter]);
 		sh->heredoc[hdoc_iter] = tmp_str;
@@ -64,15 +64,15 @@ static int	hdoc_entry(t_entry *iter, t_sh *sh, size_t hdoc_iter)
 	setup_heredoc_signals();
 	sh->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!sh->heredoc[hdoc_iter])
-		return (setup_main_signals(), -1);
+		return (setup_main_signals(sh), -1);
 	delimiter = remove_quotes(iter->raw_entry, ft_strlen(iter->raw_entry));
 	if (!delimiter)
 		return (-1);
 	if (ft_strncmp(delimiter, iter->raw_entry, ft_strlen(delimiter) + 1) == 0)
 		expand_flag = 1;
 	if (hdoc_mode(sh, expand_flag, delimiter, hdoc_iter) == -1)
-		return (setup_main_signals(), free(delimiter), -1);
-	return (setup_main_signals(), free(delimiter), 0);
+		return (setup_main_signals(sh), free(delimiter), -1);
+	return (setup_main_signals(sh), free(delimiter), 0);
 }
 
 size_t	operator_count(t_sh *sh)

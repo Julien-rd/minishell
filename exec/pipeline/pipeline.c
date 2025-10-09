@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 17:28:34 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:05:21 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@ int	pipeline(t_sh *sh)
 	{
 		pl.current = &pl.cmds[pl.iter];
 		if (own_cmd_exec(&pl, sh) == -1)
-			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
+			return (pl_cleanup(&pl, sh, FAILURE));
 		if (pipe_fork(&pl) == -1)
-			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
+			return (pl_cleanup(&pl, sh, FAILURE));
 		if (pl.current->pid == 0)
 			child_process(&pl, sh);
 		else if (parent_process(&pl) == -1)
-			return (free_cmds(&pl, pl.count + 1), free(pl.position), -1);
+			return (pl_cleanup(&pl, sh, FAILURE));
 		pl.iter++;
 	}
-	return (free_cmds(&pl, pl.count + 1), free(pl.position), kill_children(&pl,
-			sh));
+	return (pl_cleanup(&pl, sh, SUCCESS));
 }
