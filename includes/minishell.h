@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/07 17:37:42 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 12:53:49 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,12 @@
 # define EXIT 14
 # define ENV 15
 # define EXTERNAL 16
-# define INTERNAL 17
 # define INTERACTIVE 18
 # define NONINTERACTIVE 19
 # define HERE_DOC_OP 20
 # define APPEND_OP 21
 # define INFILE_OP 22
 # define OUTFILE_OP 23
-# define A_HERE_DOC 24
-# define A_APPEND 25
-# define A_INFILE 26
-# define A_OUTFILE 27
 # define NULL_DEFAULT 28
 # define NUMERIC_ARG 29
 # define TOO_MANY_ARGS 30
