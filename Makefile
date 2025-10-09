@@ -1,21 +1,21 @@
 NAME = minishell
 CC = cc
 INC_DIR = includes
-CFLAGS = -Wall -Wextra -Werror -Ilibft_00 -MMD -g -I$(INC_DIR)
+CFLAGS = -Wall -Wextra -Werror -Ilibft -MMD -g -I$(INC_DIR)
 OBJ_DIR = obj
 VPATH = parsing parsing/expand exec exec/builtins exec/pipeline core core/signals core/non_interactive/get_next_line parsing/expand parsing/here_doc core/non_interactive \
 exec/error_handling exec/pipeline_helpers core/helper
 SRC = split_expands.c syntax_check.c parsing.c build_helpers.c helper.c error_messages.c file_management.c internal_cmd_error.c \
-check_cmd.c main.c signal_handlers.c free_functions.c\
-expand.c expand_helper.c expand_helper2.c here_doc.c \
-pipeline.c find_path.c exec_central.c get_next_line.c \
+check_cmd.c main.c signal_handlers.c free_functions.c \
+expand.c expand_helper.c expand_helper2.c here_doc.c interactive_loop.c \
+pipeline.c find_path.c get_next_line.c check_exit_status.c init_shell.c\
 get_next_line_utils.c non_interactive.c signal_setups.c parse_and_execute.c pipe_init.c \
 cd.c echo.c env.c exit.c export.c pwd.c unset.c pl_functions.c pl_helper.c non_interactive_helpers.c builtin_handler.c
 
 
 OBJ = $(SRC:%.c=obj/%.o)
 DEP = $(SRC:%.c=obj/%.d)
-LIBFT_DIR = libft_00
+LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 .SILENT:

@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_central.c                                     :+:      :+:    :+:   */
+/*   check_exit_status.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/17 19:10:38 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/06 10:04:32 by jromann          ###   ########.fr       */
+/*   Created: 2025/10/09 12:28:15 by jromann           #+#    #+#             */
+/*   Updated: 2025/10/09 12:41:28 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_central(t_sh *sh)
+void	check_exit_status(char *buf, int exit_code, t_sh *sh)
 {
-	int	exit_code;
-
-	sh->exit = 0;
-	exit_code = 0;
-	exit_code = pipeline(sh);
-	free_list(sh->entries);
-	if (sh->heredoc)
-		free2d(&sh->heredoc);
-	return (exit_code);
+	if ((exit_code == -1 && g_current_signal == 0) || sh->exit || buf == NULL)
+	{
+		if (sh->envp.vars)
+			free2d(&sh->envp.vars);
+		if (sh->exit || buf == NULL)
+		{
+			if (buf)
+				free(buf);
+			if (safe_write(1, "exit\n", 5) == -1)
+				exit(1);
+			exit(exit_code);
+		}
+		free(buf);
+		exit(1);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/06 17:09:00 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:38:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ int	export(char **argv, t_pipeline *pl, t_sh *sh)
 		return (0);
 	while (argv[iter])
 	{
-		if (input_check(argv[iter]) != -1 && ft_strchr(argv[iter], '=') && insert_env(sh, argv[iter]) == -1)
+		if (input_check(argv[iter]) != -1 && ft_strchr(argv[iter], '=')
+			&& insert_env(sh, argv[iter]) == -1)
 			return (-1);
 		iter++;
 	}
