@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 12:53:49 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 12:56:20 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ bool							empty_prompt(char *buf);
 void							free_list(t_entry *list);
 void							child_exit_handle(t_sh *sh, t_pipeline *pl,
 									int errcode);
+void							check_exit_status(char *buf, int exit_code,
+									t_sh *sh);
+int								init_shell(t_sh *sh, int argc, char **argv,
+									char **envp);
+void							interactive_loop(t_sh *sh);
 
 /********************  PARSING  ********************/
 
@@ -80,8 +85,7 @@ int								parsing(char *buf, t_sh *sh);
 t_entry							*lstlast(t_entry *lst);
 void							lstadd(t_entry **lst, t_entry *new);
 t_entry							*newnode(char *raw_str);
-int								parse_and_execute(char *buf, t_sh *sh,
-									int flag);
+int								parse_and_execute(char *buf, t_sh *sh);
 
 // NONINTERACTIVE
 void							non_interactive(t_sh *sh);
@@ -168,8 +172,7 @@ int								insert_pos(t_sh *sh, char *param);
 void							invalid_option(t_pipeline *pl, t_sh *sh);
 void							execve_fail(char *path, int error,
 									t_pipeline *pl, t_sh *sh);
-void							command_fail(t_pipeline *pl,
-									t_sh *sh);
+void							command_fail(t_pipeline *pl, t_sh *sh);
 void							builtin_handler(t_pipeline *pl, t_sh *sh);
 int								syntax_error(t_entry *entry);
 int								input_check(char *param);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_execute.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/08 14:43:04 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 12:53:50 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	exec_central(t_sh *sh)
 	return (exit_code);
 }
 
-int	parse_and_execute(char *buf, t_sh *sh, int flag)
+int	parse_and_execute(char *buf, t_sh *sh)
 {
 	if (parsing(buf, sh) == -1)
 		return (-1);
@@ -36,7 +36,5 @@ int	parse_and_execute(char *buf, t_sh *sh, int flag)
 		return (-1);
 	if (sh->exit)
 		return (sh->exit_code);
-	if (flag == INTERACTIVE)
-		add_history(buf);
 	return (0);
 }
