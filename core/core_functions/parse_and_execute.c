@@ -1,0 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_and_execute.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
+/*   Updated: 2025/10/09 16:37:12 by eprottun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+static int	exec_central(t_sh *sh)
+{
+	int	exit_code;
+
+	sh->exit = 0;
+	exit_code = pipeline(sh);
+	return (exit_code);
+}
+
+void	parse_and_execute(char *buf, t_sh *sh)
+{
+	if (parsing(buf, sh) == -1)
+		return ;
+	if (syntax_check(sh) == -1)
+		return (cleanup(sh));
+	sh->exit_code = exec_central(sh);
+	return (cleanup(sh));
+}
