@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/07 17:38:07 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:52:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	exit_error_msg(t_pipeline *pl, t_sh *sh, int flag)
 	}
 }
 
-void	exit_error(t_pipeline *pl, t_sh *sh)
+static void	exit_error(t_pipeline *pl, t_sh *sh)
 {
 	long long	exit_code;
 	size_t		iter;
@@ -54,7 +54,7 @@ void	exit_error(t_pipeline *pl, t_sh *sh)
 	child_exit_handle(sh, pl, exit_code);
 }
 
-void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
+static void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
 {
 	size_t	iter;
 	size_t	return_value;
@@ -83,7 +83,7 @@ void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
 	child_exit_handle(sh, pl, 0);
 }
 
-void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
+static void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 {
 	if (sh->internal_errcode == -2)
 	{

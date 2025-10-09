@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_execute.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 12:53:50 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:58:44 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_central(t_sh *sh)
+static int	exec_central(t_sh *sh)
 {
 	int	exit_code;
 

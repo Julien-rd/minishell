@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 12:56:20 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:19:29 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,40 +44,98 @@
 
 extern volatile sig_atomic_t	g_current_signal;
 
-/********************  CORE  ********************/
+/********************** 1. CORE  ************************/
 
-/******  Signals  ******/
-void							setup_heredoc_signals(void);
-void							setup_main_signals(void);
-void							setup_child_signals(void);
-void							setup_interactive_signals(void);
-void							setup_noninteractive_signals(void);
+/******  Core Functions  ******/
 
-void							sigint_prompt(int num);
-void							sigint_heredoc(int num);
-void							sigint_main(int num);
-int								hdoc_signal_kill(char *buf, char *entry);
+int				init_shell(t_sh *sh, int argc, char **argv, char **envp);
+void			non_interactive(t_sh *sh);
+void 			interactive_loop(t_sh	*sh);
+int				parse_and_execute(char *buf, t_sh *sh);
 
-/******  Helpers  ******/
-int								safe_write(int fd, char *buf, size_t len);
-void							free2d(char ***str);
-long long						ft_atoll(const char *str);
-char							*remove_quotes(char *to_strip, size_t len);
-size_t							skip_whitspaces(char *buf);
-int								toggle_quotes(char *str, t_sh *sh, size_t iter);
-int								is_token(char c);
-void							cut_nl(char *buf);
-bool							empty_prompt(char *buf);
-void							free_list(t_entry *list);
-void							child_exit_handle(t_sh *sh, t_pipeline *pl,
-									int errcode);
-void							check_exit_status(char *buf, int exit_code,
-									t_sh *sh);
-int								init_shell(t_sh *sh, int argc, char **argv,
-									char **envp);
-void							interactive_loop(t_sh *sh);
 
-/********************  PARSING  ********************/
+/******************** 2. EXECUTION **********************/
+
+/********  Builtins  ********/
+
+void			pwd(t_sh *sh, t_pipeline *pl, int flag);
+int				exit_cmd(t_pipeline *pl, t_sh *sh);
+int				cd(t_sh *sh, char **argv, size_t pipe_count);
+void			echo(t_pipeline *pl, t_sh *sh, int nflag);
+void			env(t_pipeline *pl, t_sh *sh, int flag);
+int				export(char **argv, t_pipeline *pl, t_sh *sh);
+int				unset(char **cmd, t_pipeline *pl, t_sh *sh);
+
+/********  Pipeline  ********/
+
+int	pipeline(t_sh *sh);
+
+// pipeline_core
+int				pl_setup(t_pipeline *pl, t_sh *sh);
+int				own_cmd_exec(t_pipeline *pl, t_sh *sh);
+void			child_process(t_pipeline *pl, t_sh *sh);
+int				parent_process(t_pipeline *pl);
+int				kill_children(t_pipeline *pl, t_sh *sh);
+
+// setup
+int				count_pipes(t_sh *sh);
+int				init_pipe_pos(t_pipeline *pl, t_sh *sh);
+void			find_start(t_pipeline *pl, t_sh *sh, size_t cmd_iter);
+int				cmd_init(t_cmd *current);
+void			cmd_flag(t_sh *sh, t_cmd *current);
+
+// pipeline_helpers
+int				options_check(t_cmd *cur);
+int				cmd_tokens(t_cmd *current);
+int				pipe_fork(t_pipeline *pl);
+
+// file_handling
+int				setup_redirect(t_sh *sh, t_pipeline *pl);
+int				pipe_init(t_pipeline *pl);
+
+/******  Error Handling  ******/
+
+// error_messages
+long long		ft_atoll(const char *str);
+void			invalid_option(t_pipeline *pl, t_sh *sh);
+void			execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh);
+void			command_fail(t_pipeline *pl, t_sh *sh);
+
+// internal_cmd_error
+void			internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag);
+
+
+/********************** 3. HELPER ***********************/
+
+// free_functions
+void			free2d(char ***str);
+void			free_list(t_entry *list);
+void			child_exit_handle(t_sh *sh, t_pipeline *pl, int errcode);
+void			free_cmds(t_pipeline *pl, size_t arr_len);
+
+// helper
+int				safe_write(int fd, char *buf, size_t len);
+int				is_token(char c);
+int				toggle_quotes(char *buf, t_sh *sh, size_t iter);
+size_t			skip_whitspaces(char *buf);
+bool			empty_prompt(char *buf);
+
+/********************** 5. SIGNALS **********************/
+
+// signal_handlers
+void			sigint_prompt(int num);
+void			sigint_main(int num);
+void			sigint_heredoc(int num);
+int				hdoc_signal_kill(char *buf, char *entry);
+
+// signal_setups
+void			setup_interactive_signals(void);
+void			setup_main_signals(void);
+void			setup_heredoc_signals(void);
+void			setup_child_signals(void);
+void			setup_noninteractive_signals(void);
+
+/********************** 4. PARSING **********************/
 
 int								parsing(char *buf, t_sh *sh);
 
@@ -95,19 +153,6 @@ int								malloc_ops(char *buf, size_t *entry,
 void							fill_ops(char *buf, size_t *entry, size_t *iter,
 									t_sh *sh);
 void							fill_string(t_sh *sh);
-
-/********************  EXECUTION  ********************/
-
-/******  Builtins  ******/
-void							pwd(t_sh *sh, t_pipeline *pl, int flag);
-int								exit_cmd(t_pipeline *pl, t_sh *sh);
-int								cd(t_sh *sh, char **argv, size_t pipe_count);
-void							echo(t_pipeline *pl, t_sh *sh, int nflag);
-void							env(t_pipeline *pl, t_sh *sh, int flag);
-int								export(char **argv, t_pipeline *pl, t_sh *sh);
-int								unset(char **cmd, t_pipeline *pl, t_sh *sh);
-
-void							free_cmds(t_pipeline *pl, size_t arr_len);
 
 /******************** EXPAND ********************/
 int								expand_init(t_entry *current, t_sh *sh,
@@ -179,6 +224,7 @@ int								input_check(char *param);
 
 // helper
 
+void							free_cmds(t_pipeline *pl, size_t arr_len);
 int								count_pipes(t_sh *sh);
 int								init_pipe_pos(t_pipeline *pl, t_sh *sh);
 void							find_start(t_pipeline *pl, t_sh *sh,

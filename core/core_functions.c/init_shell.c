@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:17:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 12:35:55 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:54:30 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	create_envp(t_sh *sh, char *envp[])
+static int	create_envp(t_sh *sh, char *envp[])
 {
 	size_t	iter;
 	size_t	create_iter;
