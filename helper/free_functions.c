@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 15:08:34 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:37:25 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,10 @@ void	free_cmds(t_pipeline *pl, size_t arr_len)
 		iter++;
 	}
 	free(pl->cmds);
+}
+
+void	cleanup(t_sh *sh)
+{
+	free_list(sh->entries);
+	free2d(&sh->heredoc);
 }

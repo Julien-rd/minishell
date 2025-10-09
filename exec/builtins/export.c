@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/07 17:38:27 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:14:42 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	input_check(char *param)
 	return (0);
 }
 
-int	extend_envp(t_sh *sh)
+static int	extend_envp(t_sh *sh)
 {
 	char	**new_envp;
 	size_t	iter;
@@ -57,7 +57,7 @@ int	extend_envp(t_sh *sh)
 	return (0);
 }
 
-int	insert_pos(t_sh *sh, char *param)
+static int	insert_pos(t_sh *sh, char *param)
 {
 	size_t	iter;
 	size_t	end_of_name;
@@ -82,7 +82,7 @@ int	insert_pos(t_sh *sh, char *param)
 	return (-1);
 }
 
-int	insert_env(t_sh *sh, char *entry)
+static int	insert_env(t_sh *sh, char *entry)
 {
 	char	*new;
 	int		position;

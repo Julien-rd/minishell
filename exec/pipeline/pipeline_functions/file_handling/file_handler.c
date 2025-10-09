@@ -6,13 +6,13 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 14:51:25 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:33:36 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	infile_init(char *file_name)
+static int	infile_init(char *file_name)
 {
 	int	fd_in;
 
@@ -26,7 +26,7 @@ int	infile_init(char *file_name)
 	return (0);
 }
 
-int	heredoc_init(t_pipeline *pl, t_sh *sh)
+static int	heredoc_init(t_pipeline *pl, t_sh *sh)
 {
 	int	fd_heredoc[2];
 
@@ -45,7 +45,7 @@ int	heredoc_init(t_pipeline *pl, t_sh *sh)
 	return (0);
 }
 
-int	outfile_init(char *file_name, int flag)
+static int	outfile_init(char *file_name, int flag)
 {
 	int	fd_out;
 

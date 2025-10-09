@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 15:12:08 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:01:53 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,13 @@ int	pipe_fork(t_pipeline *pl)
 	if (pl->iter == pl->count)
 		pl->last_pid = pl->current->pid;
 	return (0);
+}
+
+int	pl_cleanup(t_pipeline *pl, t_sh *sh, int flag)
+{
+	free_cmds(pl, pl->count + 1);
+	free(pl->position);
+	if (flag == FAILURE)
+		return (-1);
+	return (kill_children(pl, sh));
 }
