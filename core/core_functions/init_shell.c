@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:17:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 15:54:30 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/10 10:16:25 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ int	init_shell(t_sh *sh, int argc, char **argv, char **envp)
 	if (create_envp(sh, envp) == -1)
 		return (-1);
 	sh->exit_code = 0;
+	sh->exit = 0;
 	return (0);
 }
