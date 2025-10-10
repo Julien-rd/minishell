@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 17:26:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/10 10:09:00 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int								init_shell(t_sh *sh, int argc, char **argv,
 									char **envp);
 void							non_interactive(t_sh *sh);
 void							interactive_loop(t_sh *sh);
-void							parse_and_execute(char *buf, t_sh *sh);
-void							check_exit_status(char *buf, t_sh *sh);
+void							parse_and_execute(t_sh *sh);
+void							check_exit_status(t_sh *sh);
 
 /******************** 2. EXECUTION **********************/
 
@@ -138,7 +138,7 @@ bool							empty_prompt(char *buf);
 
 /********************** 4. PARSING **********************/
 
-int								parsing(char *buf, t_sh *sh);
+int								parsing(t_sh *sh);
 
 /********** Parsing Functions **********/
 

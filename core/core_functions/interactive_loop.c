@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:22:37 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 17:27:21 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/10 10:08:50 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 void	interactive_loop(t_sh *sh)
 {
-	char	*buf;
-
 	while (1)
 	{
 		setup_interactive_signals();
-		buf = readline("minishell>> ");
-		if (buf == NULL)
+		sh->buf = readline("minishell>> ");
+		if (sh->buf == NULL)
 			break ;
 		setup_main_signals(sh);
-		if (empty_prompt(buf))
+		if (empty_prompt(sh->buf))
 			continue ;
-		parse_and_execute(buf, sh);
-		add_history(buf);
-		check_exit_status(buf, sh);
+		parse_and_execute(sh);
+		add_history(sh->buf);
+		check_exit_status(sh);
 	}
 	rl_clear_history();
-	check_exit_status(buf, sh);
+	check_exit_status(sh);
 }
