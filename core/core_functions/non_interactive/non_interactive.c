@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 17:26:40 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/10 09:50:13 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	non_interactive(t_sh *sh)
 		if (empty_prompt(buf))
 			continue ;
 		parse_and_execute(buf, sh);
-		if (sh->exit_code || sh->exit)
+		if (sh->exit_code == -1 || sh->exit)
 		{
 			get_next_line(-1);
 			check_exit_status(buf, sh);

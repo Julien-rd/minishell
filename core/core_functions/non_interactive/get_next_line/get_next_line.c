@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 06:43:08 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/02 17:45:50 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/10 09:43:22 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_next_line(int fd)
 
 	next_line = NULL;
 	if (fd < 0)
-		return (free(arr), NULL);
+		return (free(arr), arr = NULL, NULL);
 	arr = ft_read(arr, fd);
 	index = ft_next_line_check(arr, 0);
 	if (index == 0)
