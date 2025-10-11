@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pl_core.c                                          :+:      :+:    :+:   */
+/*   pipeline_core.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 15:09:18 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/11 14:28:12 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 			free(path);
 		command_fail(pl, sh);
 	}
+	fflush(stdout);
 	execve(path, pl->current->argv, sh->envp.vars);
 	execve_fail(path, errno, pl, sh);
 }
