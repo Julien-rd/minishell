@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/10 10:07:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/10 10:52:16 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ static int	create_list(char *buf, t_sh *sh)
 	return (0);
 }
 
-int	parsing(t_sh *sh)
+int	parsing(char *buf, t_sh *sh)
 {
-	if (create_list(sh->buf, sh) == -1)
+	if (create_list(buf, sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)

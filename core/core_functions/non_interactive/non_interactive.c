@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/10 10:14:12 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/10 12:53:18 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,23 @@ static void	cut_nl(char *buf)
 
 void	non_interactive(t_sh *sh)
 {
+	char	*buf;
+
 	setup_noninteractive_signals();
 	while (1)
 	{
-		sh->buf = get_next_line(STDIN_FILENO);
-		if (!sh->buf)
+		buf = get_next_line(STDIN_FILENO);
+		if (!buf)
 			break ;
-		cut_nl(sh->buf);
-		if (empty_prompt(sh->buf))
+		cut_nl(buf);
+		if (empty_prompt(buf))
 		{
-			free(sh->buf) ;
+			free(buf);
 			continue ;
 		}
-		parse_and_execute(sh);
+		parse_and_execute(buf, sh);
 		if (sh->exit_code == -1 || sh->exit)
-		{
-			get_next_line(-1);
-			check_exit_status(sh);
-		}
-		free(sh->buf);
+			check_exit_status(buf, sh, NONINTERACTIVE);
 	}
-	get_next_line(-1);
-	check_exit_status(sh);
+	check_exit_status(buf, sh, NONINTERACTIVE);
 }

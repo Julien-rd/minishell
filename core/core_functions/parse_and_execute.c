@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/10 10:07:15 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/10 12:48:54 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ static int	exec_central(t_sh *sh)
 	return (exit_code);
 }
 
-void	parse_and_execute(t_sh *sh)
+void	parse_and_execute(char *buf, t_sh *sh)
 {
-	if (parsing(sh) == -1)
-		return ;
+	if (parsing(buf, sh) == -1)
+		return free(buf);
+	free(buf);
 	if (syntax_check(sh) == -1)
 		return (cleanup(sh));
 	sh->exit_code = exec_central(sh);

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 17:26:23 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/11 11:32:48 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 		buf.raw_entry = readline("> ");
 		if (g_current_signal != 0 || !buf.raw_entry)
 			return (hdoc_signal_kill(buf.raw_entry, delimiter));
-		if (ft_strcmp(&buf.raw_entry[skip_whitspaces(buf.raw_entry)],
-				delimiter) == 0)
+		if (ft_strcmp(buf.raw_entry, delimiter) == 0)
 			return (setup_main_signals(sh), free(buf.raw_entry), 0);
 		if (expand_hdoc_entry(&buf, sh, expand_flag) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);

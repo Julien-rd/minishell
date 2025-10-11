@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/10 10:05:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/10 10:52:47 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_sh
 {
 	t_envp			envp;
 	t_entry			*entries;
-	char			*buf;
 	char			**heredoc;
 	int				internal_errcode;
 	int				exit;
