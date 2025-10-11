@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:14:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 17:26:19 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/11 12:50:00 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static int	syntax_error(t_entry *entry, t_sh *sh)
 {
 	sh->exit_code = 2;
-	if (entry->next == NULL)
+	if (entry->spec == PIPE && entry == sh->entries)
+		safe_write(1, "syntax error near unexpected token `|'\n", 39);
+	else if (entry->next == NULL)
 		safe_write(1, "syntax error near unexpected token `newline'\n", 45);
 	else
 	{
