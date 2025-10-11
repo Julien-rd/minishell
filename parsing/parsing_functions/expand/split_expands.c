@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 16:52:57 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/11 13:16:16 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
 		if (!exp_str[iter])
 			break ;
 		entry_len = token_len(exp_str, sh, iter);
-		if (content_to_lst(&head, exp_str, entry_len) == -1)
+		if (content_to_lst(&head, &exp_str[iter], entry_len) == -1)
 			return (ft_lstclear(&head, free), -1);
 		iter += entry_len + (entry_len == 0);
 	}
