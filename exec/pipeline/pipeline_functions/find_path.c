@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/11 14:38:09 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/11 14:55:45 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,22 +88,13 @@ char	*ft_getpath(char **envp, char *cmd)
 	int		path_pos;
 	char	**paths;
 	char	*tmp_path;
-	char	*tmp2;
 	int		success_bool;
 
 	if (ft_strchr(cmd, '/'))
 		return (cmd);
 	path_pos = ft_find_paths(envp, "PATH");
 	if (!path_pos)
-	{
-		tmp2 = getcwd(NULL, 0);
-		if (!tmp2)
-			return (perror("getcwd"), NULL);
-		if (ft_strncmp(tmp2, "/usr/bin", 8) != 0)
-			return (free(tmp2), NULL);
-		tmp_path = ft_strjointhree(tmp2, "/", cmd);
-		return (free(tmp2), tmp_path);
-	}
+		return NULL;
 	paths = ft_split(&envp[path_pos][5], ':');
 	if (paths == NULL)
 		return (NULL);
