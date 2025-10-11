@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/11 11:32:48 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/11 12:36:49 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static int	hdoc_entry(t_entry *iter, t_sh *sh, size_t hdoc_iter)
 	expand_flag = 0;
 	if (iter->raw_entry == NULL)
 		return (-1);
-	setup_heredoc_signals();
 	sh->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!sh->heredoc[hdoc_iter])
 		return (setup_main_signals(sh), -1);
@@ -109,6 +108,7 @@ int	here_doc(t_sh *sh)
 	{
 		if (iter->spec == HERE_DOC)
 		{
+			setup_heredoc_signals();
 			if (hdoc_entry(iter, sh, hdoc_iter) == -1)
 				return (free2d(&sh->heredoc), -1);
 			hdoc_iter++;

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/10 10:52:16 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/11 13:08:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,17 @@
 
 static int	here_doc_caller(t_sh *sh)
 {
-	t_entry	*cur;
-
-	cur = sh->entries;
 	sh->heredoc = NULL;
-	while (cur)
+	if (here_doc(sh) == -1)
 	{
-		if (cur->spec == HERE_DOC && here_doc(sh) == -1)
+		if (g_current_signal == SIGINT)
+			sh->exit_code = 130;
+		else
 		{
-			if (g_current_signal == SIGINT)
-				sh->exit_code = 130;
-			else
-			{
-				free2d(&sh->envp.vars);
-				sh->exit_code = -1;
-			}
-			return (-1);
+			free2d(&sh->envp.vars);
+			sh->exit_code = -1;
 		}
-		cur = cur->next;
+		return (-1);
 	}
 	return (0);
 }
