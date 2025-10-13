@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:22:37 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/11 12:46:39 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:09:09 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	interactive_loop(t_sh *sh)
 {
-	char *buf;
+	char	*buf;
 
 	while (1)
 	{
