@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 15:35:27 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:18:42 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,15 @@ int	export(char **argv, t_pipeline *pl, t_sh *sh)
 {
 	size_t	iter;
 	int		input_type;
-	
+
 	iter = 1;
 	if (pl->count)
 		return (0);
 	while (argv[iter])
 	{
 		input_type = input_check(argv[iter]);
-		if (input_type == 0 && ft_strchr(argv[iter], '=')
-			&& insert_env(sh, argv[iter]) == -1)
+		if (input_type == 0 && ft_strchr(argv[iter], '=') && insert_env(sh,
+				argv[iter]) == -1)
 			return (-1);
 		else if (input_type == 1 && add_env(sh, argv[iter]) == -1)
 			return (-1);

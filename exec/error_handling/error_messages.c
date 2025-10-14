@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 16:11:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:19:23 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ long long	ft_atoll(const char *str)
 
 void	invalid_option(t_pipeline *pl, t_sh *sh)
 {
-	if (safe_write(2, pl->current->argv[0], ft_strlen(pl->current->argv[0])) == -1)
+	if (safe_write(2, pl->current->argv[0], ft_strlen(pl->current->argv[0]))
+		== -1)
 		child_exit(sh, pl, 1);
 	if (safe_write(2, ": ", 2) == -1)
 		child_exit(sh, pl, 1);
@@ -57,26 +58,24 @@ void	invalid_option(t_pipeline *pl, t_sh *sh)
 	child_exit(sh, pl, 2);
 }
 
-static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh,
-		int *error)
+static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh, int *error)
 {
 	int		fd;
 	char	*argv[2];
 	char	minishell[10];
-	char 	*path;
+	char	*path;
 
 	fd = open(pl->current->argv[0], O_RDONLY);
 	if (fd != -1)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
-			return (perror("dup2"), close(fd), child_exit(sh, pl,
-					1));
+			return (perror("dup2"), close(fd), child_exit(sh, pl, 1));
 		close(fd);
 		ft_strlcpy(minishell, "minishell", 10);
 		argv[0] = minishell;
 		argv[1] = NULL;
 		path = ft_strjoin(sh->og_path, "/minishell");
-		if(!path)
+		if (!path)
 			return (perror("strjoin"), child_exit(sh, pl, 1));
 		execve(path, argv, sh->envp.vars);
 		return (perror("execve"), child_exit(sh, pl, 1));

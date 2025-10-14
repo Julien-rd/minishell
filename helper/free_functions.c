@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 16:11:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:18:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	child_exit(t_sh *sh, t_pipeline *pl, int errcode)
 	free(pl->position);
 	get_next_line(-1);
 	free_cmds(pl, pl->count + 1);
-	if(sh->og_path)
+	if (sh->og_path)
 		free(sh->og_path);
 	if (sh->heredoc)
 		free2d(&sh->heredoc);

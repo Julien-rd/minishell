@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:28:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 15:05:11 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 16:18:46 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_exit_status(char *buf, t_sh *sh, int flag)
 		get_next_line(-1);
 		if (sh->envp.vars)
 			free2d(&sh->envp.vars);
-		if(sh->og_path)
+		if (sh->og_path)
 			free(sh->og_path);
 		if (sh->exit || buf == NULL)
 		{

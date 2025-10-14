@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 14:44:26 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:18:17 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ int	hdoc_signal_kill(char *buf, char *entry)
 		free(buf);
 	if (g_current_signal != 2)
 	{
-		if (safe_write(2, "warning: here-document delimited by end-of-file (wanted '",
-			57) == -1)
+		if (safe_write(2,
+				"warning: here-document delimited by end-of-file (wanted '",
+				57) == -1)
 			return (-1);
 		if (safe_write(2, entry, ft_strlen(entry)) == -1)
 			return (-1);

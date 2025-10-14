@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 16:11:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:18:22 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int								export(char **argv, t_pipeline *pl, t_sh *sh);
 // export_helper
 int								insert_pos(t_sh *sh, char *param);
 int								extend_envp(t_sh *sh);
-char 							*cut_plus(char *entry);
+char							*cut_plus(char *entry);
 
 /********  Pipeline  ********/
 

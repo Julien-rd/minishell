@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:16:59 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 15:33:13 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:18:39 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,14 @@ int	extend_envp(t_sh *sh)
 	return (0);
 }
 
-char *cut_plus(char *entry)
+char	*cut_plus(char *entry)
 {
-	char *new;
+	char	*new;
 
 	new = malloc(ft_strlen(entry));
-	if (!new) 
+	if (!new)
 		return (perror("cut_plus"), NULL);
 	ft_strlcpy(new, entry, envlen(entry) + 1);
 	ft_strlcat(new, &entry[envlen(entry) + 1], ft_strlen(entry) + 1);
 	return (new);
 }
-
