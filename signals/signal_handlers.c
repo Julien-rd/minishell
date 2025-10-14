@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 10:59:06 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:24:12 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	sigint_prompt(int num)
 void	sigint_main(int num)
 {
 	(void)num;
-	g_current_signal = SIGINT;
+	g_current_signal = num;
 	if (safe_write(1, "\n", 1) == -1)
 		return ;
 }
