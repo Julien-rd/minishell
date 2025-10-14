@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/11 12:39:31 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 10:59:06 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	sigint_main(int num)
 	g_current_signal = SIGINT;
 	if (safe_write(1, "\n", 1) == -1)
 		return ;
+}
+
+void sigint_noninteractive(int num)
+{
+	g_current_signal = num;
 }
 
 void	sigint_heredoc(int num)
