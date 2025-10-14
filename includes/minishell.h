@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 11:12:10 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:44:19 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ int								token_len(char *buf, t_sh *sh, size_t iter);
 void							sigint_prompt(int num);
 void							sigint_main(int num);
 void							sigint_heredoc(int num);
+void							sigint_noninteractive(int num);
 int								hdoc_signal_kill(char *buf, char *entry);
 
 // signal_setups

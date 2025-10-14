@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 11:01:39 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:44:26 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,14 @@ void	sigint_prompt(int num)
 void	sigint_main(int num)
 {
 	(void)num;
-	g_current_signal = SIGINT;
+	g_current_signal = num;
 	if (safe_write(1, "\n", 1) == -1)
 		return ;
+}
+
+void	sigint_noninteractive(int num)
+{
+	g_current_signal = num;
 }
 
 void	sigint_heredoc(int num)

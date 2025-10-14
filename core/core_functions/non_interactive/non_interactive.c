@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:46:45 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/10 12:53:18 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 10:51:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ void	non_interactive(t_sh *sh)
 			continue ;
 		}
 		parse_and_execute(buf, sh);
-		if (sh->exit_code == -1 || sh->exit)
-			check_exit_status(buf, sh, NONINTERACTIVE);
+		check_exit_status(buf, sh, NONINTERACTIVE);
 	}
 	check_exit_status(buf, sh, NONINTERACTIVE);
 }
