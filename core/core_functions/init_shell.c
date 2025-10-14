@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:17:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/10 10:16:25 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 14:50:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ int	init_shell(t_sh *sh, int argc, char **argv, char **envp)
 		return (-1);
 	if (create_envp(sh, envp) == -1)
 		return (-1);
+	sh->og_path = getcwd(NULL, 0);
+	if (!sh->og_path)
+		return (perror("getcwd"), -1);
 	sh->exit_code = 0;
 	sh->exit = 0;
 	return (0);
