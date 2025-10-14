@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 11:24:12 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:28:37 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	sigint_main(int num)
 		return ;
 }
 
-void sigint_noninteractive(int num)
+void	sigint_noninteractive(int num)
 {
 	g_current_signal = num;
 }
