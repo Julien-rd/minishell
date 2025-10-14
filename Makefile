@@ -9,7 +9,7 @@ SRC = split_expands.c syntax_check.c parsing.c list_helpers.c helper.c error_mes
 expand.c expand_helper.c expand_helper2.c here_doc.c interactive_loop.c \
 pipeline.c find_path.c get_next_line.c check_exit_status.c init_shell.c\
 get_next_line_utils.c non_interactive.c signal_setups.c parse_and_execute.c \
-cd.c echo.c env.c exit.c export.c pwd.c unset.c builtin_handler.c pipe_init.c pipeline_core.c pipeline_helpers.c \
+cd.c echo.c env.c exit.c export.c export_helper.c pwd.c unset.c builtin_handler.c pipe_init.c pipeline_core.c pipeline_helpers.c \
 setup.c
 
 
