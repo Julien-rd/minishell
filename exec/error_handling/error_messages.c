@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 14:27:52 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 15:03:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh,
 	int		fd;
 	char	*argv[2];
 	char	minishell[10];
+	char 	*path;
 
 	fd = open(pl->current->argv[0], O_RDONLY);
 	if (fd != -1)
@@ -74,7 +75,10 @@ static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh,
 		ft_strlcpy(minishell, "minishell", 10);
 		argv[0] = minishell;
 		argv[1] = NULL;
-		execve("./minishell", argv, sh->envp.vars);
+		path = ft_strjoin(sh->og_path, "/minishell");
+		if(!path)
+			return (perror("strjoin"), child_exit_handle(sh, pl, 1));
+		execve(path, argv, sh->envp.vars);
 		return (perror("execve"), child_exit_handle(sh, pl, 1));
 	}
 	*error = errno;

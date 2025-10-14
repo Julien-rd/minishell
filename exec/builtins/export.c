@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 14:40:51 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:53:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,35 +110,35 @@ static int	insert_env(t_sh *sh, char *entry)
 	return (0);
 }
 
-// int	add_env(t_sh *sh, char *entry)
-// {
-// 	char	*new;
-// 	char	*content;
-// 	int		position;
+int	add_env(t_sh *sh, char *entry)
+{
+	char	*new;
+	// char	*content;
+	int		position;
 
-// 	new = malloc(ft_strlen(entry));
-// 		if (!new) 
-// 			return (perror("add_env"), -1);
-// 	ft_strlcpy(new, entry, );
-// 	position = insert_pos(sh, entry);
-// 	if (position == -1)
-// 	{
-// 		if (sh->envp.count >= sh->envp.malloc)
-// 			if (extend_envp(sh) == -1)
-// 				return (perror("add_env"), -1);
+	new = malloc(ft_strlen(entry));
+		if (!new) 
+			return (perror("add_env"), -1);
+	ft_strlcpy(new, entry, 1);
+	position = insert_pos(sh, entry);
+	if (position == -1)
+	{
+		if (sh->envp.count >= sh->envp.malloc)
+			if (extend_envp(sh) == -1)
+				return (perror("add_env"), -1);
 		
-// 		ft_strlcpy(new, entry, envlen(entry) + 1);
-// 		ft_strlcpy(&new[envlen(entry)], &entry[envlen(entry) + 1], ft_strlen(&entry[envlen(entry) + 1]) + 1);
-// 		sh->envp.vars[sh->envp.count] = new;
-// 		sh->envp.count = sh->envp.count + 1;
-// 		sh->envp.vars[sh->envp.count] = NULL;
-// 	}
-// 	else
-// 	{
+		ft_strlcpy(new, entry, envlen(entry) + 1);
+		ft_strlcpy(&new[envlen(entry)], &entry[envlen(entry) + 1], ft_strlen(&entry[envlen(entry) + 1]) + 1);
+		sh->envp.vars[sh->envp.count] = new;
+		sh->envp.count = sh->envp.count + 1;
+		sh->envp.vars[sh->envp.count] = NULL;
+	}
+	else
+	{
 		
-// 	}
-// 	return (0);
-// }
+	}
+	return (0);
+}
 
 int	export(char **argv, t_pipeline *pl, t_sh *sh)
 {
