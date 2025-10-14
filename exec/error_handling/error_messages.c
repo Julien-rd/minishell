@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/11 14:23:00 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 14:27:52 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,17 @@ long long	ft_atoll(const char *str)
 
 void	invalid_option(t_pipeline *pl, t_sh *sh)
 {
-	write(2, pl->current->argv[0], ft_strlen(pl->current->argv[0]));
-	write(2, ": ", 2);
-	write(2, &pl->current->argv[1][0], 1);
+	if (safe_write(2, pl->current->argv[0], ft_strlen(pl->current->argv[0])) == -1)
+		child_exit_handle(sh, pl, 1);
+	if (safe_write(2, ": ", 2) == -1)
+		child_exit_handle(sh, pl, 1);
+	if (safe_write(2, &pl->current->argv[1][0], 1) == -1)
+		child_exit_handle(sh, pl, 1);
 	if (pl->current->argv[1][1])
-		write(2, &pl->current->argv[1][1], 1);
-	write(2, ": invalid option\n", 17);
+		if (safe_write(2, &pl->current->argv[1][1], 1) == -1)
+			child_exit_handle(sh, pl, 1);
+	if (safe_write(2, ": invalid option\n", 17) == -1)
+		child_exit_handle(sh, pl, 1);
 	child_exit_handle(sh, pl, 2);
 }
 
@@ -56,7 +61,7 @@ static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh,
 		int *error)
 {
 	int		fd;
-	char	*argv[3];
+	char	*argv[2];
 	char	minishell[10];
 
 	fd = open(pl->current->argv[0], O_RDONLY);
@@ -68,13 +73,7 @@ static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh,
 		close(fd);
 		ft_strlcpy(minishell, "minishell", 10);
 		argv[0] = minishell;
-		argv[1] = ft_strdup(pl->current->argv[0]);
-		if (!argv[1])
-		{
-			perror("malloc");
-			child_exit_handle(sh, pl, 1);
-		}
-		argv[2] = NULL;
+		argv[1] = NULL;
 		execve("./minishell", argv, sh->envp.vars);
 		return (perror("execve"), child_exit_handle(sh, pl, 1));
 	}

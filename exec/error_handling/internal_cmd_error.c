@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 15:52:27 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 11:06:16 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,15 @@ static void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 {
 	if (sh->internal_errcode == -2)
 	{
-		write(2, "cd: too many arguments\n", 23);
+		safe_write(2, "cd: too many arguments\n", 23);
 		child_exit_handle(sh, pl, 1);
 	}
 	else if (!pl->count)
 	{
 		if (sh->internal_errcode != 0)
 		{
-			write(2, "cd: ", 4);
+			if (safe_write(2, "cd: ", 4) == -1)
+				child_exit_handle(sh, pl, 1);
 			errno = sh->exit_code;
 			perror(cur->argv[1]);
 			child_exit_handle(sh, pl, 1);
@@ -102,7 +103,8 @@ static void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 	}
 	else if (chdir(cur->argv[1]) == -1)
 	{
-		write(2, "cd: ", 4);
+		if (safe_write(2, "cd: ", 4) == -1)
+			child_exit_handle(sh, pl, 1);
 		perror(cur->argv[1]);
 		child_exit_handle(sh, pl, 1);
 	}

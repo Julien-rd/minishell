@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/13 17:07:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:12:10 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void							pwd(t_sh *sh, t_pipeline *pl, int flag);
 int								exit_cmd(t_pipeline *pl, t_sh *sh);
 int								cd(t_sh *sh, char **argv, size_t pipe_count);
 void							echo(t_pipeline *pl, t_sh *sh, int nflag);
-void							env(t_pipeline *pl, t_sh *sh, int flag);
+void							env(t_pipeline *pl, t_sh *sh);
 int								input_check(char *param);
 int								export(char **argv, t_pipeline *pl, t_sh *sh);
 int								unset(char **cmd, t_pipeline *pl, t_sh *sh);

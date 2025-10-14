@@ -6,19 +6,22 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:01:35 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/07 17:24:29 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 11:16:23 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env(t_pipeline *pl, t_sh *sh, int flag)
+void	env(t_pipeline *pl, t_sh *sh)
 {
 	size_t	iter;
 
 	iter = 0;
-	if (flag == -1)
-		invalid_option(pl, sh);
+	if (pl->current->argv[1])
+	{
+		safe_write(1, "env: too many arguments\n", 25);
+		child_exit_handle(sh, pl, 1);
+	}
 	while (sh->envp.vars[iter])
 	{
 		if (safe_write(1, sh->envp.vars[iter],
