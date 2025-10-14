@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_core.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 14:50:41 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/14 16:11:56 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 
 	setup_child_signals();
 	if (setup_redirect(sh, pl) == -1)
-		child_exit_handle(sh, pl, 1);
+		child_exit(sh, pl, 1);
 	if (pl->current->argv[0] == NULL)
-		child_exit_handle(sh, pl, 0);
+		child_exit(sh, pl, 0);
 	if (pl->current->cmd_flag != EXTERNAL)
 		builtin_handler(pl, sh);
 	path = ft_getpath(sh->envp.vars, pl->current->argv[0]);

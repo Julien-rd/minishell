@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 15:32:48 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:11:56 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void							internal_cmd_error(t_pipeline *pl, t_sh *sh,
 // free_functions
 void							free2d(char ***str);
 void							free_list(t_entry *list);
-void							child_exit_handle(t_sh *sh, t_pipeline *pl,
+void							child_exit(t_sh *sh, t_pipeline *pl,
 									int errcode);
 void							free_cmds(t_pipeline *pl, size_t arr_len);
 void							cleanup(t_sh *sh);
