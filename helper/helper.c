@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/11 15:38:24 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/15 13:56:57 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,19 @@ bool	empty_prompt(char *buf)
 	if (ft_strlen(buf) == 0)
 		return (true);
 	return (false);
+}
+
+char *env_var(char *var_name, t_sh *sh)
+{
+	size_t	iter;
+
+	iter = 0;
+	while (sh->envp.vars[iter])
+	{
+		if (!ft_strncmp(var_name, sh->envp.vars[iter], ft_strlen(var_name)) 
+			&& sh->envp.vars[iter][ft_strlen(var_name)] == '=')
+			return (&sh->envp.vars[iter][ft_strlen(var_name) + 1]);
+		iter++;
+	}
+	return (NULL);
 }

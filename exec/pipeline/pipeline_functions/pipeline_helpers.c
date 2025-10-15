@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 17:01:53 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:11:47 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	options_check(t_cmd *cur)
 		return (-1);
 	if (!ft_strncmp(cur->argv[0], "echo", 5) && cur->argv[1])
 	{
-		while (cur->argv[iter] && cur->argv[iter][0] == '-')
+		while (cur->argv[iter] && cur->argv[iter][0] == '-' && cur->argv[iter][1])
 		{
 			n_iter = 1;
 			while (cur->argv[iter][n_iter] == 'n')

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/11 14:33:52 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:28:58 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,16 @@ int	cd(t_sh *sh, char **argv, size_t pipe_count)
 		return (0);
 	tmp_cwd = getcwd(NULL, 0);
 	if (!tmp_cwd)
-		return (perror("cd"), -1);
-	if (!pipe_count && chdir(argv[1]) == -1)
+		return (perror("getcwd"), -1);
+	if (!argv[1])
 	{
-		sh->exit_code = errno;
-		return (free(tmp_cwd), -3);
+		if (!env_var("HOME", sh))
+			return (safe_write(2, "cd: HOME not set\n", 18), free(tmp_cwd), 0); //exitcode muss 1 sein
+		if (chdir(env_var("HOME", sh)) == -1)
+			return (sh->exit_code = errno, free(tmp_cwd), -3);
 	}
+	else if (argv[1] && chdir(argv[1]) == -1)
+		return (sh->exit_code = errno, free(tmp_cwd), -3);
 	if (envp_pwd(sh, tmp_cwd) == -1)
 		return (free(tmp_cwd), -1);
 	free(tmp_cwd);

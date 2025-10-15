@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 16:18:22 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/15 13:48:40 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int								is_token(char c);
 int								toggle_quotes(char *buf, t_sh *sh, size_t iter);
 size_t							skip_whitspaces(char *buf);
 bool							empty_prompt(char *buf);
+char							*env_var(char *var_name, t_sh *sh);
 
 /********************** 4. PARSING **********************/
 
