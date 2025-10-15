@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/15 14:11:47 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/15 17:55:07 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,20 @@ int	pl_cleanup(t_pipeline *pl, t_sh *sh, int flag)
 	if (flag == FAILURE)
 		return (-1);
 	return (kill_children(pl, sh));
+}
+
+size_t	hdoc_add(t_pipeline	*pl)
+{
+	t_entry	*node;
+	size_t	add;
+
+	add = 0;
+	node = pl->current->line;
+	while (node && node->spec != PIPE)
+	{
+		if (node->spec == HERE_DOC)
+			add++;
+		node = node->next;
+	}
+	return (add);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:40:30 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/09 16:22:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/15 17:54:54 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	pipeline(t_sh *sh)
 		else if (parent_process(&pl) == -1)
 			return (pl_cleanup(&pl, sh, FAILURE));
 		pl.iter++;
+		pl.hdoc_iter += hdoc_add(&pl);
 	}
 	return (pl_cleanup(&pl, sh, SUCCESS));
 }

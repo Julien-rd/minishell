@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/13 17:07:42 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/15 17:35:12 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 	while (1)
 	{
 		buf.raw_entry = readline("> ");
-		return (hdoc_signal_kill(buf.raw_entry, delimiter));
 		if (g_current_signal != 0 || !buf.raw_entry)
-			if (ft_strcmp(buf.raw_entry, delimiter) == 0)
-				return (setup_main_signals(sh), free(buf.raw_entry), 0);
+			return (hdoc_signal_kill(buf.raw_entry, delimiter));
+		if (ft_strcmp(buf.raw_entry, delimiter) == 0)
+			return (setup_main_signals(sh), free(buf.raw_entry), 0);
 		if (expand_hdoc_entry(&buf, sh, expand_flag) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		tmp_str = ft_strjointhree(sh->heredoc[hdoc_iter], buf.raw_entry, "\n");

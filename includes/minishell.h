@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/15 13:48:40 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/15 17:56:51 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,46 @@ void							parse_and_execute(char *buf, t_sh *sh);
 void							check_exit_status(char *buf, t_sh *sh,
 									int flag);
 
-/******************** 2. EXECUTION **********************/
+/********************** 2. PARSING **********************/
+
+int								parsing(char *buf, t_sh *sh);
+
+/********** Parsing Functions **********/
+
+int								syntax_check(t_sh *sh);
+int								here_doc(t_sh *sh);
+
+// list_helpers
+t_entry							*lstlast(t_entry *lst);
+void							lstadd(t_entry **lst, t_entry *new);
+t_entry							*newnode(char *raw_str);
+
+/*************** Expand ***************/
+
+char							*expand(t_entry *current, t_sh *sh, int flag);
+
+// expand_helper
+char							*remove_quotes(char *to_strip, size_t len);
+int								check_return_get_env(size_t iter,
+									t_expand_str *str, t_expand_helper *exh);
+int								ex_encounter(char *str_new,
+									t_expand_helper *exh, t_expand_str *str,
+									size_t iter);
+
+// expand_helper2
+int								get_env(char *buf, t_expand_str *str,
+									t_expand_helper *exh, char **envp);
+int								quote_check(size_t iter, char *buf, t_sh *sh);
+size_t							envlen(char *env);
+int								get_env(char *buf, t_expand_str *str,
+									t_expand_helper *exh, char **envp);
+
+// split_expands
+int								split_expands(char *exp_str, t_entry *entry,
+									t_sh *sh);
+int								token_len(char *buf, t_sh *sh, size_t iter);
+
+/******************** 3. EXECUTION **********************/
 
 /********  Builtins  ********/
 
@@ -107,6 +146,7 @@ int								options_check(t_cmd *cur);
 int								cmd_tokens(t_cmd *current);
 int								pipe_fork(t_pipeline *pl);
 int								pl_cleanup(t_pipeline *pl, t_sh *sh, int flag);
+size_t							hdoc_add(t_pipeline	*pl);
 
 // file_handling
 int								setup_redirect(t_sh *sh, t_pipeline *pl);
@@ -125,7 +165,7 @@ void							command_fail(t_pipeline *pl, t_sh *sh);
 void							internal_cmd_error(t_pipeline *pl, t_sh *sh,
 									int flag);
 
-/********************** 3. HELPER ***********************/
+/********************** 4. HELPER ***********************/
 
 // free_functions
 void							free2d(char ***str);
@@ -142,45 +182,6 @@ int								toggle_quotes(char *buf, t_sh *sh, size_t iter);
 size_t							skip_whitspaces(char *buf);
 bool							empty_prompt(char *buf);
 char							*env_var(char *var_name, t_sh *sh);
-
-/********************** 4. PARSING **********************/
-
-int								parsing(char *buf, t_sh *sh);
-
-/********** Parsing Functions **********/
-
-int								syntax_check(t_sh *sh);
-int								here_doc(t_sh *sh);
-
-// list_helpers
-t_entry							*lstlast(t_entry *lst);
-void							lstadd(t_entry **lst, t_entry *new);
-t_entry							*newnode(char *raw_str);
-
-/*************** Expand ***************/
-
-char							*expand(t_entry *current, t_sh *sh, int flag);
-
-// expand_helper
-char							*remove_quotes(char *to_strip, size_t len);
-int								check_return_get_env(size_t iter,
-									t_expand_str *str, t_expand_helper *exh);
-int								ex_encounter(char *str_new,
-									t_expand_helper *exh, t_expand_str *str,
-									size_t iter);
-
-// expand_helper2
-int								get_env(char *buf, t_expand_str *str,
-									t_expand_helper *exh, char **envp);
-int								quote_check(size_t iter, char *buf, t_sh *sh);
-size_t							envlen(char *env);
-int								get_env(char *buf, t_expand_str *str,
-									t_expand_helper *exh, char **envp);
-
-// split_expands
-int								split_expands(char *exp_str, t_entry *entry,
-									t_sh *sh);
-int								token_len(char *buf, t_sh *sh, size_t iter);
 
 /********************** 5. SIGNALS **********************/
 
