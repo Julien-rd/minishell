@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/15 14:28:58 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/16 14:36:05 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,36 @@ int	cd(t_sh *sh, char **argv, size_t pipe_count)
 	if (!tmp_cwd)
 		return (perror("getcwd"), -1);
 	if (!argv[1])
-	{
-		if (!env_var("HOME", sh))
-			return (safe_write(2, "cd: HOME not set\n", 18), free(tmp_cwd), 0); //exitcode muss 1 sein
-		if (chdir(env_var("HOME", sh)) == -1)
-			return (sh->exit_code = errno, free(tmp_cwd), -3);
-	}
-	else if (argv[1] && chdir(argv[1]) == -1)
+		return (cd_no_arg(tmp_cwd, sh));
+	if (!argv[1][0])
+		return (free(tmp_cwd), 0);
+	if (argv[1] && chdir(argv[1]) == -1)
 		return (sh->exit_code = errno, free(tmp_cwd), -3);
 	if (envp_pwd(sh, tmp_cwd) == -1)
 		return (free(tmp_cwd), -1);
 	free(tmp_cwd);
 	return (0);
+}
+
+int	cd_no_arg(char *tmp_cwd, t_sh *sh)
+{
+	if (!env_var("HOME", sh))
+	{
+		if (tmp_cwd == NULL)
+		{
+			safe_write(2, "cd: HOME not set\n", 17);
+			return (1);
+		}
+		return (free(tmp_cwd), -4);
+	}
+	if (chdir(env_var("HOME", sh)) == -1)
+	{
+		if (tmp_cwd == NULL)
+		{
+			perror("cd");
+			return (1);
+		}
+		return (free(tmp_cwd), sh->exit_code = errno, -3);
+	}
+	return (free(tmp_cwd), 0);
 }

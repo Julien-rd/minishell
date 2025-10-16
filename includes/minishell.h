@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/15 17:56:51 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/16 14:37:11 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void							env(t_pipeline *pl, t_sh *sh);
 int								input_check(char *param);
 int								unset(char **cmd, t_pipeline *pl, t_sh *sh);
 int								export(char **argv, t_pipeline *pl, t_sh *sh);
+int								cd_no_arg(char *tmp_cwd, t_sh *sh);
 
 // export_helper
 int								insert_pos(t_sh *sh, char *param);
@@ -146,7 +147,7 @@ int								options_check(t_cmd *cur);
 int								cmd_tokens(t_cmd *current);
 int								pipe_fork(t_pipeline *pl);
 int								pl_cleanup(t_pipeline *pl, t_sh *sh, int flag);
-size_t							hdoc_add(t_pipeline	*pl);
+size_t							hdoc_add(t_pipeline *pl);
 
 // file_handling
 int								setup_redirect(t_sh *sh, t_pipeline *pl);
