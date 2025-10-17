@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/17 16:00:01 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/17 16:18:28 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,18 +163,6 @@ int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
-<<<<<<< HEAD
-=======
-	// t_entry *node = sh->entries;
-	// while (node)
-	// {
-	// 	puts(node->quotes);
-	// 	puts(node->unquoted);
-	// 	puts(node->raw_entry);
-	// 	node = node->next;
-	// }
-	// return (sh->exit_code = -1, -1);
->>>>>>> refs/remotes/origin/main
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);

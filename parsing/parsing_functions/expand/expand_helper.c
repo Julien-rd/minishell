@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/17 16:04:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/17 16:09:47 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	ex_encounter(t_ex_arr *exarr, t_expand_helper *exh, t_expand_str *str,
 	else
 	{
 		exh->len = ft_strlen(str->env_arr[exh->env_iter]);
-		ft_memcpy(&exarr->exp_str[exh->str_iter], str->env_arr[exh->env_iter], exh->len);
+		ft_memcpy(&exarr->exp_str[exh->str_iter], str->env_arr[exh->env_iter],
+			exh->len);
 		ft_memset(&exarr->new_quote[exh->str_iter], exh->quote, exh->len);
 		exh->env_iter++;
 		exh->str_iter += exh->len;
