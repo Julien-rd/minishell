@@ -138,7 +138,7 @@ static int	create_list(char *buf, t_sh *sh)
 	size_t	iter;
 	t_entry	*entry;
 
-	entry = NULL;
+	sh->entries = NULL;
 	iter = 0;
 	entry = NULL;
 	while (buf[iter])
@@ -158,15 +158,15 @@ int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
-	// t_entry *node = sh->entries;
-	// while (node)
-	// {
-	// 	puts(node->quotes);
-	// 	puts(node->unquoted);
-	// 	puts(node->raw_entry);
-	// 	node = node->next;
-	// }
-	// return (sh->exit_code = -1, -1);
+	t_entry *node = sh->entries;
+	while (node)
+	{
+		puts(node->quotes);
+		puts(node->unquoted);
+		puts(node->raw_entry);
+		node = node->next;
+	}
+	return (sh->exit_code = -1, -1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
