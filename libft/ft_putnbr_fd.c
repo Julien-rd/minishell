@@ -32,7 +32,7 @@ void	ft_putnbr_fd(int n, int fd)
 		write(fd, "-", 1);
 		n *= -1;
 	}
-	while (n != 0 && i >= 0)
+	while (n != 0)
 	{
 		print[i--] = '0' + (n % 10);
 		n /= 10;
