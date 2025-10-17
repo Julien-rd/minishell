@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 INC_DIR = includes
-CFLAGS = -Ilibft -MMD -g -I$(INC_DIR)
+CFLAGS = -Ilibft -Wall -Wextra -Werror -MMD -g -I$(INC_DIR)
 OBJ_DIR = obj
 VPATH = core core/core_functions core/core_functions/non_interactive exec core/core_functions/non_interactive/get_next_line exec/builtins exec/pipeline/pipeline_functions/file_handling exec/error_handling exec/pipeline exec/pipeline/pipeline_functions helper parsing parsing/parsing_functions parsing/parsing_functions/expand signals
 SRC = split_expands.c syntax_check.c parsing.c list_helpers.c helper.c error_messages.c file_handler.c internal_cmd_error.c \

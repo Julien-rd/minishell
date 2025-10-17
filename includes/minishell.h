@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/16 14:37:11 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/17 15:27:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int								here_doc(t_sh *sh);
 // list_helpers
 t_entry							*lstlast(t_entry *lst);
 void							lstadd(t_entry **lst, t_entry *new);
-t_entry							*newnode(char *raw_str, char *unquoted, char *quotes);
+t_entry							*newnode(char *raw_str, char *unquoted,
+									char *quotes);
 
 /*************** Expand ***************/
 
@@ -80,7 +81,7 @@ char							*expand(t_entry *current, t_sh *sh, int flag);
 char							*remove_quotes(char *to_strip, size_t len);
 int								check_return_get_env(size_t iter,
 									t_expand_str *str, t_expand_helper *exh);
-int								ex_encounter(char *str_new,
+int								ex_encounter(t_ex_arr *exarr,
 									t_expand_helper *exh, t_expand_str *str,
 									size_t iter);
 
