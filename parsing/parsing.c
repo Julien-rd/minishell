@@ -98,7 +98,7 @@ char	*quote_spec(t_sh *sh, char *raw_str, size_t len)
 	{
 		while (toggle_quotes(raw_str, sh, iter))
 			iter++;
-		if (iter >= len)
+		if (!raw_str[iter])
 			break ;
 		if (!(raw_str[iter] == '\'' && sh->sgl_quote)
 			&& !(raw_str[iter] == '\"' && sh->dbl_quote))
@@ -166,7 +166,7 @@ int	parsing(char *buf, t_sh *sh)
 	// 	puts(node->raw_entry);
 	// 	node = node->next;
 	// }
-	// return (-1);
+	// return (sh->exit_code = -1, -1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
