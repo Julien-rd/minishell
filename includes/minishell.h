@@ -88,14 +88,12 @@ int								ex_encounter(t_ex_arr *exarr,
 // expand_helper2
 int								get_env(char *buf, t_expand_str *str,
 									t_expand_helper *exh, char **envp);
-int								quote_check(size_t iter, char *buf, t_sh *sh);
 size_t							envlen(char *env);
 int								get_env(char *buf, t_expand_str *str,
 									t_expand_helper *exh, char **envp);
 
 // split_expands
-int								split_expands(char *exp_str, t_entry *entry,
-									t_sh *sh);
+int								split_expands(char *exp_str, t_entry *entry);
 int								token_len(char *buf, t_sh *sh, size_t iter);
 
 /******************** 3. EXECUTION **********************/
@@ -181,7 +179,7 @@ void							cleanup(t_sh *sh);
 int								safe_write(int fd, char *buf, size_t len);
 int								is_token(char c);
 int								toggle_quotes(char *buf, t_sh *sh, size_t iter);
-size_t							skip_whitspaces(char *buf);
+size_t							skip_whitespaces(char *buf);
 bool							empty_prompt(char *buf);
 char							*env_var(char *var_name, t_sh *sh);
 

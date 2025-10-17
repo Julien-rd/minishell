@@ -43,21 +43,6 @@ static char	**lst_to_expand(t_list *head)
 	return (expanded);
 }
 
-static int	content_to_lst(t_list **head, char *exp_str, size_t entry_len)
-{
-	t_list	*node;
-	char	*content;
-
-	content = remove_quotes(exp_str, entry_len);
-	if (!content)
-		return (perror("content_to_lst"), -1);
-	node = ft_lstnew(content);
-	if (!node)
-		return (perror("content_to_lst"), free(content), -1);
-	ft_lstadd_back(head, node);
-	return (0);
-}
-
 int	token_len(char *buf, t_sh *sh, size_t iter)
 {
 	size_t	count;
@@ -77,11 +62,43 @@ int	token_len(char *buf, t_sh *sh, size_t iter)
 	return (count);
 }
 
-int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
+int	content_len(t_entry *entry, char *exp_str, size_t iter)
+{
+	size_t	count;
+
+	count = operator_case(exp_str, iter);
+	if (count == 0)
+	{
+		while (exp_str[iter] && (entry->quotes[iter] != '0' || !skip_whitespaces(&exp_str[iter])))
+		{
+			count++;
+			iter++;
+		}
+	}
+	return (count);
+}
+
+static int	content_to_lst(t_list **head, char *exp_str, size_t content_len)
+{
+	t_list	*node;
+	char	*content;
+
+	content = malloc(sizeof(char) * (content_len + 1));
+	if (!content)
+		return (perror("content_to_lst"), -1);
+	ft_strlcpy(content, exp_str, content_len + 1);
+	node = ft_lstnew(content);
+	if (!node)
+		return (perror("content_to_lst"), free(content), -1);
+	ft_lstadd_back(head, node);
+	return (0);
+}
+
+int	split_expands(char *exp_str, t_entry *entry)
 {
 	t_list	*head;
 	size_t	iter;
-	size_t	entry_len;
+	size_t	len;
 
 	iter = 0;
 	head = NULL;
@@ -89,13 +106,14 @@ int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
 		return (0);
 	while (exp_str[iter])
 	{
-		iter += skip_whitspaces(&exp_str[iter]);
+		while (skip_whitespaces(&exp_str[iter]) && entry->quotes[iter] == '0')
+			iter++;
 		if (!exp_str[iter])
 			break ;
-		entry_len = token_len(exp_str, sh, iter);
-		if (content_to_lst(&head, &exp_str[iter], entry_len) == -1)
+		len = content_len(entry, exp_str, iter);
+		if (content_to_lst(&head, exp_str, len) == -1)
 			return (ft_lstclear(&head, free), -1);
-		iter += entry_len + (entry_len == 0);
+		iter += len + (len == 0);
 	}
 	entry->expanded = lst_to_expand(head);
 	if (!entry->expanded)

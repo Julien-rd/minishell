@@ -43,7 +43,7 @@ static int	expand_raw_entry(t_sh *sh)
 			expanded_str = expand(cur, sh, DEFAULT);
 			if (!expanded_str)
 				return (-1);
-			if (split_expands(expanded_str, cur, sh) == -1)
+			if (split_expands(expanded_str, cur) == -1)
 				return (free(expanded_str), -1);
 			free(expanded_str);
 		}
@@ -143,7 +143,7 @@ static int	create_list(char *buf, t_sh *sh)
 	iter = 0;
 	while (buf[iter])
 	{
-		iter += skip_whitspaces(&buf[iter]);
+		iter += skip_whitespaces(&buf[iter]);
 		if (!buf[iter])
 			break ;
 		if (init_entry(sh, &entry, buf, iter) == -1)
@@ -158,15 +158,6 @@ int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
-	// t_entry *node = sh->entries;
-	// while (node)
-	// {
-	// 	puts(node->quotes);
-	// 	puts(node->unquoted);
-	// 	puts(node->raw_entry);
-	// 	node = node->next;
-	// }
-	// return (sh->exit_code = -1, -1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
