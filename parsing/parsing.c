@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/17 16:18:28 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/17 16:22:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,9 @@ static int	expand_raw_entry(t_sh *sh)
 		if (!(cur->spec >= HERE_DOC_OP && cur->spec <= OUTFILE_OP)
 			&& cur->spec != PIPE && cur->spec != HERE_DOC)
 		{
-			puts(cur->quotes);
-			fflush(stdout);
 			expanded_str = expand(cur, sh, DEFAULT);
 			if (!expanded_str)
 				return (-1);
-			puts(expanded_str);
-			puts(cur->quotes);
-			fflush(stdout);
 			if (split_expands(expanded_str, cur, sh) == -1)
 				return (free(expanded_str), -1);
 			free(expanded_str);
