@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/11 13:08:14 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/17 16:22:26 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ static int	create_list(char *buf, t_sh *sh)
 	t_entry	*entry;
 
 	sh->entries = NULL;
-	iter = 0;
 	entry = NULL;
+	iter = 0;
 	while (buf[iter])
 	{
 		iter += skip_whitspaces(&buf[iter]);
@@ -158,15 +158,15 @@ int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
-	t_entry *node = sh->entries;
-	while (node)
-	{
-		puts(node->quotes);
-		puts(node->unquoted);
-		puts(node->raw_entry);
-		node = node->next;
-	}
-	return (sh->exit_code = -1, -1);
+	// t_entry *node = sh->entries;
+	// while (node)
+	// {
+	// 	puts(node->quotes);
+	// 	puts(node->unquoted);
+	// 	puts(node->raw_entry);
+	// 	node = node->next;
+	// }
+	// return (sh->exit_code = -1, -1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);

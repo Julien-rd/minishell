@@ -1,4 +1,4 @@
-# readline.supp -> run with valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell   ulimit -v : 12984
+# readline.supp -> run with valgrind --suppressions=readline.supp --track-origins=yes --leak-check=full --show-leak-kinds=all ./minishell   ulimit -v : 12984
 {
    readline_malloc
    Memcheck:Leak

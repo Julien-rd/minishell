@@ -50,7 +50,7 @@ static int	content_to_lst(t_list **head, char *exp_str, size_t entry_len)
 
 	content = remove_quotes(exp_str, entry_len);
 	if (!content)
-		return (-1);
+		return (perror("content_to_lst"), -1);
 	node = ft_lstnew(content);
 	if (!node)
 		return (perror("content_to_lst"), free(content), -1);

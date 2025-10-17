@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 16:18:14 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/17 15:33:56 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,19 @@ void	free_list(t_entry *list)
 			free(list->raw_entry);
 			list->raw_entry = NULL;
 		}
+		if(list->quotes)
+		{
+			free(list->quotes);
+			list->quotes = NULL;
+		}
 		if (list->expanded)
 		{
 			free2d(&list->expanded);
+			list->expanded = NULL;
+		}
+		if (list->unquoted)
+		{
+			free(list->unquoted);
 			list->expanded = NULL;
 		}
 		tmp = list->next;

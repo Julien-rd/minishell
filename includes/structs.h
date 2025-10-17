@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 16:18:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/17 16:04:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 # define STRUCTS_H
 
 # include "libraries.h"
+
+typedef struct s_ex_arr
+{
+	char			*exp_str;
+	char			*new_quote;
+}					t_ex_arr;
 
 typedef struct s_entry
 {
@@ -32,8 +38,9 @@ typedef struct s_expand_helper
 	size_t			env_pos_iter;
 	size_t			len;
 	size_t			str_iter;
-	int				env_return ;
+	int 			env_return ;
 	char			*buf;
+	char 			quote;
 }					t_expand_helper;
 
 typedef struct s_expand_str
