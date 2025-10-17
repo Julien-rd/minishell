@@ -88,6 +88,8 @@ char	*quote_spec(t_sh *sh, char *raw_str, size_t len)
 	size_t	ret_iter;
 
 	iter = 0;
+	sh->dbl_quote = 0;
+	sh->sgl_quote = 0;
 	ret_iter = 0;
 	ret_str = malloc((len + 1) * sizeof(char));
 	if (!ret_str)
@@ -103,11 +105,11 @@ char	*quote_spec(t_sh *sh, char *raw_str, size_t len)
 			ret_str[ret_iter++] = '0' + sh->sgl_quote + sh->dbl_quote * 2;
 		iter++;
 	}
-	ret_str[ret_iter] = '0';
+	ret_str[ret_iter] = '\0';
 	return (ret_str);
 }
 
-int	init_entry(t_sh *sh, t_entry *entry, char *buf, size_t iter)
+int	init_entry(t_sh *sh, t_entry **entry, char *buf, size_t iter)
 {
 	size_t	entry_len;
 	char	*raw_str;
@@ -125,8 +127,8 @@ int	init_entry(t_sh *sh, t_entry *entry, char *buf, size_t iter)
 	quotes = quote_spec(sh, raw_str, ft_strlen(unquoted));
 	if (!quotes)
 		return (perror("init_entry"), free(raw_str), free(unquoted), -1);
-	entry = newnode(raw_str, unquoted, quotes);
-	if (!entry)
+	*entry = newnode(raw_str, unquoted, quotes);
+	if (!*entry)
 		return (free(raw_str), free(unquoted), free(quotes), -1);
 	return (0);
 }
@@ -144,7 +146,7 @@ static int	create_list(char *buf, t_sh *sh)
 		iter += skip_whitspaces(&buf[iter]);
 		if (!buf[iter])
 			break ;
-		if (init_entry(sh, entry, buf, iter) == -1)
+		if (init_entry(sh, &entry, buf, iter) == -1)
 			return (-1);
 		lstadd(&sh->entries, entry);
 		iter += token_len(buf, sh, iter);
@@ -156,17 +158,15 @@ int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
-	while (sh->entries)
-	{
-		puts(sh->entries->quotes);
-		puts("\n");
-		puts(sh->entries->unquoted);
-		puts("\n");
-		puts(sh->entries->raw_entry);
-		puts("\n");
-		sh->entries = sh->entries->next;
-	}
-	return (-1);
+	// t_entry *node = sh->entries;
+	// while (node)
+	// {
+	// 	puts(node->quotes);
+	// 	puts(node->unquoted);
+	// 	puts(node->raw_entry);
+	// 	node = node->next;
+	// }
+	// return (-1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
