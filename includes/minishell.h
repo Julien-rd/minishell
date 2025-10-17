@@ -70,7 +70,7 @@ int								here_doc(t_sh *sh);
 // list_helpers
 t_entry							*lstlast(t_entry *lst);
 void							lstadd(t_entry **lst, t_entry *new);
-t_entry							*newnode(char *raw_str);
+t_entry							*newnode(char *raw_str, char *unquoted, char *quotes);
 
 /*************** Expand ***************/
 

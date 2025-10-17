@@ -32,14 +32,16 @@ void	lstadd(t_entry **lst, t_entry *new)
 	last->next = new;
 }
 
-t_entry	*newnode(char *raw_str)
+t_entry	*newnode(char *raw_str, char *unquoted, char *quotes)
 {
 	t_entry	*new_lst;
 
 	new_lst = malloc(sizeof(t_entry));
 	if (new_lst == NULL)
-		return (NULL);
+		return (perror("new_lst"), NULL);
 	new_lst->raw_entry = raw_str;
+	new_lst->unquoted = unquoted;
+	new_lst->quotes = quotes;
 	new_lst->expanded = NULL;
 	new_lst->exp_count = 0;
 	new_lst->spec = DEFAULT;

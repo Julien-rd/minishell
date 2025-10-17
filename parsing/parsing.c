@@ -52,41 +52,59 @@ static int	expand_raw_entry(t_sh *sh)
 	return (0);
 }
 
-static void	entry_spec(t_sh *sh)
+char	*quote_spec(t_sh *sh, char *raw_str, size_t len)
 {
-	t_entry	*cur;
+	char *ret_str;
+	size_t	iter;
+	size_t	ret_iter;
 
-	cur = sh->entries;
-	while (cur)
+	iter = 0;
+	ret_iter = 0;
+	ret_str = malloc((len + 1) * sizeof(char));
+	if (!ret_str)
+		return (perror("quote_spec"), NULL);
+	while (raw_str[iter])
 	{
-		if (!ft_strcmp(cur->raw_entry, "<<"))
-			cur->spec = HERE_DOC_OP;
-		else if (!ft_strcmp(cur->raw_entry, ">>"))
-			cur->spec = APPEND_OP;
-		else if (!ft_strcmp(cur->raw_entry, "<"))
-			cur->spec = INFILE_OP;
-		else if (!ft_strcmp(cur->raw_entry, ">"))
-			cur->spec = OUTFILE_OP;
-		else if (!ft_strcmp(cur->raw_entry, "|"))
-			cur->spec = PIPE;
-		if (cur->next && cur->spec == HERE_DOC_OP)
-			cur->next->spec = HERE_DOC;
-		else if (cur->next && cur->spec == APPEND_OP)
-			cur->next->spec = APPEND_FILE;
-		else if (cur->next && cur->spec == INFILE_OP)
-			cur->next->spec = INFILE;
-		else if (cur->next && cur->spec == OUTFILE_OP)
-			cur->next->spec = OUTFILE;
-		cur = cur->next;
+		while (toggle_quotes(raw_str, sh, iter))
+			iter++;
+		if (iter >= len)
+			break ;
+		if (!(raw_str[iter] == '\'' && sh->sgl_quote)
+			&& !(raw_str[iter] == '\"' && sh->dbl_quote))
+			ret_str[ret_iter++] = '0' + sh->sgl_quote + sh->dbl_quote * 2;
+		iter++;
 	}
+	ret_str[ret_iter] = '0';
+	return (ret_str);
+}
+
+int	init_entry(t_sh *sh, t_entry *entry, char *buf, size_t iter)
+{
+	size_t	entry_len;
+	char	*raw_str;
+	char	*unquoted;
+	char	*quotes;
+
+	entry_len = token_len(buf, sh, iter);
+	raw_str = malloc((entry_len + 1) * sizeof(char));
+		if (!raw_str)
+			return (perror("init_entry"), -1);
+	ft_strlcpy(raw_str, &buf[iter], entry_len + 1);
+	unquoted = remove_quotes(&buf[iter], entry_len);
+	if (!unquoted)
+		return (perror("init_entry"), free(raw_str), -1);
+	quotes = quote_spec(sh, raw_str, ft_strlen(unquoted));
+	if (!quotes)
+		return (perror("init_entry"), free(raw_str), free(unquoted), -1);
+	entry = newnode(raw_str, unquoted, quotes);
+	if (!entry)
+		return (free(raw_str), free(unquoted), free(quotes), -1);
 }
 
 static int	create_list(char *buf, t_sh *sh)
 {
 	size_t	iter;
-	size_t	entry_len;
 	t_entry	*entry;
-	char	*raw_str;
 
 	sh->entries = NULL;
 	iter = 0;
@@ -95,16 +113,10 @@ static int	create_list(char *buf, t_sh *sh)
 		iter += skip_whitspaces(&buf[iter]);
 		if (!buf[iter])
 			break ;
-		entry_len = token_len(buf, sh, iter);
-		raw_str = malloc((entry_len + 1) * sizeof(char));
-		if (!raw_str)
-			return (perror("create_list"), -1);
-		ft_strlcpy(raw_str, &buf[iter], entry_len + 1);
-		entry = newnode(raw_str);
-		if (!entry)
-			return (perror("create_list"), free(raw_str), -1);
+		if (init_entry(sh, entry, buf, iter) == -1)
+			return (-1);
 		lstadd(&sh->entries, entry);
-		iter += entry_len;
+		iter += token_len(buf, sh, iter);
 	}
 	return (0);
 }

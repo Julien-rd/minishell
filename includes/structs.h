@@ -18,6 +18,8 @@
 typedef struct s_entry
 {
 	char			*raw_entry;
+	char			*quotes;
+	char			*unquoted;
 	int				spec;
 	char			**expanded;
 	int				exp_count;
