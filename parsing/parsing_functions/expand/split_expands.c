@@ -102,8 +102,8 @@ int	split_expands(char *exp_str, t_entry *entry)
 
 	iter = 0;
 	head = NULL;
-	if (!exp_str[0])
-		return (0);
+	if (!exp_str[0] && entry->raw_entry[0] && entry->exp_count == 0)
+		content_to_lst(&head, exp_str, 0);
 	while (exp_str[iter])
 	{
 		while (skip_whitespaces(&exp_str[iter]) && entry->quotes[iter] == '0')
@@ -111,7 +111,7 @@ int	split_expands(char *exp_str, t_entry *entry)
 		if (!exp_str[iter])
 			break ;
 		len = content_len(entry, exp_str, iter);
-		if (content_to_lst(&head, exp_str, len) == -1)
+		if (content_to_lst(&head, &exp_str[iter], len) == -1)
 			return (ft_lstclear(&head, free), -1);
 		iter += len + (len == 0);
 	}
