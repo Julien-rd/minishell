@@ -59,7 +59,7 @@ char	*remove_quotes(char *to_strip, size_t len)
 	sh.sgl_quote = 0;
 	stripped = malloc((len + 1) * sizeof(char));
 	if (!stripped)
-		return (NULL);
+		return (perror("remove_quotes"), NULL);
 	iter = 0;
 	while (iter < len)
 	{

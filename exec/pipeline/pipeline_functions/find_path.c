@@ -41,7 +41,7 @@ char	*ft_strjointhree(char const *s1, char const *s2, char const *s3)
 	str_join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)
 				+ ft_strlen(s3) + 1));
 	if (!str_join)
-		return (NULL);
+		return (perror("ft_strjointhree"), NULL);
 	while (s1[i])
 	{
 		str_join[i] = s1[i];
@@ -97,7 +97,7 @@ char	*ft_getpath(char **envp, char *cmd)
 		return (NULL);
 	paths = ft_split(&envp[path_pos][5], ':');
 	if (paths == NULL)
-		return (NULL);
+		return (perror("ft_getpath"), NULL);
 	success_bool = ft_search_paths(paths, &tmp_path, cmd);
 	free2d(&paths);
 	if (success_bool != 0)

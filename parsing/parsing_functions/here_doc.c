@@ -43,8 +43,7 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		tmp_str = ft_strjointhree(sh->heredoc[hdoc_iter], buf.raw_entry, "\n");
 		if (!tmp_str)
-			return (perror("malloc"), setup_main_signals(sh),
-				free(buf.raw_entry), -1);
+			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		free(sh->heredoc[hdoc_iter]);
 		sh->heredoc[hdoc_iter] = tmp_str;
 		free(buf.raw_entry);
@@ -61,7 +60,7 @@ static int	hdoc_entry(t_entry *iter, t_sh *sh, size_t hdoc_iter)
 		return (-1);
 	sh->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!sh->heredoc[hdoc_iter])
-		return (setup_main_signals(sh), -1);
+		return (perror("hdoc_entry"), setup_main_signals(sh), -1);
 	delimiter = remove_quotes(iter->raw_entry, ft_strlen(iter->raw_entry));
 	if (!delimiter)
 		return (-1);
@@ -103,7 +102,7 @@ int	here_doc(t_sh *sh)
 		return (0);
 	sh->heredoc = ft_calloc(hdoc_count + 1, sizeof(char *));
 	if (!sh->heredoc)
-		return (-1);
+		return (perror("here_doc"), -1);
 	while (iter != NULL)
 	{
 		if (iter->spec == HERE_DOC)

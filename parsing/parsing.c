@@ -123,10 +123,10 @@ int	init_entry(t_sh *sh, t_entry **entry, char *buf, size_t iter)
 	ft_strlcpy(raw_str, &buf[iter], entry_len + 1);
 	unquoted = remove_quotes(&buf[iter], entry_len);
 	if (!unquoted)
-		return (perror("init_entry"), free(raw_str), -1);
+		return (free(raw_str), -1);
 	quotes = quote_spec(sh, raw_str, ft_strlen(unquoted));
 	if (!quotes)
-		return (perror("init_entry"), free(raw_str), free(unquoted), -1);
+		return (free(raw_str), free(unquoted), -1);
 	*entry = newnode(raw_str, unquoted, quotes);
 	if (!*entry)
 		return (free(raw_str), free(unquoted), free(quotes), -1);
