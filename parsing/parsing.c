@@ -52,6 +52,35 @@ static int	expand_raw_entry(t_sh *sh)
 	return (0);
 }
 
+static void	entry_spec(t_sh *sh)
+{
+	t_entry	*cur;
+
+	cur = sh->entries;
+	while (cur)
+	{
+		if (!ft_strcmp(cur->raw_entry, "<<"))
+			cur->spec = HERE_DOC_OP;
+		else if (!ft_strcmp(cur->raw_entry, ">>"))
+			cur->spec = APPEND_OP;
+		else if (!ft_strcmp(cur->raw_entry, "<"))
+			cur->spec = INFILE_OP;
+		else if (!ft_strcmp(cur->raw_entry, ">"))
+			cur->spec = OUTFILE_OP;
+		else if (!ft_strcmp(cur->raw_entry, "|"))
+			cur->spec = PIPE;
+		if (cur->next && cur->spec == HERE_DOC_OP)
+			cur->next->spec = HERE_DOC;
+		else if (cur->next && cur->spec == APPEND_OP)
+			cur->next->spec = APPEND_FILE;
+		else if (cur->next && cur->spec == INFILE_OP)
+			cur->next->spec = INFILE;
+		else if (cur->next && cur->spec == OUTFILE_OP)
+			cur->next->spec = OUTFILE;
+		cur = cur->next;
+	}
+}
+
 char	*quote_spec(t_sh *sh, char *raw_str, size_t len)
 {
 	char *ret_str;
@@ -99,6 +128,7 @@ int	init_entry(t_sh *sh, t_entry *entry, char *buf, size_t iter)
 	entry = newnode(raw_str, unquoted, quotes);
 	if (!entry)
 		return (free(raw_str), free(unquoted), free(quotes), -1);
+	return (0);
 }
 
 static int	create_list(char *buf, t_sh *sh)
@@ -106,8 +136,9 @@ static int	create_list(char *buf, t_sh *sh)
 	size_t	iter;
 	t_entry	*entry;
 
-	sh->entries = NULL;
+	entry = NULL;
 	iter = 0;
+	entry = NULL;
 	while (buf[iter])
 	{
 		iter += skip_whitspaces(&buf[iter]);
@@ -125,6 +156,17 @@ int	parsing(char *buf, t_sh *sh)
 {
 	if (create_list(buf, sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
+	while (sh->entries)
+	{
+		puts(sh->entries->quotes);
+		puts("\n");
+		puts(sh->entries->unquoted);
+		puts("\n");
+		puts(sh->entries->raw_entry);
+		puts("\n");
+		sh->entries = sh->entries->next;
+	}
+	return (-1);
 	entry_spec(sh);
 	if (expand_raw_entry(sh) == -1)
 		return (free_list(sh->entries), sh->exit_code = -1, -1);
