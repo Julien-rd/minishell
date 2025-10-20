@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/13 17:08:32 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 12:27:36 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_return_get_env(size_t iter, t_expand_str *str, t_expand_helper *exh)
 	return (0);
 }
 
-char	*remove_quotes(char *to_strip, size_t len)
+char	*remove_quotes(char *to_strip, char *expand_bool, size_t len)
 {
 	size_t	iter;
 	size_t	stripped_iter;
@@ -63,7 +63,8 @@ char	*remove_quotes(char *to_strip, size_t len)
 	iter = 0;
 	while (iter < len)
 	{
-		while (toggle_quotes(to_strip, &sh, iter))
+		while ((!expand_bool || expand_bool[iter] == '0')
+			&& toggle_quotes(to_strip, &sh, iter))
 			iter++;
 		if (iter >= len)
 			break ;

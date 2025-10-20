@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/11 13:08:14 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 12:33:07 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int	create_list(char *buf, t_sh *sh)
 		iter += skip_whitspaces(&buf[iter]);
 		if (!buf[iter])
 			break ;
-		entry_len = token_len(buf, sh, iter);
+		entry_len = token_len(buf, NULL, sh, iter);
 		raw_str = malloc((entry_len + 1) * sizeof(char));
 		if (!raw_str)
 			return (perror("create_list"), -1);

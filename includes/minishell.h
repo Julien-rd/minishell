@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/16 14:37:11 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 12:32:59 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_entry							*newnode(char *raw_str);
 char							*expand(t_entry *current, t_sh *sh, int flag);
 
 // expand_helper
-char							*remove_quotes(char *to_strip, size_t len);
+char							*remove_quotes(char *to_strip, char *expand_bool, size_t len);
 int								check_return_get_env(size_t iter,
 									t_expand_str *str, t_expand_helper *exh);
 int								ex_encounter(char *str_new,
@@ -95,8 +95,7 @@ int								get_env(char *buf, t_expand_str *str,
 // split_expands
 int								split_expands(char *exp_str, t_entry *entry,
 									t_sh *sh);
-int								token_len(char *buf, t_sh *sh, size_t iter);
-
+int								token_len(char *buf, char *expand_bool, t_sh *sh, size_t iter);
 /******************** 3. EXECUTION **********************/
 
 /********  Builtins  ********/

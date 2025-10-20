@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_expands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/13 17:08:18 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 12:30:47 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ static char	**lst_to_expand(t_list *head)
 	return (expanded);
 }
 
-static int	content_to_lst(t_list **head, char *exp_str, size_t entry_len)
+static int	content_to_lst(t_list **head, char *exp_str, char *expand_bool, size_t entry_len)
 {
 	t_list	*node;
 	char	*content;
 
-	content = remove_quotes(exp_str, entry_len);
+	content = remove_quotes(exp_str, expand_bool, entry_len);
 	if (!content)
 		return (perror("content_to_lst"), -1);
 	node = ft_lstnew(content);
@@ -58,7 +58,7 @@ static int	content_to_lst(t_list **head, char *exp_str, size_t entry_len)
 	return (0);
 }
 
-int	token_len(char *buf, t_sh *sh, size_t iter)
+int	token_len(char *buf, char *expand_bool, t_sh *sh, size_t iter)
 {
 	size_t	count;
 
@@ -70,7 +70,8 @@ int	token_len(char *buf, t_sh *sh, size_t iter)
 		return (count);
 	while (sh->dbl_quote || sh->sgl_quote || (buf[iter] && is_token(buf[iter])))
 	{
-		toggle_quotes(buf, sh, iter);
+		if (!expand_bool || expand_bool[iter] == '0')
+			toggle_quotes(buf, sh, iter);
 		count++;
 		iter++;
 	}
@@ -92,8 +93,8 @@ int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
 		iter += skip_whitspaces(&exp_str[iter]);
 		if (!exp_str[iter])
 			break ;
-		entry_len = token_len(exp_str, sh, iter);
-		if (content_to_lst(&head, &exp_str[iter], entry_len) == -1)
+		entry_len = token_len(exp_str, entry->expand_bool, sh, iter);
+		if (content_to_lst(&head, &exp_str[iter], &entry->expand_bool[iter], entry_len) == -1)
 			return (ft_lstclear(&head, free), -1);
 		iter += entry_len + (entry_len == 0);
 	}

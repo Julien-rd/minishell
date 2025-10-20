@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/15 17:35:12 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 12:27:56 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	hdoc_entry(t_entry *iter, t_sh *sh, size_t hdoc_iter)
 	sh->heredoc[hdoc_iter] = ft_calloc(1, 1);
 	if (!sh->heredoc[hdoc_iter])
 		return (setup_main_signals(sh), -1);
-	delimiter = remove_quotes(iter->raw_entry, ft_strlen(iter->raw_entry));
+	delimiter = remove_quotes(iter->raw_entry, NULL, ft_strlen(iter->raw_entry));
 	if (!delimiter)
 		return (-1);
 	if (ft_strncmp(delimiter, iter->raw_entry, ft_strlen(delimiter) + 1) == 0)
