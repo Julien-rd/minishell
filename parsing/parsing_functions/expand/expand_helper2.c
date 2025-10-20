@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 16:50:54 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 13:22:51 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	quoteclosed(char *str, char quote, t_sh *sh)
 	if (sh->dbl_quote == 1)
 	{
 		sh->dbl_quote = 0;
-		return (0);
+		return (2);
 	}
 	while (str[++iter])
 	{
@@ -33,7 +33,7 @@ static int	quoteclosed(char *str, char quote, t_sh *sh)
 		{
 			sh->sgl_quote = (quote == '\'');
 			sh->dbl_quote = (quote == '\"');
-			return (sh->sgl_quote);
+			return (sh->sgl_quote + sh->dbl_quote * 2);
 		}
 	}
 	return (0);
@@ -50,7 +50,7 @@ int	quote_check(size_t iter, char *buf, t_sh *sh)
 		return_value = quoteclosed(&buf[iter], '\"', sh);
 	if (sh->sgl_quote == 1)
 		return (1);
-	return (0);
+	return (return_value);
 }
 
 size_t	envlen(char *env)
