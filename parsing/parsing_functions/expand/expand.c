@@ -6,31 +6,46 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 17:40:17 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 18:06:40 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	initialise_expand_data(char *buf, t_sh *sh, t_expand_helper *exh,
+		t_expand_str *str)
+{
+	if (exh)
+	{
+		exh->env_iter = 0;
+		exh->env_pos_iter = 0;
+		exh->str_iter = 0;
+		exh->buf = buf;
+	}
+	if (str)
+	{
+		str->exp_str = ft_calloc(sizeof(char), str->len + 1);
+		str->str_spec = ft_calloc(sizeof(char), str->len + 1);
+		if (!str->exp_str || !str->str_spec)
+		{
+			free(str->exp_str);
+			str->exp_str = NULL;
+			return (-1);
+		}
+	}
+	sh->dbl_quote = 0;
+	sh->sgl_quote = 0;
+	return (0);
+}
 
 static void	expanded_str(char *buf, t_sh *sh, t_expand_str *str)
 {
 	size_t			iter;
 	t_expand_helper	exh;
 
-	exh.env_iter = 0;
-	exh.env_pos_iter = 0;
-	exh.str_iter = 0;
 	iter = 0;
-	sh->dbl_quote = 0;
-	sh->sgl_quote = 0;
-	exh.buf = buf;
-	str->exp_str = ft_calloc(sizeof(char), str->len + 1);
-	str->str_spec = ft_calloc(sizeof(char), str->len + 1);
-	if (!str->exp_str || !str->str_spec)
-	{
-		free(str->exp_str);
-		str->exp_str = NULL;
-	}
+	if (initialise_expand_data(buf, sh, &exh, str) == -1)
+		return ;
 	while (str->exp_str && buf[iter])
 	{
 		toggle_quotes(buf, sh, iter);
@@ -53,17 +68,14 @@ static int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
 	size_t			iter;
 	t_expand_helper	exh;
 
-	exh.env_iter = 0;
-	exh.env_pos_iter = 0;
 	iter = 0;
-	sh->dbl_quote = 0;
-	sh->sgl_quote = 0;
+	initialise_expand_data(NULL, sh, &exh, NULL);
 	while (buf[iter])
 	{
 		exh.len = envlen(&buf[iter + 1]);
-		if ((!quote_check(iter, buf, sh) || str->flag == HERE_DOC)
-			&& buf[iter] == '$' && (exh.len || quoteclosed_after_dollar(iter
-					+ 1, buf, sh)) && str->var_count)
+		if ((!quote_check(iter, buf, sh, DEFAULT) || str->flag == HERE_DOC)
+			&& buf[iter] == '$' && (exh.len || quote_check(iter, buf, sh,
+					!DEFAULT)) && str->var_count)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh,
 					sh->envp.vars);
@@ -83,15 +95,14 @@ static int	expand_init(t_entry *current, t_sh *sh, t_expand_str *str)
 	size_t	iter;
 
 	iter = 0;
-	sh->dbl_quote = 0;
-	sh->sgl_quote = 0;
+	initialise_expand_data(NULL, sh, NULL, NULL);
 	while (current->raw_entry[iter])
 	{
-		if ((!quote_check(iter, current->raw_entry, sh)
+		if ((!quote_check(iter, current->raw_entry, sh, DEFAULT)
 				|| str->flag == HERE_DOC) && current->raw_entry[iter] == '$')
 		{
-			if (envlen(&current->raw_entry[iter + 1]) > 0
-				|| quoteclosed_after_dollar(iter + 1, current->raw_entry, sh))
+			if (envlen(&current->raw_entry[iter + 1]) > 0 || quote_check(iter,
+					current->raw_entry, sh, !DEFAULT))
 				str->var_count++;
 		}
 		iter++;

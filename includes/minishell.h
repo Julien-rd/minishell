@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 16:03:07 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 18:06:48 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,11 @@ int								ex_encounter(char *str_new,
 // expand_helper2
 int								get_env(char *buf, t_expand_str *str,
 									t_expand_helper *exh, char **envp);
-int								quote_check(size_t iter, char *buf, t_sh *sh);
+int								quote_check(size_t iter, char *buf, t_sh *sh,
+									int flag);
 size_t							envlen(char *env);
 int								get_env(char *buf, t_expand_str *str,
 									t_expand_helper *exh, char **envp);
-int								quoteclosed_after_dollar(size_t iter, char *buf,
-									t_sh *sh);
 
 // split_expands
 int								split_expands(char *exp_str, t_entry *entry,

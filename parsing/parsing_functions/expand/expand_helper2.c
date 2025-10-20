@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 15:52:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 18:05:19 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,16 @@ static int	quoteclosed(char *str, char quote, t_sh *sh, int dollar_sign)
 	return (0);
 }
 
-int	quoteclosed_after_dollar(size_t iter, char *buf, t_sh *sh)
+int	quote_check(size_t iter, char *buf, t_sh *sh, int flag)
 {
-	if (sh->sgl_quote == 1 || sh->dbl_quote == 1)
+	if (flag != DEFAULT)
+	{
+		if (sh->sgl_quote == 1 || sh->dbl_quote == 1)
+			return (0);
+		if (buf[iter + 1] == '\'' || buf[iter + 1] == '\"')
+			return (quoteclosed(&buf[iter + 1], buf[iter + 1], sh, 1));
 		return (0);
-	if (buf[iter] == '\'' || buf[iter] == '\"')
-		return (quoteclosed(&buf[iter], buf[iter], sh, 1));
-	return (0);
-}
-
-int	quote_check(size_t iter, char *buf, t_sh *sh)
-{
+	}
 	if (buf[iter] == '\'' && sh->dbl_quote == 0)
 		quoteclosed(&buf[iter], '\'', sh, 0);
 	else if (buf[iter] == '\"' && sh->sgl_quote == 0)

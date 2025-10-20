@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 17:38:50 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 18:09:58 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*remove_quotes(char *to_strip, char *expand_bool, size_t len)
 	stripped_iter = 0;
 	sh.dbl_quote = 0;
 	sh.sgl_quote = 0;
-	stripped = malloc((len + 1) * sizeof(char));
+	stripped = ft_calloc(sizeof(char), len + 1);
 	if (!stripped)
 		return (NULL);
 	iter = 0;
@@ -70,10 +70,23 @@ char	*remove_quotes(char *to_strip, char *expand_bool, size_t len)
 		if (iter >= len)
 			break ;
 		if (!(to_strip[iter] == '\'' && sh.sgl_quote)
-				&& !(to_strip[iter] == '\"' && sh.dbl_quote))
+			&& !(to_strip[iter] == '\"' && sh.dbl_quote))
 			stripped[stripped_iter++] = to_strip[iter];
 		iter++;
 	}
-	stripped[stripped_iter] = '\0';
 	return (stripped);
+}
+
+int	toggle_quotes(char *buf, t_sh *sh, size_t iter)
+{
+	int	r_value;
+
+	r_value = 0;
+	if (buf[iter] == '\'' && !sh->dbl_quote && (sh->sgl_quote
+			|| (ft_strchr(&buf[iter + 1], '\''))) && ++r_value)
+		sh->sgl_quote = !sh->sgl_quote;
+	else if (buf[iter] == '\"' && !sh->sgl_quote && (sh->dbl_quote
+			|| (ft_strchr(&buf[iter + 1], '\"'))) && ++r_value)
+		sh->dbl_quote = !sh->dbl_quote;
+	return (r_value);
 }
