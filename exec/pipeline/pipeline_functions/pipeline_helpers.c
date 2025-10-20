@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 16:00:34 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 17:39:07 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	options_check(t_cmd *cur)
 		return (-1);
 	if (!ft_strncmp(cur->argv[0], "echo", 5) && cur->argv[1])
 	{
-		while (cur->argv[iter] && cur->argv[iter][0] == '-' && cur->argv[iter][1])
+		while (cur->argv[iter] && cur->argv[iter][0] == '-'
+			&& cur->argv[iter][1])
 		{
 			n_iter = 1;
 			while (cur->argv[iter][n_iter] == 'n')
@@ -86,7 +87,7 @@ int	pl_cleanup(t_pipeline *pl, t_sh *sh, int flag)
 	return (kill_children(pl, sh));
 }
 
-size_t	hdoc_add(t_pipeline	*pl)
+size_t	hdoc_add(t_pipeline *pl)
 {
 	t_entry	*node;
 	size_t	add;

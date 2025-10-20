@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 16:00:44 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 17:40:17 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	expanded_str(char *buf, t_sh *sh, t_expand_str *str)
 	exh.buf = buf;
 	str->exp_str = ft_calloc(sizeof(char), str->len + 1);
 	str->str_spec = ft_calloc(sizeof(char), str->len + 1);
-	if(!str->exp_str || !str->str_spec)
+	if (!str->exp_str || !str->str_spec)
 	{
 		free(str->exp_str);
 		str->exp_str = NULL;
