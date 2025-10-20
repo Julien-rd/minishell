@@ -23,7 +23,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) --no-print-directory -C $(LIBFT_DIR)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
@@ -37,11 +37,11 @@ $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
 clean: 
 	rm -f $(OBJ) $(DEP)
 	rm -rf $(OBJ_DIR)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
