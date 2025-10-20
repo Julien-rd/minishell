@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 14:08:37 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 17:26:32 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 14:51:17 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	setup_pipe_input(t_pipeline *pl)
 	if (pl->iter == 0)
 		return (0);
 	if (dup2(pl->prev_fd, STDIN_FILENO) == -1)
-		return (perror("dup2"), -1);
+		return (perror("dup2"), close(pl->prev_fd),-1);
 	if (close(pl->prev_fd) == -1)
 		return (perror("close"), -1);
 	return (0);
@@ -29,7 +29,9 @@ static int	setup_pipe_output(t_pipeline *pl)
 		return (0);
 	if (dup2(pl->fd[1], STDOUT_FILENO) == -1)
 		return (perror("dup2"), close(pl->fd[0]), close(pl->fd[1]), -1);
-	if (close(pl->fd[0]) == -1 || close(pl->fd[1]) == -1)
+	if (close(pl->fd[0]) == -1)
+		return (perror("close"), close(pl->fd[1]), -1);
+	if (close(pl->fd[1]) == -1)
 		return (perror("close"), -1);
 	return (0);
 }

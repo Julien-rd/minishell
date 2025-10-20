@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/15 17:54:21 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 14:43:07 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	infile_init(char *file_name)
 	if (fd_in == -1)
 		return (perror(file_name), -1);
 	if (dup2(fd_in, 0) == -1)
-		return (close(fd_in), perror(file_name), -1);
+		return (perror(file_name), close(fd_in), -1);
 	if (close(fd_in) == -1)
 		return (perror(file_name), -1);
 	return (0);
@@ -54,7 +54,7 @@ static int	outfile_init(char *file_name, int flag)
 	if (fd_out == -1)
 		return (perror(file_name), -1);
 	if (dup2(fd_out, 1) == -1)
-		return (close(fd_out), perror("dup2"), -1);
+		return (perror("dup2"), close(fd_out), -1);
 	if (close(fd_out) == -1)
 		return (perror(file_name), -1);
 	return (0);

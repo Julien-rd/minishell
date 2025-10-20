@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/15 17:39:18 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 15:48:35 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,21 @@ int	parent_process(t_pipeline *pl)
 	if (pl->iter != 0)
 	{
 		if (close(pl->prev_fd) == -1)
-			return (perror("close"), -1);
+		{
+			perror("close");
+			if (pl->iter != pl->count)
+			{
+				close(pl->fd[0]);
+				close(pl->fd[1]);
+			}
+			return (-1);
+		}
 	}
 	if (pl->iter != pl->count)
 	{
 		pl->prev_fd = pl->fd[0];
 		if (close(pl->fd[1]) == -1)
-			return (perror("close"), -1);
+			return (perror("close"), close(pl->fd[0]), -1);
 	}
 	return (0);
 }

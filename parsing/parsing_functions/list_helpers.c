@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_helpers.c                                    :+:      :+:    :+:   */
+/*   list_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 17:17:28 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/03 09:56:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 14:37:19 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_entry	*newnode(char *raw_str)
 
 	new_lst = malloc(sizeof(t_entry));
 	if (new_lst == NULL)
-		return (NULL);
+		return (perror("newnode"), NULL);
 	new_lst->raw_entry = raw_str;
 	new_lst->expanded = NULL;
 	new_lst->exp_count = 0;

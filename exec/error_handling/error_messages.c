@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 16:19:23 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 15:43:36 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,10 @@ void	command_fail(t_pipeline *pl, t_sh *sh)
 			child_exit(sh, pl, 1);
 		child_exit(sh, pl, 127);
 	}
-	perror(pl->current->argv[0]);
+	if (errno == ENOMEM)
+	{
+		perror(pl->current->argv[0]);
+		child_exit(sh, pl, 1);
+	}
 	child_exit(sh, pl, 1);
 }

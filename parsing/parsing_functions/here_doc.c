@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 12:27:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 14:36:52 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		tmp_str = ft_strjointhree(sh->heredoc[hdoc_iter], buf.raw_entry, "\n");
 		if (!tmp_str)
-			return (perror("malloc"), setup_main_signals(sh),
+			return (perror("hdoc_mode"), setup_main_signals(sh),
 				free(buf.raw_entry), -1);
 		free(sh->heredoc[hdoc_iter]);
 		sh->heredoc[hdoc_iter] = tmp_str;

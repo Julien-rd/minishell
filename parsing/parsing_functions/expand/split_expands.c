@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 12:30:47 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 14:35:47 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	content_to_lst(t_list **head, char *exp_str, char *expand_bool, size_
 
 	content = remove_quotes(exp_str, expand_bool, entry_len);
 	if (!content)
-		return (perror("content_to_lst"), -1);
+		return (-1);
 	node = ft_lstnew(content);
 	if (!node)
 		return (perror("content_to_lst"), free(content), -1);

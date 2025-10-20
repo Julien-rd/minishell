@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 12:33:07 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 15:05:13 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ static int	create_list(char *buf, t_sh *sh)
 		ft_strlcpy(raw_str, &buf[iter], entry_len + 1);
 		entry = newnode(raw_str);
 		if (!entry)
-			return (perror("create_list"), free(raw_str), -1);
+			return (free(raw_str), -1);
+		entry->expand_bool = NULL;
 		lstadd(&sh->entries, entry);
 		iter += entry_len;
 	}

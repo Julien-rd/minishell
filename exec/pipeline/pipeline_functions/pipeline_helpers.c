@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/15 17:55:07 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 14:53:20 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ int	pipe_fork(t_pipeline *pl)
 			return (perror("pipe"), -1);
 	pl->current->pid = fork();
 	if (pl->current->pid == -1)
-		return (perror("fork"), -1);
+	{
+		perror("fork");
+		if (pl->iter != pl->count)
+			return (close(pl->fd[0]), close(pl->fd[1]), -1);
+		return (-1);
+	}
 	if (pl->iter == pl->count)
 		pl->last_pid = pl->current->pid;
 	return (0);
