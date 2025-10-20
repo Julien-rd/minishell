@@ -6,51 +6,53 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:22:55 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 13:22:51 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 15:52:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	quoteclosed(char *str, char quote, t_sh *sh)
+static int	quoteclosed(char *str, char quote, t_sh *sh, int dollar_sign)
 {
 	size_t	iter;
 
 	iter = 0;
 	if (sh->sgl_quote == 1)
-	{
-		sh->sgl_quote = 0;
-		return (1);
-	}
+		return (sh->sgl_quote = 0, 1);
 	if (sh->dbl_quote == 1)
-	{
-		sh->dbl_quote = 0;
-		return (2);
-	}
+		return (sh->dbl_quote = 0, 0);
 	while (str[++iter])
 	{
 		if (str[iter] == quote)
 		{
+			if (dollar_sign)
+				return (1);
 			sh->sgl_quote = (quote == '\'');
 			sh->dbl_quote = (quote == '\"');
-			return (sh->sgl_quote + sh->dbl_quote * 2);
+			return (sh->sgl_quote);
 		}
 	}
 	return (0);
 }
 
+int	quoteclosed_after_dollar(size_t iter, char *buf, t_sh *sh)
+{
+	if (sh->sgl_quote == 1 || sh->dbl_quote == 1)
+		return (0);
+	if (buf[iter] == '\'' || buf[iter] == '\"')
+		return (quoteclosed(&buf[iter], buf[iter], sh, 1));
+	return (0);
+}
+
 int	quote_check(size_t iter, char *buf, t_sh *sh)
 {
-	int	return_value;
-
-	return_value = 0;
 	if (buf[iter] == '\'' && sh->dbl_quote == 0)
-		return_value = quoteclosed(&buf[iter], '\'', sh);
+		quoteclosed(&buf[iter], '\'', sh, 0);
 	else if (buf[iter] == '\"' && sh->sgl_quote == 0)
-		return_value = quoteclosed(&buf[iter], '\"', sh);
+		quoteclosed(&buf[iter], '\"', sh, 0);
 	if (sh->sgl_quote == 1)
 		return (1);
-	return (return_value);
+	return (0);
 }
 
 size_t	envlen(char *env)

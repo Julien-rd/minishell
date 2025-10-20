@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 12:32:59 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 16:03:07 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ t_entry							*newnode(char *raw_str);
 char							*expand(t_entry *current, t_sh *sh, int flag);
 
 // expand_helper
-char							*remove_quotes(char *to_strip, char *expand_bool, size_t len);
+char							*remove_quotes(char *to_strip,
+									char *expand_bool, size_t len);
 int								check_return_get_env(size_t iter,
 									t_expand_str *str, t_expand_helper *exh);
 int								ex_encounter(char *str_new,
@@ -91,11 +92,14 @@ int								quote_check(size_t iter, char *buf, t_sh *sh);
 size_t							envlen(char *env);
 int								get_env(char *buf, t_expand_str *str,
 									t_expand_helper *exh, char **envp);
+int								quoteclosed_after_dollar(size_t iter, char *buf,
+									t_sh *sh);
 
 // split_expands
 int								split_expands(char *exp_str, t_entry *entry,
 									t_sh *sh);
-int								token_len(char *buf, char *expand_bool, t_sh *sh, size_t iter);
+int								token_len(char *buf, char *expand_bool,
+									t_sh *sh, size_t iter);
 /******************** 3. EXECUTION **********************/
 
 /********  Builtins  ********/

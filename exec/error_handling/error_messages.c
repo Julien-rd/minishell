@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 16:39:04 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 16:40:20 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	invalid_option(t_pipeline *pl, t_sh *sh)
 	child_exit(sh, pl, 2);
 }
 
-static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh, int *error)
+static void	run_as_script(t_pipeline *pl, t_sh *sh, int *error)
 {
 	int		fd;
 	char	*argv[2];
@@ -76,7 +76,7 @@ static void	execute_if_cmd_not_found(t_pipeline *pl, t_sh *sh, int *error)
 		argv[1] = NULL;
 		path = ft_strjoin(sh->og_path, "/minishell");
 		if (!path)
-			return (perror("strjoin"), child_exit(sh, pl, 1));
+			return (perror("run_as_script"), child_exit(sh, pl, 1));
 		execve(path, argv, sh->envp.vars);
 		return (perror("execve"), child_exit(sh, pl, 1));
 	}
@@ -88,7 +88,7 @@ void	execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh)
 	struct stat	st;
 
 	if (errno == ENOEXEC)
-		execute_if_cmd_not_found(pl, sh, &error);
+		run_as_script(pl, sh, &error);
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 		error = EISDIR;
 	errno = error;

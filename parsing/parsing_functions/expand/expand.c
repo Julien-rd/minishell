@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 13:24:18 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 16:00:44 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ static void	expanded_str(char *buf, t_sh *sh, t_expand_str *str)
 	exh.buf = buf;
 	str->exp_str = ft_calloc(sizeof(char), str->len + 1);
 	str->str_spec = ft_calloc(sizeof(char), str->len + 1);
+	if(!str->exp_str || !str->str_spec)
+	{
+		free(str->exp_str);
+		str->exp_str = NULL;
+	}
 	while (str->exp_str && buf[iter])
 	{
 		toggle_quotes(buf, sh, iter);
@@ -56,8 +61,9 @@ static int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
 	while (buf[iter])
 	{
 		exh.len = envlen(&buf[iter + 1]);
-		if ((quote_check(iter, buf, sh) != 1 || str->flag == HERE_DOC)
-			&& buf[iter] == '$' && (exh.len || quote_check(iter, &buf[iter + 1], sh) != 0) && str->var_count)
+		if ((!quote_check(iter, buf, sh) || str->flag == HERE_DOC)
+			&& buf[iter] == '$' && (exh.len || quoteclosed_after_dollar(iter
+					+ 1, buf, sh)) && str->var_count)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh,
 					sh->envp.vars);
@@ -81,9 +87,13 @@ static int	expand_init(t_entry *current, t_sh *sh, t_expand_str *str)
 	sh->sgl_quote = 0;
 	while (current->raw_entry[iter])
 	{
-		if ((quote_check(iter, current->raw_entry, sh) != 1|| quote_check(iter + 1, current->raw_entry, sh) != 0
+		if ((!quote_check(iter, current->raw_entry, sh)
 				|| str->flag == HERE_DOC) && current->raw_entry[iter] == '$')
+		{
+			if (envlen(&current->raw_entry[iter + 1]) > 0
+				|| quoteclosed_after_dollar(iter + 1, current->raw_entry, sh))
 				str->var_count++;
+		}
 		iter++;
 	}
 	if (str->var_count > 0)
