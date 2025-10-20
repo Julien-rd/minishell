@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 13:10:28 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 13:24:18 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
 	while (buf[iter])
 	{
 		exh.len = envlen(&buf[iter + 1]);
-		if ((!quote_check(iter, buf, sh) || str->flag == HERE_DOC)
-			&& buf[iter] == '$' && (exh.len || quote_check(iter, &buf[iter + 1], sh) != 1) && str->var_count)
+		if ((quote_check(iter, buf, sh) != 1 || str->flag == HERE_DOC)
+			&& buf[iter] == '$' && (exh.len || quote_check(iter, &buf[iter + 1], sh) != 0) && str->var_count)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh,
 					sh->envp.vars);
@@ -81,12 +81,9 @@ static int	expand_init(t_entry *current, t_sh *sh, t_expand_str *str)
 	sh->sgl_quote = 0;
 	while (current->raw_entry[iter])
 	{
-		if ((!quote_check(iter, current->raw_entry, sh)
+		if ((quote_check(iter, current->raw_entry, sh) != 1|| quote_check(iter + 1, current->raw_entry, sh) != 0
 				|| str->flag == HERE_DOC) && current->raw_entry[iter] == '$')
-		{
-			if (envlen(&current->raw_entry[iter + 1]) > 0)
 				str->var_count++;
-		}
 		iter++;
 	}
 	if (str->var_count > 0)
