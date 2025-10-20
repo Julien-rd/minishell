@@ -14,7 +14,7 @@ DEP = $(SRC:.c=.d)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+	ar rcs --no-print-directory $(NAME) $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ 2>&1
