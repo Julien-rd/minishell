@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:15:30 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/15 13:56:57 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 16:46:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	toggle_quotes(char *buf, t_sh *sh, size_t iter)
 
 	r_value = 0;
 	if (buf[iter] == '\'' && !sh->dbl_quote && (sh->sgl_quote
-			|| (ft_strchr(&buf[iter + 1], '\''))) && ++r_value)
+		|| (ft_strchr(&buf[iter + 1], '\''))) && ++r_value)
 		sh->sgl_quote = !sh->sgl_quote;
 	else if (buf[iter] == '\"' && !sh->sgl_quote && (sh->dbl_quote
 			|| (ft_strchr(&buf[iter + 1], '\"'))) && ++r_value)
@@ -57,14 +57,14 @@ bool	empty_prompt(char *buf)
 	return (false);
 }
 
-char *env_var(char *var_name, t_sh *sh)
+char	*env_var(char *var_name, t_sh *sh)
 {
 	size_t	iter;
 
 	iter = 0;
 	while (sh->envp.vars[iter])
 	{
-		if (!ft_strncmp(var_name, sh->envp.vars[iter], ft_strlen(var_name)) 
+		if (!ft_strncmp(var_name, sh->envp.vars[iter], ft_strlen(var_name))
 			&& sh->envp.vars[iter][ft_strlen(var_name)] == '=')
 			return (&sh->envp.vars[iter][ft_strlen(var_name) + 1]);
 		iter++;

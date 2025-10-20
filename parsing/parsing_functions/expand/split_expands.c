@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_expands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:13:37 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 14:35:47 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 16:45:52 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static char	**lst_to_expand(t_list *head)
 	return (expanded);
 }
 
-static int	content_to_lst(t_list **head, char *exp_str, char *expand_bool, size_t entry_len)
+static int	content_to_lst(t_list **head, char *exp_str, char *expand_bool,
+		size_t entry_len)
 {
 	t_list	*node;
 	char	*content;
@@ -94,7 +95,8 @@ int	split_expands(char *exp_str, t_entry *entry, t_sh *sh)
 		if (!exp_str[iter])
 			break ;
 		entry_len = token_len(exp_str, entry->expand_bool, sh, iter);
-		if (content_to_lst(&head, &exp_str[iter], &entry->expand_bool[iter], entry_len) == -1)
+		if (content_to_lst(&head, &exp_str[iter], &entry->expand_bool[iter],
+				entry_len) == -1)
 			return (ft_lstclear(&head, free), -1);
 		iter += entry_len + (entry_len == 0);
 	}
