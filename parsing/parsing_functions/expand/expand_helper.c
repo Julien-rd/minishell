@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 14:35:37 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 15:53:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*remove_quotes(char *to_strip, char *expand_bool, size_t len)
 	sh.sgl_quote = 0;
 	stripped = malloc((len + 1) * sizeof(char));
 	if (!stripped)
-		return (perror("remove_quotes"), NULL);
+		return (NULL);
 	iter = 0;
 	while (iter < len)
 	{
@@ -69,8 +69,8 @@ char	*remove_quotes(char *to_strip, char *expand_bool, size_t len)
 			iter++;
 		if (iter >= len)
 			break ;
-		if ((expand_bool && expand_bool[iter] == '1') || (!(to_strip[iter] == '\'' && sh.sgl_quote)
-			&& !(to_strip[iter] == '\"' && sh.dbl_quote)))
+		if (!(to_strip[iter] == '\'' && sh.sgl_quote)
+			&& !(to_strip[iter] == '\"' && sh.dbl_quote))
 			stripped[stripped_iter++] = to_strip[iter];
 		iter++;
 	}
