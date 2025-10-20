@@ -6,13 +6,13 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/17 16:09:47 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:08:32 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ex_encounter(t_ex_arr *exarr, t_expand_helper *exh, t_expand_str *str,
+int	ex_encounter(char *str_new, t_expand_helper *exh, t_expand_str *str,
 		size_t iter)
 {
 	if (str->env_pos[exh->env_pos_iter + 1] == 0)
@@ -20,9 +20,7 @@ int	ex_encounter(t_ex_arr *exarr, t_expand_helper *exh, t_expand_str *str,
 	else
 	{
 		exh->len = ft_strlen(str->env_arr[exh->env_iter]);
-		ft_memcpy(&exarr->exp_str[exh->str_iter], str->env_arr[exh->env_iter],
-			exh->len);
-		ft_memset(&exarr->new_quote[exh->str_iter], exh->quote, exh->len);
+		ft_memcpy(str_new, str->env_arr[exh->env_iter], exh->len);
 		exh->env_iter++;
 		exh->str_iter += exh->len;
 		exh->env_pos_iter += 2;

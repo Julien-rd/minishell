@@ -40,7 +40,7 @@ int	toggle_quotes(char *buf, t_sh *sh, size_t iter)
 	return (r_value);
 }
 
-size_t	skip_whitespaces(char *buf)
+size_t	skip_whitspaces(char *buf)
 {
 	size_t	iter;
 

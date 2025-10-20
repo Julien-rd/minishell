@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:42:04 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/17 16:04:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 12:07:00 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,11 @@
 
 # include "libraries.h"
 
-typedef struct s_ex_arr
-{
-	char			*exp_str;
-	char			*new_quote;
-}					t_ex_arr;
-
 typedef struct s_entry
 {
 	char			*raw_entry;
-	char			*quotes;
-	char			*unquoted;
 	int				spec;
+	char			*expand_bool;
 	char			**expanded;
 	int				exp_count;
 	struct s_entry	*next;
@@ -38,9 +31,8 @@ typedef struct s_expand_helper
 	size_t			env_pos_iter;
 	size_t			len;
 	size_t			str_iter;
-	int 			env_return ;
+	int				env_return ;
 	char			*buf;
-	char 			quote;
 }					t_expand_helper;
 
 typedef struct s_expand_str

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/17 15:27:29 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/16 14:37:11 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ int								here_doc(t_sh *sh);
 // list_helpers
 t_entry							*lstlast(t_entry *lst);
 void							lstadd(t_entry **lst, t_entry *new);
-t_entry							*newnode(char *raw_str, char *unquoted,
-									char *quotes);
+t_entry							*newnode(char *raw_str);
 
 /*************** Expand ***************/
 
@@ -81,19 +80,21 @@ char							*expand(t_entry *current, t_sh *sh, int flag);
 char							*remove_quotes(char *to_strip, size_t len);
 int								check_return_get_env(size_t iter,
 									t_expand_str *str, t_expand_helper *exh);
-int								ex_encounter(t_ex_arr *exarr,
+int								ex_encounter(char *str_new,
 									t_expand_helper *exh, t_expand_str *str,
 									size_t iter);
 
 // expand_helper2
 int								get_env(char *buf, t_expand_str *str,
 									t_expand_helper *exh, char **envp);
+int								quote_check(size_t iter, char *buf, t_sh *sh);
 size_t							envlen(char *env);
 int								get_env(char *buf, t_expand_str *str,
 									t_expand_helper *exh, char **envp);
 
 // split_expands
-int								split_expands(char *exp_str, t_entry *entry);
+int								split_expands(char *exp_str, t_entry *entry,
+									t_sh *sh);
 int								token_len(char *buf, t_sh *sh, size_t iter);
 
 /******************** 3. EXECUTION **********************/
@@ -179,7 +180,7 @@ void							cleanup(t_sh *sh);
 int								safe_write(int fd, char *buf, size_t len);
 int								is_token(char c);
 int								toggle_quotes(char *buf, t_sh *sh, size_t iter);
-size_t							skip_whitespaces(char *buf);
+size_t							skip_whitspaces(char *buf);
 bool							empty_prompt(char *buf);
 char							*env_var(char *var_name, t_sh *sh);
 

@@ -35,7 +35,9 @@ static void	exit_error_msg(t_pipeline *pl, t_sh *sh, int flag)
 static void	exit_error(t_pipeline *pl, t_sh *sh)
 {
 	long long	exit_code;
-	
+	size_t		iter;
+
+	iter = 0;
 	if (!pl->current->argv[1])
 		child_exit(sh, pl, sh->exit_code);
 	if (pl->current->argv[1][0] == '0' && pl->current->argv[1][1] == '\0')
@@ -111,6 +113,9 @@ static void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 
 void	internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag)
 {
+	size_t		iter;
+
+	iter = 0;
 	if (flag == -1 && pl->current->cmd_flag != EXIT)
 		invalid_option(pl, sh);
 	if (pl->current->cmd_flag == CD)

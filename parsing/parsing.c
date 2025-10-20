@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/17 16:22:26 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/11 13:08:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	expand_raw_entry(t_sh *sh)
 			expanded_str = expand(cur, sh, DEFAULT);
 			if (!expanded_str)
 				return (-1);
-			if (split_expands(expanded_str, cur) == -1)
+			if (split_expands(expanded_str, cur, sh) == -1)
 				return (free(expanded_str), -1);
 			free(expanded_str);
 		}
@@ -81,75 +81,30 @@ static void	entry_spec(t_sh *sh)
 	}
 }
 
-char	*quote_spec(t_sh *sh, char *raw_str, size_t len)
-{
-	char *ret_str;
-	size_t	iter;
-	size_t	ret_iter;
-
-	iter = 0;
-	sh->dbl_quote = 0;
-	sh->sgl_quote = 0;
-	ret_iter = 0;
-	ret_str = malloc((len + 1) * sizeof(char));
-	if (!ret_str)
-		return (perror("quote_spec"), NULL);
-	while (raw_str[iter])
-	{
-		while (toggle_quotes(raw_str, sh, iter))
-			iter++;
-		if (!raw_str[iter])
-			break ;
-		if (!(raw_str[iter] == '\'' && sh->sgl_quote)
-			&& !(raw_str[iter] == '\"' && sh->dbl_quote))
-			ret_str[ret_iter++] = '0' + sh->sgl_quote + sh->dbl_quote * 2;
-		iter++;
-	}
-	ret_str[ret_iter] = '\0';
-	return (ret_str);
-}
-
-int	init_entry(t_sh *sh, t_entry **entry, char *buf, size_t iter)
-{
-	size_t	entry_len;
-	char	*raw_str;
-	char	*unquoted;
-	char	*quotes;
-
-	entry_len = token_len(buf, sh, iter);
-	raw_str = malloc((entry_len + 1) * sizeof(char));
-		if (!raw_str)
-			return (perror("init_entry"), -1);
-	ft_strlcpy(raw_str, &buf[iter], entry_len + 1);
-	unquoted = remove_quotes(&buf[iter], entry_len);
-	if (!unquoted)
-		return (free(raw_str), -1);
-	quotes = quote_spec(sh, raw_str, ft_strlen(unquoted));
-	if (!quotes)
-		return (free(raw_str), free(unquoted), -1);
-	*entry = newnode(raw_str, unquoted, quotes);
-	if (!*entry)
-		return (free(raw_str), free(unquoted), free(quotes), -1);
-	return (0);
-}
-
 static int	create_list(char *buf, t_sh *sh)
 {
 	size_t	iter;
+	size_t	entry_len;
 	t_entry	*entry;
+	char	*raw_str;
 
 	sh->entries = NULL;
-	entry = NULL;
 	iter = 0;
 	while (buf[iter])
 	{
-		iter += skip_whitespaces(&buf[iter]);
+		iter += skip_whitspaces(&buf[iter]);
 		if (!buf[iter])
 			break ;
-		if (init_entry(sh, &entry, buf, iter) == -1)
-			return (-1);
+		entry_len = token_len(buf, sh, iter);
+		raw_str = malloc((entry_len + 1) * sizeof(char));
+		if (!raw_str)
+			return (perror("create_list"), -1);
+		ft_strlcpy(raw_str, &buf[iter], entry_len + 1);
+		entry = newnode(raw_str);
+		if (!entry)
+			return (perror("create_list"), free(raw_str), -1);
 		lstadd(&sh->entries, entry);
-		iter += token_len(buf, sh, iter);
+		iter += entry_len;
 	}
 	return (0);
 }
