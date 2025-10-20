@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/09 16:48:09 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 13:04:15 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expanded_str(char *buf, t_sh *sh, t_expand_str *str)
+static void	expanded_str(char *buf, t_sh *sh, t_expand_str *str)
 {
 	size_t			iter;
 	t_expand_helper	exh;
-	char			*exp_str;
 
 	exh.env_iter = 0;
 	exh.env_pos_iter = 0;
@@ -25,20 +24,23 @@ static char	*expanded_str(char *buf, t_sh *sh, t_expand_str *str)
 	sh->dbl_quote = 0;
 	sh->sgl_quote = 0;
 	exh.buf = buf;
-	exp_str = ft_calloc(sizeof(char), str->len + 1);
-	while (exp_str && buf[iter])
+	str->exp_str = ft_calloc(sizeof(char), str->len + 1);
+	str->str_spec = ft_calloc(sizeof(char), str->len + 1);
+	while (str->exp_str && buf[iter])
 	{
 		toggle_quotes(buf, sh, iter);
 		if (str->var_count * 2 > exh.env_pos_iter
 			&& str->env_pos[exh.env_pos_iter] == iter && (sh->sgl_quote == 0
 				|| str->flag == HERE_DOC))
-			iter += ex_encounter(&exp_str[exh.str_iter], &exh, str, iter);
+			iter += ex_encounter(&str->exp_str[exh.str_iter], &exh, str, iter);
 		else
-			exp_str[exh.str_iter++] = buf[iter];
+		{
+			str->exp_str[exh.str_iter] = buf[iter];
+			str->str_spec[exh.str_iter++] = '0';
+		}
 		if (buf[iter])
 			iter++;
 	}
-	return (exp_str);
 }
 
 static int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
@@ -102,7 +104,6 @@ static int	expand_init(t_entry *current, t_sh *sh, t_expand_str *str)
 char	*expand(t_entry *current, t_sh *sh, int flag)
 {
 	t_expand_str	str;
-	char			*exp_str;
 
 	str.flag = flag;
 	str.len = 0;
@@ -115,6 +116,7 @@ char	*expand(t_entry *current, t_sh *sh, int flag)
 	current->exp_count = str.var_count;
 	if (check_envs(current->raw_entry, sh, &str) == -1)
 		return (free2d(&str.env_arr), free(str.env_pos), NULL);
-	exp_str = expanded_str(current->raw_entry, sh, &str);
-	return (free2d(&str.env_arr), free(str.env_pos), exp_str);
+	expanded_str(current->raw_entry, sh, &str);
+	current->expand_bool = str.str_spec;
+	return (free2d(&str.env_arr), free(str.env_pos), str.exp_str);
 }

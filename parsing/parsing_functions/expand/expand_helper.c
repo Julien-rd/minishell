@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:58:44 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 12:27:36 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/20 13:00:58 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ex_encounter(char *str_new, t_expand_helper *exh, t_expand_str *str,
 	{
 		exh->len = ft_strlen(str->env_arr[exh->env_iter]);
 		ft_memcpy(str_new, str->env_arr[exh->env_iter], exh->len);
+		ft_memset(&str->str_spec[exh->str_iter], '1', exh->len);
 		exh->env_iter++;
 		exh->str_iter += exh->len;
 		exh->env_pos_iter += 2;
