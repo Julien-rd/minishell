@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 15:05:54 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 13:04:15 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/20 13:10:28 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	check_envs(char *buf, t_sh *sh, t_expand_str *str)
 	{
 		exh.len = envlen(&buf[iter + 1]);
 		if ((!quote_check(iter, buf, sh) || str->flag == HERE_DOC)
-			&& buf[iter] == '$' && exh.len && str->var_count)
+			&& buf[iter] == '$' && (exh.len || quote_check(iter, &buf[iter + 1], sh) != 1) && str->var_count)
 		{
 			exh.env_return = get_env(&buf[iter + 1], str, &exh,
 					sh->envp.vars);
@@ -117,6 +117,9 @@ char	*expand(t_entry *current, t_sh *sh, int flag)
 	if (check_envs(current->raw_entry, sh, &str) == -1)
 		return (free2d(&str.env_arr), free(str.env_pos), NULL);
 	expanded_str(current->raw_entry, sh, &str);
-	current->expand_bool = str.str_spec;
+	if (flag == HERE_DOC)
+		free(str.str_spec);
+	else
+		current->expand_bool = str.str_spec;
 	return (free2d(&str.env_arr), free(str.env_pos), str.exp_str);
 }
