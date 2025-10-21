@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 19:01:35 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 16:11:56 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 12:21:31 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	env(t_pipeline *pl, t_sh *sh)
 	iter = 0;
 	if (pl->current->argv[1])
 	{
-		safe_write(1, "env: too many arguments\n", 25);
+		safe_write(2, "env: too many arguments\n", 25);
 		child_exit(sh, pl, 1);
 	}
 	while (sh->envp.vars[iter])
