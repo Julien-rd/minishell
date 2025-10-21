@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 18:08:21 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/21 11:04:54 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,8 @@ void	command_fail(t_pipeline *pl, t_sh *sh)
 	}
 	else if (errno == ENOENT || pl->current->argv[0][0] == 0)
 	{
-		if (pl->current->argv[0][0] == 0)
-			if (safe_write(2, "''", 2) == -1)
-				child_exit(sh, pl, 1);
+		if (pl->current->argv[0][0] == 0 && safe_write(2, "''", 2) == -1)
+			child_exit(sh, pl, 1);
 		else if (safe_write(2, pl->current->argv[0],
 				ft_strlen(pl->current->argv[0])) == -1)
 			child_exit(sh, pl, 1);
