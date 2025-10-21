@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:26:43 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/14 11:26:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:11:23 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	setup_main_signals(t_sh *sh)
 
 	if (g_current_signal == SIGINT)
 		sh->exit_code = 130;
+	// g_current_signal = 0;
 	sa_int.sa_handler = sigint_main;
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;

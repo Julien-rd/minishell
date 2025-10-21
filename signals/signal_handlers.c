@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 17:01:11 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:16:41 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,5 @@ int	hdoc_signal_kill(char *buf, char *entry)
 			return (-1);
 		return (0);
 	}
-	return (-1);
+	return (0);
 }
