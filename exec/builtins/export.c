@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/14 16:18:42 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:15:54 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	add_env(t_sh *sh, char *entry)
 	if (!new)
 		return (-1);
 	position = insert_pos(sh, new);
-	if (position == -1)
+	if (position == -1 || !sh->envp.vars[position][0])
 	{
 		if (sh->envp.count >= sh->envp.malloc)
 			if (extend_envp(sh) == -1)

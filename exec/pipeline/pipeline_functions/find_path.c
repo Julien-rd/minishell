@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 15:50:42 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 16:18:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_find_paths(char *envp[], char *env_name)
 		iter++;
 	}
 	errno = ENOENT;
-	return (0);
+	return (-1);
 }
 
 char	*ft_strjointhree(char const *s1, char const *s2, char const *s3)
@@ -93,7 +93,7 @@ char	*ft_getpath(char **envp, char *cmd)
 	if (ft_strchr(cmd, '/'))
 		return (cmd);
 	path_pos = ft_find_paths(envp, "PATH");
-	if (!path_pos)
+	if (path_pos == -1)
 		return (NULL);
 	paths = ft_split(&envp[path_pos][5], ':');
 	if (paths == NULL)
