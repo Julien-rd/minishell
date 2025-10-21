@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 13:44:10 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:24:31 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void							env(t_pipeline *pl, t_sh *sh, int option_flag);
 int								input_check(char *param);
 int								unset(char **cmd, t_pipeline *pl, t_sh *sh);
 int								export(char **argv, t_pipeline *pl, t_sh *sh);
-int								cd_no_arg(char *tmp_cwd, t_sh *sh);
+int								cd_no_arg(char *tmp_cwd, t_sh *sh, int flag);
 
 // export_helper
 int								insert_pos(t_sh *sh, char *param);

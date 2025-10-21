@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   internal_cmd_error.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:09:33 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/21 12:22:00 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 16:42:27 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,35 +85,36 @@ static void	export_unset_error(t_pipeline *pl, t_sh *sh, int cmd_flag)
 
 static void	cd_error(t_cmd *cur, t_pipeline *pl, t_sh *sh)
 {
-	if ((!pl->count && sh->internal_errcode != 0) || sh->internal_errcode == -2)
+	errno = sh->exit_code;
+	if (errno == ENOENT && sh->internal_errcode == 0 && safe_write(2,
+			"cd: cannot access current directory, attempting to recover\n",
+			59) != -1)
+		child_exit(sh, pl, 0);
+	else if ((!pl->count && sh->internal_errcode != 0)
+		|| sh->internal_errcode == -2)
 	{
-		if (safe_write(2, "cd: ", 4) == -1)
-			child_exit(sh, pl, 1);
-		errno = sh->exit_code;
-		if (sh->internal_errcode == -2)
-			safe_write(2, "too many arguments\n", 19);
+		if (sh->internal_errcode == -4 && errno == ENOENT)
+			safe_write(2, "cd: HOME not set, cannot recover\n", 33);
+		else if (sh->internal_errcode == -2)
+			safe_write(2, "cd: too many arguments\n", 23);
 		else if (cur->argv[1])
 			return (perror(cur->argv[1]), child_exit(sh, pl, 1));
 		else if (sh->internal_errcode == -3)
 			return (perror("cd"), child_exit(sh, pl, 1));
 		else if (sh->internal_errcode == -4)
-			safe_write(2, "HOME not set\n", 13);
+			safe_write(2, "cd: HOME not set\n", 17);
 		child_exit(sh, pl, 1);
 	}
 	else if (pl->count && !cur->argv[1])
-		child_exit(sh, pl, cd_no_arg(NULL, sh));
+		child_exit(sh, pl, cd_no_arg(NULL, sh, !DEFAULT));
 	else if (pl->count && cur->argv[1][0] && chdir(cur->argv[1]) == -1)
-	{
-		if (safe_write(2, "cd: ", 4) == -1)
-			child_exit(sh, pl, 1);
 		return (perror(cur->argv[1]), child_exit(sh, pl, 1));
-	}
 	child_exit(sh, pl, 0);
 }
 
 void	internal_cmd_error(t_pipeline *pl, t_sh *sh, int flag)
 {
-	size_t		iter;
+	size_t	iter;
 
 	iter = 0;
 	if (flag == -1 && pl->current->cmd_flag != EXIT)

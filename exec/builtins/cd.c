@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 12:22:26 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 16:47:57 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,9 @@ int	envp_pwd(t_sh *sh, char *tmp_cwd)
 	while (sh->envp.vars[iter])
 	{
 		if (!ft_strncmp(sh->envp.vars[iter], "OLDPWD=", 7))
-		{
-			if (update_pwd_entry(&sh->envp.vars[iter], "OLDPWD=", tmp_cwd)
-				== -1)
+			if (tmp_cwd && update_pwd_entry(&sh->envp.vars[iter], "OLDPWD=",
+					tmp_cwd) == -1)
 				return (-1);
-		}
 		if (!ft_strncmp(sh->envp.vars[iter], "PWD=", 4))
 		{
 			cwd = getcwd(NULL, 0);
@@ -52,11 +50,11 @@ int	envp_pwd(t_sh *sh, char *tmp_cwd)
 	return (0);
 }
 
-int	cd_no_arg(char *tmp_cwd, t_sh *sh)
+int	cd_no_arg(char *tmp_cwd, t_sh *sh, int flag)
 {
 	if (!env_var("HOME", sh))
 	{
-		if (tmp_cwd == NULL)
+		if (tmp_cwd == NULL && flag != DEFAULT)
 		{
 			safe_write(2, "cd: HOME not set\n", 17);
 			return (1);
@@ -90,15 +88,16 @@ int	cd(t_sh *sh, char **argv, size_t pipe_count)
 	if (pipe_count)
 		return (0);
 	tmp_cwd = getcwd(NULL, 0);
-	if (!tmp_cwd)
-		return (perror("getcwd"), -1);
+	if (!tmp_cwd && errno == ENOENT)
+		return (sh->exit_code = errno,
+			cd_no_arg(tmp_cwd, sh, DEFAULT));
+	else if (!tmp_cwd)
+		return (sh->exit_code = errno, -1);
 	if (!argv[1])
-		return (cd_no_arg(tmp_cwd, sh));
-	if (!argv[1][0])
-		return (free(tmp_cwd), 0);
-	if (chdir(argv[1]) == -1)
+		return (cd_no_arg(tmp_cwd, sh, DEFAULT));
+	if (argv[1][0] && chdir(argv[1]) == -1)
 		return (sh->exit_code = errno, free(tmp_cwd), -3);
-	if (envp_pwd(sh, tmp_cwd) == -1)
+	if (argv[1][0] && envp_pwd(sh, tmp_cwd) == -1)
 		return (free(tmp_cwd), -1);
 	free(tmp_cwd);
 	return (0);
