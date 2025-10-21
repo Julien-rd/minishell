@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:45:11 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/16 14:36:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/21 11:35:50 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,33 +52,6 @@ int	envp_pwd(t_sh *sh, char *tmp_cwd)
 	return (0);
 }
 
-int	cd(t_sh *sh, char **argv, size_t pipe_count)
-{
-	size_t	iter;
-	char	*tmp_cwd;
-
-	iter = 0;
-	while (argv[iter])
-		iter++;
-	if (iter > 2)
-		return (-2);
-	if (pipe_count)
-		return (0);
-	tmp_cwd = getcwd(NULL, 0);
-	if (!tmp_cwd)
-		return (perror("getcwd"), -1);
-	if (!argv[1])
-		return (cd_no_arg(tmp_cwd, sh));
-	if (!argv[1][0])
-		return (free(tmp_cwd), 0);
-	if (argv[1] && chdir(argv[1]) == -1)
-		return (sh->exit_code = errno, free(tmp_cwd), -3);
-	if (envp_pwd(sh, tmp_cwd) == -1)
-		return (free(tmp_cwd), -1);
-	free(tmp_cwd);
-	return (0);
-}
-
 int	cd_no_arg(char *tmp_cwd, t_sh *sh)
 {
 	if (!env_var("HOME", sh))
@@ -99,5 +72,34 @@ int	cd_no_arg(char *tmp_cwd, t_sh *sh)
 		}
 		return (free(tmp_cwd), sh->exit_code = errno, -3);
 	}
+	if (envp_pwd(sh, tmp_cwd) == -1)
+		return (free(tmp_cwd), 1);
 	return (free(tmp_cwd), 0);
+}
+
+int	cd(t_sh *sh, char **argv, size_t pipe_count)
+{
+	size_t	iter;
+	char	*tmp_cwd;
+
+	iter = 0;
+	while (argv[iter])
+		iter++;
+	if (iter > 2)
+		return (-2);
+	if (pipe_count)
+		return (0);
+	tmp_cwd = getcwd(NULL, 0);
+	if (!tmp_cwd)
+		return (perror("getcwd"), -1);
+	if (!argv[1])
+		return (cd_no_arg(tmp_cwd, sh));
+	if (!argv[1][0])
+		return (free(tmp_cwd), 0);
+	if (chdir(argv[1]) == -1)
+		return (sh->exit_code = errno, free(tmp_cwd), -3);
+	if (envp_pwd(sh, tmp_cwd) == -1)
+		return (free(tmp_cwd), -1);
+	free(tmp_cwd);
+	return (0);
 }
