@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 13:58:47 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/21 12:20:53 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 12:26:41 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	builtin_handler(t_pipeline *pl, t_sh *sh)
 	else if (pl->current->cmd_flag == PWD)
 		pwd(sh, pl, flag);
 	else if (pl->current->cmd_flag == ENV)
-		env(pl, sh);
+		env(pl, sh, flag);
 	else
 		internal_cmd_error(pl, sh, flag);
 }

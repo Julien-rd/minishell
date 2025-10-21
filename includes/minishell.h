@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 12:20:48 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 12:24:08 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void							pwd(t_sh *sh, t_pipeline *pl, int flag);
 int								exit_cmd(t_pipeline *pl, t_sh *sh);
 int								cd(t_sh *sh, char **argv, size_t pipe_count);
 void							echo(t_pipeline *pl, t_sh *sh, int nflag);
-void							env(t_pipeline *pl, t_sh *sh);
+void							env(t_pipeline *pl, t_sh *sh, int option_flag);
 int								input_check(char *param);
 int								unset(char **cmd, t_pipeline *pl, t_sh *sh);
 int								export(char **argv, t_pipeline *pl, t_sh *sh);
