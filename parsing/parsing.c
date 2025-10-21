@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 15:05:13 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 13:40:00 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,9 @@ static int	here_doc_caller(t_sh *sh)
 	sh->heredoc = NULL;
 	if (here_doc(sh) == -1)
 	{
-		if (g_current_signal == SIGINT)
-			sh->exit_code = 130;
-		else
-		{
-			free2d(&sh->envp.vars);
-			sh->exit_code = -1;
-		}
-		return (-1);
+		if (sh->exit_code == 130)
+			return (-1);
+		return (sh->exit_code = -1, -1);
 	}
 	return (0);
 }

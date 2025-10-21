@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 12:24:08 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/21 13:44:10 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,8 @@ void							sigint_prompt(int num);
 void							sigint_main(int num);
 void							sigint_heredoc(int num);
 void							sigint_noninteractive(int num);
-int								hdoc_signal_kill(char *buf, char *entry);
+int								hdoc_signal_kill(t_sh *sh, char *buf,
+									char *entry);
 
 // signal_setups
 void							setup_interactive_signals(void);

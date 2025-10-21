@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:08:15 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/21 13:16:41 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:41:58 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ void	sigint_heredoc(int num)
 	rl_on_new_line();
 }
 
-int	hdoc_signal_kill(char *buf, char *entry)
+int	hdoc_signal_kill(t_sh *sh, char *buf, char *entry)
 {
 	if (buf)
 		free(buf);
 	if (g_current_signal != 2)
 	{
+		setup_main_signals(sh);
 		if (safe_write(2,
 				"warning: here-document delimited by end-of-file (wanted '",
 				57) == -1)
@@ -61,5 +62,6 @@ int	hdoc_signal_kill(char *buf, char *entry)
 			return (-1);
 		return (0);
 	}
-	return (0);
+	setup_main_signals(sh);
+	return (-1);
 }
