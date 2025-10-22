@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 13:38:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 14:36:35 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 		size_t hdoc_iter)
 {
-	t_entry		buf;
+	t_entry	buf;
 
 	sh->hd_path = heredoc_path(hdoc_iter);
 	if (!sh->hd_path)
@@ -36,7 +36,7 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 		if (safe_write(sh->heredoc_fd[hdoc_iter], buf.raw_entry,
 				ft_strlen(buf.raw_entry)) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
-		if (safe_write(sh->heredoc_fd[hdoc_iter], "\n", 1) == -1)
+		if (1 || safe_write(sh->heredoc_fd[hdoc_iter], "\n", 1) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		free(buf.raw_entry);
 	}
@@ -80,8 +80,8 @@ int	here_doc(t_sh *sh)
 			setup_heredoc_signals();
 			if (hdoc_entry(iter, sh, hdoc_iter) == -1 || ft_lseek(sh,
 					hdoc_iter) == -1)
-				return (close_fd(sh), free(sh->heredoc_fd), free(sh->hd_path),
-					safe_unlink(sh->hd_path), -1);
+				return (close_fd(sh), safe_unlink(sh->hd_path),
+					free(sh->heredoc_fd), free(sh->hd_path), -1);
 			hdoc_iter++;
 		}
 		iter = iter->next;
