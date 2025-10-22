@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 17:39:07 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:49:22 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	pipe_fork(t_pipeline *pl)
 	if (pl->current->pid == -1)
 	{
 		perror("fork");
+		if (pl->iter != 0)
+			close(pl->prev_fd);
 		if (pl->iter != pl->count)
 			return (close(pl->fd[0]), close(pl->fd[1]), -1);
 		return (-1);
