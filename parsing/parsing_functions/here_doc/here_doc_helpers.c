@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:09:35 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 12:13:19 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 15:04:35 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,17 @@ int	ft_lseek(t_sh *sh, size_t hdoc_iter)
 {
 	if (close(sh->heredoc_fd[hdoc_iter]) == -1)
 		return (sh->heredoc_fd[hdoc_iter] = -1, -1);
-	sh->heredoc_fd[hdoc_iter] = open(sh->hd_path, O_RDWR);
+	sh->heredoc_fd[hdoc_iter] = open(sh->hd_path, O_RDONLY);
 	if (sh->heredoc_fd[hdoc_iter] == -1)
-		return (perror("ft_lseek"), -1);
+		return (perror(sh->hd_path), -1);
 	if (safe_unlink(sh->hd_path) == -1)
-		return (perror("ft_lseek"), -1);
+	{
+		free(sh->hd_path);
+		sh->hd_path = NULL;
+		return (-1);
+	}
 	free(sh->hd_path);
+	sh->hd_path = NULL;
 	return (0);
 }
 
@@ -84,6 +89,6 @@ int	safe_unlink(char *path)
 	if (path == NULL)
 		return (-1);
 	if (unlink(path) == -1)
-		return (perror("safe_unlink"), -1);
+		return (perror(path), -1);
 	return (0);
 }
