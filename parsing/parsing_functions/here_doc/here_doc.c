@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 14:36:35 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 14:37:09 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 	sh->heredoc_fd[hdoc_iter] = open(sh->hd_path, O_CREAT | O_RDWR | O_TRUNC,
 			0600);
 	if (sh->heredoc_fd[hdoc_iter] == -1)
-		return (perror("hdoc_mode"), -1);
+		return (perror("open"), -1);
 	while (1)
 	{
 		buf.raw_entry = readline("> ");
