@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 12:14:46 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 13:38:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	here_doc(t_sh *sh)
 
 	hdoc_iter = 0;
 	iter = sh->entries;
+	sh->hd_path = NULL;
 	if (hdoc_init(sh) == -1)
 		return (-1);
 	if (!sh->heredoc_fd)
