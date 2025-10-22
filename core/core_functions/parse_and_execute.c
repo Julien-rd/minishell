@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 13:31:37 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 13:42:58 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static int	exec_central(t_sh *sh)
 	int	exit_code;
 
 	sh->exit = 0;
-	return (-1);
 	exit_code = pipeline(sh);
 	return (exit_code);
 }
