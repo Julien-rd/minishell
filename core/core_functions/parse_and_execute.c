@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_execute.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/10/22 13:42:58 by jromann          ###   ########.fr       */
-=======
-/*   Updated: 2025/10/22 13:45:16 by eprottun         ###   ########.fr       */
->>>>>>> refs/remotes/origin/main
+/*   Updated: 2025/10/22 14:18:06 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
