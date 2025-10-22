@@ -6,32 +6,24 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/21 13:41:53 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 11:26:40 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	expand_hdoc_entry(t_entry *buf, t_sh *sh, int expand_flag)
-{
-	char	*tmp;
-
-	if (expand_flag == 0)
-		return (0);
-	tmp = expand(buf, sh, HERE_DOC);
-	if (!tmp)
-		return (-1);
-	free(buf->raw_entry);
-	buf->raw_entry = tmp;
-	return (0);
-}
-
 static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 		size_t hdoc_iter)
 {
 	t_entry	buf;
-	char	*tmp_str;
 
+	sh->hd_path = heredoc_path(hdoc_iter);
+	if (!sh->hd_path)
+		return (setup_main_signals(sh), -1);
+	sh->heredoc_fd[hdoc_iter] = open(sh->hd_path, O_CREAT | O_RDWR | O_TRUNC,
+			0600);
+	if (sh->heredoc_fd[hdoc_iter] == -1)
+		return (perror("hdoc_mode"), -1);
 	while (1)
 	{
 		buf.raw_entry = readline("> ");
@@ -41,12 +33,11 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 			return (setup_main_signals(sh), free(buf.raw_entry), 0);
 		if (expand_hdoc_entry(&buf, sh, expand_flag) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
-		tmp_str = ft_strjointhree(sh->heredoc[hdoc_iter], buf.raw_entry, "\n");
-		if (!tmp_str)
-			return (perror("hdoc_mode"), setup_main_signals(sh),
-				free(buf.raw_entry), -1);
-		free(sh->heredoc[hdoc_iter]);
-		sh->heredoc[hdoc_iter] = tmp_str;
+		if (safe_write(sh->heredoc_fd[hdoc_iter], buf.raw_entry,
+				ft_strlen(buf.raw_entry)) == -1)
+			return (setup_main_signals(sh), free(buf.raw_entry), -1);
+		if (safe_write(sh->heredoc_fd[hdoc_iter], "\n", 1) == -1)
+			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		free(buf.raw_entry);
 	}
 }
@@ -59,9 +50,6 @@ static int	hdoc_entry(t_entry *iter, t_sh *sh, size_t hdoc_iter)
 	expand_flag = 0;
 	if (iter->raw_entry == NULL)
 		return (-1);
-	sh->heredoc[hdoc_iter] = ft_calloc(1, 1);
-	if (!sh->heredoc[hdoc_iter])
-		return (setup_main_signals(sh), -1);
 	delimiter = remove_quotes(iter->raw_entry, NULL,
 			ft_strlen(iter->raw_entry));
 	if (!delimiter)
@@ -73,45 +61,28 @@ static int	hdoc_entry(t_entry *iter, t_sh *sh, size_t hdoc_iter)
 	return (setup_main_signals(sh), free(delimiter), 0);
 }
 
-size_t	operator_count(t_sh *sh)
-{
-	size_t	hdoc_count;
-	t_entry	*iter;
-
-	iter = sh->entries;
-	hdoc_count = 0;
-	while (iter != NULL)
-	{
-		if (iter->spec == HERE_DOC)
-			hdoc_count++;
-		iter = iter->next;
-	}
-	if (hdoc_count == 0)
-		sh->heredoc = NULL;
-	return (hdoc_count);
-}
-
 int	here_doc(t_sh *sh)
 {
 	t_entry	*iter;
 	size_t	hdoc_iter;
-	size_t	hdoc_count;
 
 	hdoc_iter = 0;
 	iter = sh->entries;
-	hdoc_count = operator_count(sh);
-	if (hdoc_count == 0)
+	sh->hd_count = operator_count(sh);
+	if (sh->hd_count == 0)
 		return (0);
-	sh->heredoc = ft_calloc(hdoc_count + 1, sizeof(char *));
-	if (!sh->heredoc)
+	sh->heredoc_fd = malloc(sizeof(int) * sh->hd_count);
+	if (!sh->heredoc_fd)
 		return (-1);
 	while (iter != NULL)
 	{
 		if (iter->spec == HERE_DOC)
 		{
 			setup_heredoc_signals();
-			if (hdoc_entry(iter, sh, hdoc_iter) == -1)
-				return (free2d(&sh->heredoc), -1);
+			if (hdoc_entry(iter, sh, hdoc_iter) == -1 || ft_lseek(sh,
+					hdoc_iter) == -1)
+				return (close_fd(sh), free(sh->heredoc_fd), free(sh->hd_path),
+					unlink(sh->hd_path), -1);
 			hdoc_iter++;
 		}
 		iter = iter->next;

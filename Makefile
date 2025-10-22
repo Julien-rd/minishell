@@ -3,14 +3,14 @@ CC = cc
 INC_DIR = includes
 CFLAGS = -Wall -Wextra -Werror -Ilibft -MMD -g -I$(INC_DIR)
 OBJ_DIR = obj
-VPATH = core core/core_functions core/core_functions/non_interactive exec core/core_functions/non_interactive/get_next_line exec/builtins exec/pipeline/pipeline_functions/file_handling exec/error_handling exec/pipeline exec/pipeline/pipeline_functions helper parsing parsing/parsing_functions parsing/parsing_functions/expand signals
+VPATH = core core/core_functions core/core_functions/non_interactive exec core/core_functions/non_interactive/get_next_line \
+exec/builtins exec/pipeline/pipeline_functions/file_handling exec/error_handling exec/pipeline exec/pipeline/pipeline_functions \
+helper parsing parsing/parsing_functions parsing/parsing_functions/expand signals parsing/parsing_functions/here_doc
 SRC = split_expands.c syntax_check.c parsing.c list_helpers.c helper.c error_messages.c file_handler.c internal_cmd_error.c \
- main.c signal_handlers.c free_functions.c \
-expand.c expand_helper.c expand_helper2.c here_doc.c interactive_loop.c \
-pipeline.c find_path.c get_next_line.c check_exit_status.c init_shell.c\
-get_next_line_utils.c non_interactive.c signal_setups.c parse_and_execute.c \
-cd.c echo.c env.c exit.c export.c export_helper.c pwd.c unset.c builtin_handler.c pipe_init.c pipeline_core.c pipeline_helpers.c \
-setup.c
+main.c signal_handlers.c free_functions.c expand.c expand_helper.c expand_helper2.c here_doc.c interactive_loop.c \
+pipeline.c find_path.c get_next_line.c check_exit_status.c init_shell.c get_next_line_utils.c non_interactive.c signal_setups.c \
+parse_and_execute.c cd.c echo.c env.c exit.c export.c export_helper.c pwd.c unset.c builtin_handler.c pipe_init.c pipeline_core.c \
+pipeline_helpers.c setup.c here_doc_helpers.c
 
 
 OBJ = $(SRC:%.c=obj/%.o)

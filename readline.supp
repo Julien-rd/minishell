@@ -1,4 +1,5 @@
-# readline.supp -> run with valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell   ulimit -v : 12984
+# tracking tmp files: watch -n 1 'ls -la /tmp/.minishell_heredoc_*'
+# readline.supp -> run with valgrind --suppressions=readline.supp --track-fds=yes --leak-check=full --show-leak-kinds=all ./minishell   ulimit -v : 12984
 {
    readline_malloc
    Memcheck:Leak

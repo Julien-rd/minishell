@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/20 13:26:47 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 11:16:01 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ void	child_exit(t_sh *sh, t_pipeline *pl, int errcode)
 	free_cmds(pl, pl->count + 1);
 	if (sh->og_path)
 		free(sh->og_path);
-	if (sh->heredoc)
-		free2d(&sh->heredoc);
+	if (sh->hd_count)
+		close_fd(sh);
+	free(sh->heredoc_fd);
 	exit(errcode);
 }
 
@@ -78,8 +79,18 @@ void	free_cmds(t_pipeline *pl, size_t arr_len)
 	free(pl->cmds);
 }
 
-void	cleanup(t_sh *sh)
+void	close_fd(t_sh *sh)
 {
-	free_list(sh->entries);
-	free2d(&sh->heredoc);
+	size_t	iter;
+
+	iter = 0;
+	while (iter < sh->hd_count)
+	{
+		if (sh->heredoc_fd[iter] == -1)
+			return ;
+		// LOGIK ANSCHAUEN PASST DAS SO?
+		close(sh->heredoc_fd[iter]);
+		sh->heredoc_fd[iter] = -1;
+		iter++;
+	}
 }

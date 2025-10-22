@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/20 17:11:25 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/22 09:40:38 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,8 @@ static int	infile_init(char *file_name)
 
 static int	heredoc_init(t_pipeline *pl, t_sh *sh)
 {
-	int	fd_heredoc[2];
-
-	if (pipe(fd_heredoc) == -1)
-		return (perror("pipe"), -1);
-	if (safe_write(fd_heredoc[1], sh->heredoc[pl->hdoc_iter],
-			ft_strlen(sh->heredoc[pl->hdoc_iter])) == -1)
-		return (close(fd_heredoc[0]), close(fd_heredoc[1]), -1);
-	if (close(fd_heredoc[1]) == -1)
-		return (perror("close"), close(fd_heredoc[0]), -1);
-	if (dup2(fd_heredoc[0], 0) == -1)
-		return (perror("dup2"), close(fd_heredoc[0]), -1);
-	if (close(fd_heredoc[0]) == -1)
-		return (perror("close"), -1);
+	if (dup2(sh->heredoc_fd[pl->hdoc_iter], 0) == -1)
+		return (perror("dup2"), -1);
 	pl->hdoc_iter++;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:23:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 13:40:00 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 09:36:33 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	here_doc_caller(t_sh *sh)
 {
-	sh->heredoc = NULL;
+	sh->heredoc_fd = NULL;
 	if (here_doc(sh) == -1)
 	{
 		if (sh->exit_code == 130)

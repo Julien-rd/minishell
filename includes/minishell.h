@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 16:24:31 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 11:16:28 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int								parsing(char *buf, t_sh *sh);
 /********** Parsing Functions **********/
 
 int								syntax_check(t_sh *sh);
-int								here_doc(t_sh *sh);
 
 // list_helpers
 t_entry							*lstlast(t_entry *lst);
@@ -99,6 +98,19 @@ int								split_expands(char *exp_str, t_entry *entry,
 									t_sh *sh);
 int								token_len(char *buf, char *expand_bool,
 									t_sh *sh, size_t iter);
+
+/*************** here_doc ***************/
+// here_doc
+int								here_doc(t_sh *sh);
+
+// here_doc_helpers
+int								expand_hdoc_entry(t_entry *buf, t_sh *sh,
+									int expand_flag);
+char							*heredoc_path(size_t hdoc_iter);
+int								ft_lseek(t_sh *sh, size_t hdoc_iter);
+size_t							operator_count(t_sh *sh);
+int								safe_unlink(char *path);
+
 /******************** 3. EXECUTION **********************/
 
 /********  Builtins  ********/
@@ -176,7 +188,7 @@ void							free_list(t_entry *list);
 void							child_exit(t_sh *sh, t_pipeline *pl,
 									int errcode);
 void							free_cmds(t_pipeline *pl, size_t arr_len);
-void							cleanup(t_sh *sh);
+void							close_fd(t_sh *sh);
 
 // helper
 int								safe_write(int fd, char *buf, size_t len);

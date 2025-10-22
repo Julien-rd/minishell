@@ -6,11 +6,18 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 10:51:19 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/21 13:37:33 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 11:16:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	cleanup(t_sh *sh)
+{
+	free_list(sh->entries);
+	close_fd(sh);
+	free(sh->heredoc_fd);
+}
 
 static int	exec_central(t_sh *sh)
 {
