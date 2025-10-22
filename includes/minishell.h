@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/22 11:16:28 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:13:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int								expand_hdoc_entry(t_entry *buf, t_sh *sh,
 									int expand_flag);
 char							*heredoc_path(size_t hdoc_iter);
 int								ft_lseek(t_sh *sh, size_t hdoc_iter);
-size_t							operator_count(t_sh *sh);
+int								hdoc_init(t_sh *sh);
 int								safe_unlink(char *path);
 
 /******************** 3. EXECUTION **********************/

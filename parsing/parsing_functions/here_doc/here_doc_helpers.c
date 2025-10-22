@@ -6,36 +6,46 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:09:35 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 11:13:05 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:13:19 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	operator_count(t_sh *sh)
+int	hdoc_init(t_sh *sh)
 {
-	size_t	hdoc_count;
 	t_entry	*iter;
+	int		iter2;
 
 	iter = sh->entries;
-	hdoc_count = 0;
+	sh->hd_count = 0;
 	while (iter != NULL)
 	{
 		if (iter->spec == HERE_DOC)
-			hdoc_count++;
+			sh->hd_count++;
 		iter = iter->next;
 	}
-	if (hdoc_count == 0)
+	if (sh->hd_count == 0)
+	{
 		sh->heredoc_fd = NULL;
-	return (hdoc_count);
+		return (0);
+	}
+	sh->heredoc_fd = malloc(sizeof(int) * sh->hd_count);
+	if (!sh->heredoc_fd)
+		return (-1);
+	iter2 = -1;
+	while (++iter2 < (int)sh->hd_count)
+		sh->heredoc_fd[iter2] = -1;
+	return (0);
 }
 
 int	ft_lseek(t_sh *sh, size_t hdoc_iter)
 {
 	if (close(sh->heredoc_fd[hdoc_iter]) == -1)
 		return (sh->heredoc_fd[hdoc_iter] = -1, -1);
-	if (open(sh->hd_path, O_RDWR) == -1)
-		return (-1);
+	sh->heredoc_fd[hdoc_iter] = open(sh->hd_path, O_RDWR);
+	if (sh->heredoc_fd[hdoc_iter] == -1)
+		return (perror("ft_lseek"), -1);
 	if (safe_unlink(sh->hd_path) == -1)
 		return (perror("ft_lseek"), -1);
 	free(sh->hd_path);
@@ -74,6 +84,6 @@ int	safe_unlink(char *path)
 	if (path == NULL)
 		return (-1);
 	if (unlink(path) == -1)
-		return (-1);
+		return (perror("safe_unlink"), -1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 11:23:11 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 11:26:40 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:14:46 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 		size_t hdoc_iter)
 {
-	t_entry	buf;
+	t_entry		buf;
 
 	sh->hd_path = heredoc_path(hdoc_iter);
 	if (!sh->hd_path)
@@ -68,12 +68,10 @@ int	here_doc(t_sh *sh)
 
 	hdoc_iter = 0;
 	iter = sh->entries;
-	sh->hd_count = operator_count(sh);
-	if (sh->hd_count == 0)
-		return (0);
-	sh->heredoc_fd = malloc(sizeof(int) * sh->hd_count);
-	if (!sh->heredoc_fd)
+	if (hdoc_init(sh) == -1)
 		return (-1);
+	if (!sh->heredoc_fd)
+		return (0);
 	while (iter != NULL)
 	{
 		if (iter->spec == HERE_DOC)
@@ -82,7 +80,7 @@ int	here_doc(t_sh *sh)
 			if (hdoc_entry(iter, sh, hdoc_iter) == -1 || ft_lseek(sh,
 					hdoc_iter) == -1)
 				return (close_fd(sh), free(sh->heredoc_fd), free(sh->hd_path),
-					unlink(sh->hd_path), -1);
+					safe_unlink(sh->hd_path), -1);
 			hdoc_iter++;
 		}
 		iter = iter->next;

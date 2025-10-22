@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:47:39 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 11:16:01 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:10:14 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,8 @@ void	close_fd(t_sh *sh)
 	iter = 0;
 	while (iter < sh->hd_count)
 	{
-		if (sh->heredoc_fd[iter] == -1)
-			return ;
-		// LOGIK ANSCHAUEN PASST DAS SO?
-		close(sh->heredoc_fd[iter]);
+		if (sh->heredoc_fd[iter] != -1)
+			close(sh->heredoc_fd[iter]);
 		sh->heredoc_fd[iter] = -1;
 		iter++;
 	}
