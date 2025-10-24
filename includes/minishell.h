@@ -172,8 +172,7 @@ int								pipe_init(t_pipeline *pl);
 // error_messages
 long long						ft_atoll(const char *str);
 void							invalid_option(t_pipeline *pl, t_sh *sh);
-void							execve_fail(char *path, int error,
-									t_pipeline *pl, t_sh *sh);
+void							execve_fail(char *path, int no_path, t_pipeline *pl, t_sh *sh);
 void							command_fail(t_pipeline *pl, t_sh *sh);
 
 // internal_cmd_error

@@ -83,17 +83,22 @@ static void	run_as_script(t_pipeline *pl, t_sh *sh, int *error)
 	*error = errno;
 }
 
-void	execve_fail(char *path, int error, t_pipeline *pl, t_sh *sh)
+void	execve_fail(char *path, int no_path, t_pipeline *pl, t_sh *sh)
 {
 	struct stat	st;
+	int	error;
 
+	error = errno;
 	if (errno == ENOEXEC)
 		run_as_script(pl, sh, &error);
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 		error = EISDIR;
 	errno = error;
-	perror(path);
-	if (path && !ft_strchr(pl->current->argv[0], '/'))
+	if (no_path == 1)
+		perror(pl->current->argv[0]);
+	else 
+		perror(path);
+	if ((path && !ft_strchr(pl->current->argv[0], '/')) || no_path == 1)
 		free(path);
 	if (errno == EACCES || errno == ENOEXEC || errno == EISDIR)
 		child_exit(sh, pl, 126);

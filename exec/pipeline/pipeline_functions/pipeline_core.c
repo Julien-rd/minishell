@@ -60,10 +60,36 @@ int	own_cmd_exec(t_pipeline *pl, t_sh *sh)
 	return (sh->internal_errcode);
 }
 
+int no_path_execution(char **path, char *cmd)
+{
+	char    *cwd;
+	char    *full_path;
+
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (perror("getcwd"), -1);
+	full_path = ft_strjointhree(cwd, "/", cmd);
+	if (!full_path)
+			return (perror("no_path_execution"), free(cwd), -1);
+	if (access(full_path, F_OK) == 0)
+	{
+		*path = ft_strjoin("./", cmd);
+		if (!*path)
+			return (perror("no_path_execution"), free(full_path), free(cwd), -1);
+		return (1);
+	}
+	free(full_path);
+	free(cwd);
+	return (2);
+}
+
 void	child_process(t_pipeline *pl, t_sh *sh)
 {
 	char	*path;
+	int		no_path;
 
+	no_path = 0;
 	setup_child_signals();
 	if (setup_redirect(sh, pl) == -1)
 		child_exit(sh, pl, 1);
@@ -71,15 +97,22 @@ void	child_process(t_pipeline *pl, t_sh *sh)
 		child_exit(sh, pl, 0);
 	if (pl->current->cmd_flag != EXTERNAL)
 		builtin_handler(pl, sh);
-	path = ft_getpath(sh->envp.vars, pl->current->argv[0]);
+	if (!ft_strchr(pl->current->argv[0], '/') && ft_find_paths(sh->envp.vars, "PATH") == -1)
+	{
+		no_path = no_path_execution(&path, pl->current->argv[0]);
+		if (no_path == -1)
+			child_exit(sh, pl, 1);
+	}
+	if (!no_path || no_path == 2)
+		path = ft_getpath(sh->envp.vars, pl->current->argv[0]);
 	if (path == NULL || pl->current->argv[0][0] == 0)
 	{
-		if (path && !ft_strchr(pl->current->argv[0], '/'))
+		if ((path && !ft_strchr(pl->current->argv[0], '/')) || no_path == 1)
 			free(path);
 		command_fail(pl, sh);
 	}
 	execve(path, pl->current->argv, sh->envp.vars);
-	execve_fail(path, errno, pl, sh);
+	execve_fail(path, no_path, pl, sh);
 }
 
 int	parent_process(t_pipeline *pl)
