@@ -36,7 +36,7 @@ static int	hdoc_mode(t_sh *sh, int expand_flag, char *delimiter,
 		if (safe_write(sh->heredoc_fd[hdoc_iter], buf.raw_entry,
 				ft_strlen(buf.raw_entry)) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
-		if (1 || safe_write(sh->heredoc_fd[hdoc_iter], "\n", 1) == -1)
+		if (safe_write(sh->heredoc_fd[hdoc_iter], "\n", 1) == -1)
 			return (setup_main_signals(sh), free(buf.raw_entry), -1);
 		free(buf.raw_entry);
 	}

@@ -38,8 +38,8 @@ static int	outfile_init(char *file_name, int flag)
 {
 	int	fd_out;
 
-	fd_out = open(file_name, O_WRONLY | O_CREAT | (flag == OUTFILE) * O_TRUNC
-			+ (flag == APPEND_FILE) * O_APPEND, 0644);
+	fd_out = open(file_name, O_WRONLY | O_CREAT | (((flag == OUTFILE) * O_TRUNC)
+			+ ((flag == APPEND_FILE) * O_APPEND)), 0644);
 	if (fd_out == -1)
 		return (perror(file_name), -1);
 	if (dup2(fd_out, 1) == -1)
