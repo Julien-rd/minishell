@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_core.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/22 14:09:48 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/25 13:55:30 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int no_path_execution(char **path, char *cmd)
 		*path = ft_strjoin("./", cmd);
 		if (!*path)
 			return (perror("no_path_execution"), free(full_path), free(cwd), -1);
-		return (1);
+		return (free(full_path), free(cwd), 1);
 	}
 	free(full_path);
 	free(cwd);
