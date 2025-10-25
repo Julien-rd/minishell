@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 14:48:38 by eprottun          #+#    #+#             */
-/*   Updated: 2025/04/25 17:52:13 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/25 14:03:42 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_putnbr_fd(int n, int fd)
 {
 	char	print[12];
-	int	i;
+	int		i;
 	size_t	j;
 
 	if (n == -2147483648)

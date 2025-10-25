@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/22 12:13:30 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/25 14:41:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int								safe_unlink(char *path);
 
 /********  Builtins  ********/
 
-void							builtin_handler(t_pipeline *pl, t_sh *sh);
 void							pwd(t_sh *sh, t_pipeline *pl, int flag);
 int								exit_cmd(t_pipeline *pl, t_sh *sh);
 int								cd(t_sh *sh, char **argv, size_t pipe_count);
@@ -130,6 +129,7 @@ int								cd_no_arg(char *tmp_cwd, t_sh *sh, int flag);
 int								insert_pos(t_sh *sh, char *param);
 int								extend_envp(t_sh *sh);
 char							*cut_plus(char *entry);
+void							print_declare_x(t_pipeline *pl, t_sh *sh);
 
 /********  Pipeline  ********/
 
@@ -138,9 +138,12 @@ int								pipeline(t_sh *sh);
 // pipeline_core
 int								pl_setup(t_pipeline *pl, t_sh *sh);
 int								own_cmd_exec(t_pipeline *pl, t_sh *sh);
-void							child_process(t_pipeline *pl, t_sh *sh);
+int								pipe_fork(t_pipeline *pl);
 int								parent_process(t_pipeline *pl);
 int								kill_children(t_pipeline *pl, t_sh *sh);
+
+// child_process
+void							child_process(t_pipeline *pl, t_sh *sh);
 
 // setup
 int								count_pipes(t_sh *sh);
@@ -159,7 +162,6 @@ char							*ft_getpath(char **envp, char *cmd);
 // pipeline_helpers
 int								options_check(t_cmd *cur);
 int								cmd_tokens(t_cmd *current);
-int								pipe_fork(t_pipeline *pl);
 int								pl_cleanup(t_pipeline *pl, t_sh *sh, int flag);
 size_t							hdoc_add(t_pipeline *pl);
 
@@ -172,7 +174,8 @@ int								pipe_init(t_pipeline *pl);
 // error_messages
 long long						ft_atoll(const char *str);
 void							invalid_option(t_pipeline *pl, t_sh *sh);
-void							execve_fail(char *path, int no_path, t_pipeline *pl, t_sh *sh);
+void							execve_fail(char *path, int no_path,
+									t_pipeline *pl, t_sh *sh);
 void							command_fail(t_pipeline *pl, t_sh *sh);
 
 // internal_cmd_error

@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 16:58:02 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/21 11:04:54 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/25 14:09:45 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	run_as_script(t_pipeline *pl, t_sh *sh, int *error)
 void	execve_fail(char *path, int no_path, t_pipeline *pl, t_sh *sh)
 {
 	struct stat	st;
-	int	error;
+	int			error;
 
 	error = errno;
 	if (errno == ENOEXEC)
@@ -96,7 +96,7 @@ void	execve_fail(char *path, int no_path, t_pipeline *pl, t_sh *sh)
 	errno = error;
 	if (no_path == 1)
 		perror(pl->current->argv[0]);
-	else 
+	else
 		perror(path);
 	if ((path && !ft_strchr(pl->current->argv[0], '/')) || no_path == 1)
 		free(path);

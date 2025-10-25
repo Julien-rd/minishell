@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/22 09:40:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/25 14:09:12 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	outfile_init(char *file_name, int flag)
 	int	fd_out;
 
 	fd_out = open(file_name, O_WRONLY | O_CREAT | (((flag == OUTFILE) * O_TRUNC)
-			+ ((flag == APPEND_FILE) * O_APPEND)), 0644);
+				+ ((flag == APPEND_FILE) * O_APPEND)), 0644);
 	if (fd_out == -1)
 		return (perror(file_name), -1);
 	if (dup2(fd_out, 1) == -1)

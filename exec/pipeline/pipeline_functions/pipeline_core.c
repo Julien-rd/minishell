@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:28:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/25 13:55:30 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/25 14:40:27 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,59 +60,24 @@ int	own_cmd_exec(t_pipeline *pl, t_sh *sh)
 	return (sh->internal_errcode);
 }
 
-int no_path_execution(char **path, char *cmd)
+int	pipe_fork(t_pipeline *pl)
 {
-	char    *cwd;
-	char    *full_path;
-
-
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (perror("getcwd"), -1);
-	full_path = ft_strjointhree(cwd, "/", cmd);
-	if (!full_path)
-			return (perror("no_path_execution"), free(cwd), -1);
-	if (access(full_path, F_OK) == 0)
+	if (pl->iter != pl->count)
+		if (pipe(pl->fd) == -1)
+			return (perror("pipe"), -1);
+	pl->current->pid = fork();
+	if (pl->current->pid == -1)
 	{
-		*path = ft_strjoin("./", cmd);
-		if (!*path)
-			return (perror("no_path_execution"), free(full_path), free(cwd), -1);
-		return (free(full_path), free(cwd), 1);
+		perror("fork");
+		if (pl->iter != 0)
+			close(pl->prev_fd);
+		if (pl->iter != pl->count)
+			return (close(pl->fd[0]), close(pl->fd[1]), -1);
+		return (-1);
 	}
-	free(full_path);
-	free(cwd);
-	return (2);
-}
-
-void	child_process(t_pipeline *pl, t_sh *sh)
-{
-	char	*path;
-	int		no_path;
-
-	no_path = 0;
-	setup_child_signals();
-	if (setup_redirect(sh, pl) == -1)
-		child_exit(sh, pl, 1);
-	if (pl->current->argv[0] == NULL)
-		child_exit(sh, pl, 0);
-	if (pl->current->cmd_flag != EXTERNAL)
-		builtin_handler(pl, sh);
-	if (!ft_strchr(pl->current->argv[0], '/') && ft_find_paths(sh->envp.vars, "PATH") == -1)
-	{
-		no_path = no_path_execution(&path, pl->current->argv[0]);
-		if (no_path == -1)
-			child_exit(sh, pl, 1);
-	}
-	if (!no_path || no_path == 2)
-		path = ft_getpath(sh->envp.vars, pl->current->argv[0]);
-	if (path == NULL || pl->current->argv[0][0] == 0)
-	{
-		if ((path && !ft_strchr(pl->current->argv[0], '/')) || no_path == 1)
-			free(path);
-		command_fail(pl, sh);
-	}
-	execve(path, pl->current->argv, sh->envp.vars);
-	execve_fail(path, no_path, pl, sh);
+	if (pl->iter == pl->count)
+		pl->last_pid = pl->current->pid;
+	return (0);
 }
 
 int	parent_process(t_pipeline *pl)

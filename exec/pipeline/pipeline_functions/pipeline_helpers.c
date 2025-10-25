@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:27:12 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/22 12:49:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/25 14:40:19 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,6 @@ int	cmd_tokens(t_cmd *current)
 		node = node->next;
 	}
 	return (cmd_tokens);
-}
-
-int	pipe_fork(t_pipeline *pl)
-{
-	if (pl->iter != pl->count)
-		if (pipe(pl->fd) == -1)
-			return (perror("pipe"), -1);
-	pl->current->pid = fork();
-	if (pl->current->pid == -1)
-	{
-		perror("fork");
-		if (pl->iter != 0)
-			close(pl->prev_fd);
-		if (pl->iter != pl->count)
-			return (close(pl->fd[0]), close(pl->fd[1]), -1);
-		return (-1);
-	}
-	if (pl->iter == pl->count)
-		pl->last_pid = pl->current->pid;
-	return (0);
 }
 
 int	pl_cleanup(t_pipeline *pl, t_sh *sh, int flag)

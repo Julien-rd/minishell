@@ -6,7 +6,7 @@
 /*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:16:59 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 12:21:53 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/25 14:42:49 by eprottun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,25 @@ char	*cut_plus(char *entry)
 	ft_strlcpy(new, entry, envlen(entry) + 1);
 	ft_strlcat(new, &entry[envlen(entry) + 1], ft_strlen(entry) + 1);
 	return (new);
+}
+
+void	print_declare_x(t_pipeline *pl, t_sh *sh)
+{
+	size_t	iter;
+
+	iter = 0;
+	if (pl->current->argv[1])
+		return ;
+	while (sh->envp.vars[iter])
+	{
+		if (safe_write(1, "declare -x ", 12) == -1)
+			child_exit(sh, pl, 1);
+		if (safe_write(1, sh->envp.vars[iter],
+				ft_strlen(sh->envp.vars[iter])) == -1)
+			child_exit(sh, pl, 1);
+		if (safe_write(1, "\n", 1) == -1)
+			child_exit(sh, pl, 1);
+		iter++;
+	}
+	child_exit(sh, pl, 0);
 }
