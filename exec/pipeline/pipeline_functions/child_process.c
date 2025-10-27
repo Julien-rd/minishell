@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 14:33:26 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/27 12:06:54 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/27 13:08:45 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	shlvl(t_sh *sh)
 	if (!sh->envp.vars[iter] || !is_a_num(&sh->envp.vars[iter][6]))
 		return (0);
 	shlvl_num = ft_atoll(&sh->envp.vars[iter][6]) + 1;
-	if (shlvl_num <= 1 || shlvl_num > INT_MAX)
+	if (shlvl_num <= 1 || shlvl_num > 2147483648)
 		return (0);
 	new_shlvl = ft_itoa(shlvl_num);
 	if (!new_shlvl)
