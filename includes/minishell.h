@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 12:32:40 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/25 14:41:27 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:21:30 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ extern volatile sig_atomic_t	g_current_signal;
 
 int								init_shell(t_sh *sh, int argc, char **argv,
 									char **envp);
+int								is_a_num(char *num);
 void							non_interactive(t_sh *sh);
 void							interactive_loop(t_sh *sh);
 void							parse_and_execute(char *buf, t_sh *sh);
@@ -127,6 +128,7 @@ int								cd_no_arg(char *tmp_cwd, t_sh *sh, int flag);
 
 // export_helper
 int								insert_pos(t_sh *sh, char *param);
+int								insert_env(t_sh *sh, char *entry);
 int								extend_envp(t_sh *sh);
 char							*cut_plus(char *entry);
 void							print_declare_x(t_pipeline *pl, t_sh *sh);

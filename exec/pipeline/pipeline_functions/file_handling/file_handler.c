@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 18:43:33 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/25 14:09:12 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:33:32 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ static int	heredoc_init(t_pipeline *pl, t_sh *sh)
 {
 	if (dup2(sh->heredoc_fd[pl->hdoc_iter], 0) == -1)
 		return (perror("dup2"), -1);
+	if (close(sh->heredoc_fd[pl->hdoc_iter]) == -1)
+		return (perror("close"), -1);
+	sh->heredoc_fd[pl->hdoc_iter] = -1;
 	pl->hdoc_iter++;
 	return (0);
 }
@@ -90,5 +93,6 @@ int	setup_redirect(t_sh *sh, t_pipeline *pl)
 				return (-1);
 		node = node->next;
 	}
+	close_fd(sh);
 	return (0);
 }

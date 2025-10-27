@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:17:18 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/22 12:57:36 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/27 12:24:54 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,46 @@ static int	create_envp(t_sh *sh, char *envp[])
 	return (0);
 }
 
+int	is_a_num(char *num)
+{
+	size_t	iter;
+
+	iter = 0;
+	if (num[iter] == 0)
+		return (0);
+	while (num[iter])
+	{
+		if (num[iter] > '9' || num[iter] < '0')
+			return (0);
+		iter++;
+	}
+	return (1);
+}
+
+static int	check_shlvl(t_sh *sh)
+{
+	size_t		iter;
+	long long	shlvl_num;
+
+	iter = 0;
+	while (sh->envp.vars[iter])
+	{
+		if (ft_strncmp("SHLVL=", sh->envp.vars[iter], 6) == 0)
+		{
+			if (!is_a_num(&sh->envp.vars[iter][6]))
+				break ;
+			shlvl_num = ft_atoll(&sh->envp.vars[iter][6]);
+			if (shlvl_num <= 1 || shlvl_num > INT_MAX)
+				break ;
+			return (0);
+		}
+		iter++;
+	}
+	if (insert_env(sh, "SHLVL=1") == -1)
+		return (-1);
+	return (0);
+}
+
 int	init_shell(t_sh *sh, int argc, char **argv, char **envp)
 {
 	(void)argv;
@@ -44,6 +84,8 @@ int	init_shell(t_sh *sh, int argc, char **argv, char **envp)
 		return (-1);
 	if (create_envp(sh, envp) == -1)
 		return (-1);
+	if (check_shlvl(sh) == -1)
+		return (perror("check_shlvl"), free2d(&sh->envp.vars), -1);
 	sh->og_path = getcwd(NULL, 0);
 	if (!sh->og_path)
 		return (perror("init_shell"), free2d(&sh->envp.vars), -1);

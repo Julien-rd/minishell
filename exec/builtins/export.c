@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:28:10 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 16:15:54 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:23:29 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	input_check(char *param)
 	return (0);
 }
 
-static int	insert_env(t_sh *sh, char *entry)
+int	insert_env(t_sh *sh, char *entry)
 {
 	char	*new;
 	int		position;
