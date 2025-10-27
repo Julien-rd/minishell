@@ -6,7 +6,7 @@
 /*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:22:37 by jromann           #+#    #+#             */
-/*   Updated: 2025/10/21 13:34:38 by jromann          ###   ########.fr       */
+/*   Updated: 2025/10/27 14:20:55 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	interactive_loop(t_sh *sh)
 			break ;
 		setup_main_signals(sh);
 		if (empty_prompt(buf))
+		{
+			free(buf);
 			continue ;
+		}
 		add_history(buf);
 		parse_and_execute(buf, sh);
 		check_exit_status(buf, sh, INTERACTIVE);
