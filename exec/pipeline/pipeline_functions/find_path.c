@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eprottun <eprottun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jromann <jromann@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:53:46 by eprottun          #+#    #+#             */
-/*   Updated: 2025/10/21 16:18:22 by eprottun         ###   ########.fr       */
+/*   Updated: 2025/10/27 14:16:10 by jromann          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,11 @@ static int	ft_search_paths(char **paths, char **tmp_path, char *cmd)
 
 char	*ft_getpath(char **envp, char *cmd)
 {
-	int		path_pos;
-	char	**paths;
-	char	*tmp_path;
-	int		success_bool;
+	int			path_pos;
+	char		**paths;
+	char		*tmp_path;
+	int			success_bool;
+	struct stat	st;
 
 	if (ft_strchr(cmd, '/'))
 		return (cmd);
@@ -102,5 +103,7 @@ char	*ft_getpath(char **envp, char *cmd)
 	free2d(&paths);
 	if (success_bool != 0)
 		return (errno = success_bool, NULL);
+	if (stat(tmp_path, &st) == 0 && S_ISDIR(st.st_mode))
+		return (free(tmp_path), errno = ENOENT, NULL);
 	return (tmp_path);
 }
